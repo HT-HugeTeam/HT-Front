@@ -1,0 +1,5 @@
+---
+description: src/styles/typography.css 참고해줘. text는 font-labelSmall 이렇게 접두사는 font-야.
+globs:
+alwaysApply: true
+---

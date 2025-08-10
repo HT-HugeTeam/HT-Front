@@ -13,6 +13,14 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "noUncheckedIndexedAccess": true, // 배열/객체 접근 시 undefined 체크 강제
+    "exactOptionalPropertyTypes": true, // 옵셔널 프로퍼티에 undefined 할당 방지
+    "noImplicitOverride": true, // override 키워드 강제
+    "noImplicitReturns": true, // 모든 코드 패스에서 return 강제
+    "noFallthroughCasesInSwitch": true, // switch문 fallthrough 방지
+    "noImplicitAny": true, // any 타입 사용 금지
+    "noUnusedLocals": true, // 사용하지 않는 지역 변수 경고
+    "noUnusedParameters": true, // 사용하지 않는 매개변수 경고
     "plugins": [
       {
         "name": "next"
