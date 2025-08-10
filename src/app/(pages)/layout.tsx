@@ -28,7 +28,7 @@ export default function RootLayout({
           content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'
         />
       </head>
-      <body className='select-none antialiased mx-auto min-w-[320px] max-w-[500px] w-full'>
+      <body className='select-none antialiased mobile-area w-full min-h-screen bg-gray-200'>
         <GlobalProvider>{children}</GlobalProvider>
       </body>
     </html>

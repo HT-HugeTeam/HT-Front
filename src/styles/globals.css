@@ -123,3 +123,8 @@
     @apply bg-background text-foreground;
   }
 }
+@layer components {
+  .mobile-area {
+    @apply mx-auto min-w-[320px] max-w-[500px] w-full;
+  }
+}
