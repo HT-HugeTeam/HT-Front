@@ -1,4 +1,10 @@
-import { parseAsString, parseAsStringLiteral, useQueryState } from 'nuqs';
+import {
+  parseAsBoolean,
+  parseAsString,
+  parseAsStringLiteral,
+  useQueryState,
+} from 'nuqs';
+import { useEffect, useRef } from 'react';
 
 export type TabType = 'store' | 'store-detail' | 'owner' | 'video';
 
@@ -17,17 +23,8 @@ const validTabs = Object.keys(tabs) as TabType[];
  * 마이페이지의 탭 상태를 관리하는 커스텀 훅
  *
  * @returns {Object} 탭 관련 상태와 유틸리티 함수들을 포함하는 객체
- * @property {TabType} tab - 현재 선택된 탭
- * @property {Function} setTab - 탭을 변경하는 함수
- * @property {Function} isActiveTab - 특정 탭이 현재 활성화되어 있는지 확인하는 함수
- * @property {string} tabLabel - 현재 선택된 탭의 레이블
- * @property {Record<TabType, string>} allTabs - 모든 탭과 레이블을 포함하는 객체
+ * @description 현재 보여주는 정보를 관리하는 커스텀 훅으로 쿼리파라미터로 상태를 관리
  *
- * @example
- * const { tab, setTab, isActiveTab, tabLabel } = useInfoQuery();
- * // tab이 'store'일 때
- * console.log(tabLabel); // '가게 정보'
- * console.log(isActiveTab('store')); // true
  */
 
 export function useInfoQuery() {
@@ -36,19 +33,57 @@ export function useInfoQuery() {
     parseAsStringLiteral(validTabs).withDefault(DEFAULT_TAB),
   );
   const [storeName, setStoreName] = useQueryState('storeName', parseAsString);
+  const [edit, setEdit] = useQueryState(
+    'edit',
+    parseAsBoolean.withDefault(false),
+  );
+
+  // 탭 히스토리 추적
+  const tabHistoryRef = useRef<TabType[]>([DEFAULT_TAB]);
+  const previousTabRef = useRef<TabType>(DEFAULT_TAB);
+
+  // 탭 변경 시 히스토리에 추가
+  useEffect(() => {
+    if (tab !== previousTabRef.current) {
+      if (tabHistoryRef.current[tabHistoryRef.current.length - 1] !== tab) {
+        tabHistoryRef.current = [...tabHistoryRef.current, tab];
+      }
+      previousTabRef.current = tab;
+    }
+  }, [tab]);
+
+  // 뒤로가기 함수
+  const goBackTab = () => {
+    if (tabHistoryRef.current.length > 1) {
+      // 현재 탭을 히스토리에서 제거
+      const newHistory = tabHistoryRef.current.slice(0, -1);
+      const previousTab = newHistory[newHistory.length - 1];
+
+      tabHistoryRef.current = newHistory;
+
+      setTab(previousTab ?? DEFAULT_TAB);
+
+      if (previousTab === 'store') {
+        setStoreName(null);
+        setEdit(false);
+      }
+
+      return true;
+    }
+    return false;
+  };
 
   return {
     tab,
     storeName,
     setStoreName,
+    edit,
+    setEdit,
     setTab,
+    goBackTab,
+    canGoBackTab: tabHistoryRef.current.length > 1,
     isActiveTab: (targetTab: TabType) => tab === targetTab,
     tabLabel: tabs[tab],
     allTabs: tabs,
   } as const;
-}
-
-// 타입 가드 함수 (선택적)
-export function isValidTab(value: string): value is TabType {
-  return validTabs.includes(value as TabType);
 }

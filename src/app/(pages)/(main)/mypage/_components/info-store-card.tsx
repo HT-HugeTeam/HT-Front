@@ -1,7 +1,6 @@
 'use client';
 
 import { StoreDetail } from '@/types/store/store-detail.types';
-import Link from 'next/link';
 import { useInfoQuery } from '../_hooks/use-info-query';
 
 export function InfoStoreCard({ storeDetail }: { storeDetail: StoreDetail }) {
@@ -21,7 +20,7 @@ export function InfoStoreCard({ storeDetail }: { storeDetail: StoreDetail }) {
         {Object.entries({
           주소: storeDetail.storeAddress,
           소개: storeDetail.storeDescription,
-          메뉴: `${storeDetail.storeMenu[0]}...`,
+          메뉴: `${storeDetail.storeMenu.slice(0, 3).join(', ')}...`,
         }).map(([label, content]) => (
           <div key={label} className='flex flex-col gap-1'>
             <h4 className='text-labelLarge text-gray500'>{label}</h4>

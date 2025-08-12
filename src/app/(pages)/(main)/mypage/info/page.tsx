@@ -2,7 +2,6 @@ import { getStoreDetail } from '@/lib/api/store';
 import { InfoHeader } from '../_components/info-header';
 import { Suspense } from 'react';
 import { InfoContents } from '../_components/info-contents';
-import { InfoStoreSkeletonCard } from '@/components/skeleton/info-store-skeleton-card';
 import { LoadingSpinner } from '@/components/loading-spinner';
 
 export default async function MyPageInfoPage() {
@@ -12,7 +11,7 @@ export default async function MyPageInfoPage() {
 
   return (
     <div className='w-full h-full'>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<></>}>
         <InfoHeader />
       </Suspense>
       <Suspense fallback={<LoadingSpinner />}>

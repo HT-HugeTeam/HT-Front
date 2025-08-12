@@ -4,7 +4,6 @@ import { StoreDetail } from '@/types/store/store-detail.types';
 import { useInfoQuery } from '../_hooks/use-info-query';
 import { InfoStoreCard } from './info-store-card';
 import { use } from 'react';
-import { InfoStoreSkeletonCard } from '@/components/skeleton/info-store-skeleton-card';
 import { InfoStoreDetail } from './info-store-detail';
 
 export function InfoContents({
@@ -14,7 +13,7 @@ export function InfoContents({
 }) {
   const { tabLabel, storeName } = useInfoQuery();
 
-  // storeDetailPromise를 사용하여 데이터를 비동기적으로 가져옴
+  // 임시 목데이터 => tanstack query caching 해야 함.
   const storeDetail = use(storeDetailPromise);
 
   return (
