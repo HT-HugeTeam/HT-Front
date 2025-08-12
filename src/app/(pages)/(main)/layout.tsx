@@ -1,7 +1,4 @@
-import NavigationBar from "./_components/navigation-bar";
-
-
-
+import NavigationBar from './_components/navigation-bar';
 
 export default function MainLayout({
   children,
@@ -9,9 +6,9 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className='w-full min-h-screen bg-white'>
-        <main className='w-full h-full pb-20'>{children}</main>
-        <NavigationBar />
+    <div className='w-full min-h-screen bg-white overflow-y-auto scrollbar-hide'>
+      <main className='w-full h-full pb-20'>{children}</main>
+      <NavigationBar />
     </div>
   );
 }
