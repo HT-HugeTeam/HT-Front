@@ -12,7 +12,7 @@ export function InfoHeader() {
   const handleBack = () => {
     if (edit) {
       window.dispatchEvent(new CustomEvent('cancel-store-edit'));
-      setEdit(false);
+      void setEdit(false);
       return;
     }
 

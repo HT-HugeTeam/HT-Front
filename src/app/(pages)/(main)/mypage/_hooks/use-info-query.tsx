@@ -61,11 +61,11 @@ export function useInfoQuery() {
 
       tabHistoryRef.current = newHistory;
 
-      setTab(previousTab ?? DEFAULT_TAB);
+      void setTab(previousTab ?? DEFAULT_TAB);
 
       if (previousTab === 'store') {
-        setStoreName(null);
-        setEdit(false);
+        void setStoreName(null);
+        void setEdit(false);
       }
 
       return true;

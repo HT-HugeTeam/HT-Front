@@ -24,7 +24,7 @@ export function InfoStoreDetail({
   // storeDetail이 변경될 때 formData 초기화
   useEffect(() => {
     if (storeDetail) {
-      setFormData({
+      void setFormData({
         storeName: storeDetail.storeName,
         storeAddress: storeDetail.storeAddress,
         storeDescription: storeDetail.storeDescription,
@@ -36,13 +36,13 @@ export function InfoStoreDetail({
   const handleSave = useCallback(() => {
     // API 호출로직 필요
     toast.success('수정되었습니다.');
-    setEdit(false);
+    void setEdit(false);
   }, [setEdit]);
 
   const handleCancel = useCallback(() => {
     // 원래 데이터로 복원
     if (storeDetail) {
-      setFormData({
+      void setFormData({
         storeName: storeDetail.storeName,
         storeAddress: storeDetail.storeAddress,
         storeDescription: storeDetail.storeDescription,
@@ -63,17 +63,17 @@ export function InfoStoreDetail({
   // 메뉴 추가
   const addMenuItem = () => {
     if (newMenuItem.trim()) {
-      setFormData(prev => ({
+      void setFormData(prev => ({
         ...prev,
         storeMenu: [...prev.storeMenu, newMenuItem.trim()],
       }));
-      setNewMenuItem('');
+      void setNewMenuItem('');
     }
   };
 
   // 메뉴 삭제
   const removeMenuItem = (index: number) => {
-    setFormData(prev => ({
+    void setFormData(prev => ({
       ...prev,
       storeMenu: prev.storeMenu.filter((_, i) => i !== index),
     }));
@@ -91,7 +91,7 @@ export function InfoStoreDetail({
             type='text'
             value={formData.storeName}
             onChange={e =>
-              setFormData(prev => ({ ...prev, storeName: e.target.value }))
+              void setFormData(prev => ({ ...prev, storeName: e.target.value }))
             }
             className='text-bodySmall text-gray600 border-b-2 border-gray600 pt-5 pb-2 focus:outline-none focus:ring-0'
           />
@@ -110,7 +110,10 @@ export function InfoStoreDetail({
             type='text'
             value={formData.storeAddress}
             onChange={e =>
-              setFormData(prev => ({ ...prev, storeAddress: e.target.value }))
+              void setFormData(prev => ({
+                ...prev,
+                storeAddress: e.target.value,
+              }))
             }
             className='text-bodySmall text-gray600 border-b-2 border-gray600 pt-5 pb-2 focus:outline-none focus:ring-0'
           />
@@ -128,7 +131,7 @@ export function InfoStoreDetail({
           <textarea
             value={formData.storeDescription}
             onChange={e =>
-              setFormData(prev => ({
+              void setFormData(prev => ({
                 ...prev,
                 storeDescription: e.target.value,
               }))
@@ -165,7 +168,7 @@ export function InfoStoreDetail({
               <input
                 type='text'
                 value={newMenuItem}
-                onChange={e => setNewMenuItem(e.target.value)}
+                onChange={e => void setNewMenuItem(e.target.value)}
                 placeholder='추가할 메뉴명을 입력해주세요.'
                 className='flex-1 text-bodySmall text-gray600 border-b-2 border-gray600 pt-5 pb-2 focus:outline-none focus:ring-0'
               />
