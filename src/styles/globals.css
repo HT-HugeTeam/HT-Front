@@ -127,4 +127,22 @@
   .mobile-area {
     @apply mx-auto min-w-[320px] max-w-[500px] w-full;
   }
+  .kakao-btn-text {
+    color: var(--kakao-text, rgba(0, 0, 0, 0.85));
+    font-family: 'Apple SD Gothic Neo';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%; /* 22.5px */
+  }
+  .login-bg {
+    background: linear-gradient(180deg, #ffeeea 0%, #ffcfc3 100%);
+  }
+  .login-main-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 30px; /* 93.75% */
+    letter-spacing: 0.4px;
+  }
 }
