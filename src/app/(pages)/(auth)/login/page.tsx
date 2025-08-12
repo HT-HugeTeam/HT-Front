@@ -10,7 +10,7 @@ export default function LoginPage() {
       <header className='flex flex-col items-center justify-center gap-8'>
         <LoginMainBigLogo />
         <div className='flex flex-col items-center justify-center gap-4'>
-          <h4 className='font-headlineSmall text-orange400'>
+          <h4 className='text-headlineSmall text-orange400'>
             식당 탐색의 새로운 판
           </h4>
           <h2 className='login-main-title text-orange500'>쇼츠테이블</h2>

@@ -34,6 +34,8 @@
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.38.0",
     "@typescript-eslint/parser": "^8.38.0",
+    "@use-funnel/browser": "^0.0.15",
+    "@use-funnel/next": "^0.0.21",
     "dotenv": "^17.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",

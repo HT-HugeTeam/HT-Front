@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 
 @theme inline {
+  --breakpoint-min-mobile: 450px;
+
   /* White and Black */
   --color-white000: #ffffff;
   --color-black000: #191d1f;
