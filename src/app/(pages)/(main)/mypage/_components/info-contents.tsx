@@ -1,6 +1,6 @@
 'use client';
 
-import { StoreDetail } from '@/types/store/store-detail.types';
+import { StoreDetail } from '@/types/mypage/store-detail.types';
 import { useInfoQuery } from '../_hooks/use-info-query';
 import { InfoStoreCard } from './info-store-card';
 import { use } from 'react';

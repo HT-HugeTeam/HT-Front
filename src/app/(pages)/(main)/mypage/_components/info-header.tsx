@@ -3,15 +3,16 @@
 import LeftArrowInactive from '@/public/svg/left-arrow-inactive.svg';
 import { useInfoQuery } from '../_hooks/use-info-query';
 import { useRouter } from 'next/navigation';
+import { useMyPageStore } from '@/lib/stores/mypage-store';
 
 export function InfoHeader() {
   const router = useRouter();
   const { tabLabel, storeName, edit, setEdit, goBackTab, canGoBackTab } =
     useInfoQuery();
+  const handleSave = useMyPageStore(state => state.handleSave);
 
   const handleBack = () => {
     if (edit) {
-      window.dispatchEvent(new CustomEvent('cancel-store-edit'));
       void setEdit(false);
       return;
     }
@@ -31,30 +32,27 @@ export function InfoHeader() {
         <LeftArrowInactive />
       </button>
       <span className='text-headlineLarge !font-bold text-gray600'>
-        {tabLabel === '가게 정보' && tabLabel}
-        {tabLabel === '상세 정보' && storeName}
+        {tabLabel !== '상세 정보' ? tabLabel : storeName}
       </span>
+
       {tabLabel === '가게 정보' && (
         <button className='text-bodySmall text-gray600 hover:underline cursor-pointer'>
           추가
         </button>
       )}
-      {tabLabel === '상세 정보' && !edit && (
+
+      {tabLabel === '상세 정보' && (
         <button
           className='text-bodySmall text-gray600 hover:underline cursor-pointer'
-          onClick={() => void setEdit(true)}
-        >
-          편집
-        </button>
-      )}
-      {tabLabel === '상세 정보' && edit && (
-        <button
-          className='text-bodySmall text-primary hover:underline cursor-pointer font-medium'
           onClick={() => {
-            window.dispatchEvent(new CustomEvent('save-store-detail'));
+            if (edit) {
+              handleSave(setEdit);
+            } else {
+              void setEdit(true);
+            }
           }}
         >
-          완료
+          {edit ? '완료' : '편집'}
         </button>
       )}
     </header>

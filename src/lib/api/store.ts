@@ -1,4 +1,4 @@
-import { StoreDetail } from '@/types/store/store-detail.types';
+import { StoreDetail } from '@/types/mypage/store-detail.types';
 import { donkatsuStore, gozhibiStore } from '@/lib/mockdata/store/store-detail';
 
 export async function getStoreDetail(storeId: string): Promise<StoreDetail> {
