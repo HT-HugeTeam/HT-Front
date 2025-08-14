@@ -1,17 +1,23 @@
 import Link from 'next/link';
+import StoreIcon from '@/public/svg/mypage/store.svg';
+import OwnerIcon from '@/public/svg/mypage/owner.svg';
+import VideoIcon from '@/public/svg/mypage/video.svg';
 
 const LinkItems = [
   {
     label: '가게 정보',
     herf: '/mypage/info?tab=store',
+    icon: <StoreIcon />,
   },
   {
     label: '사장님 정보',
     herf: '/mypage/info?tab=owner',
+    icon: <OwnerIcon />,
   },
   {
     label: '영상 관리',
     herf: '/mypage/info?tab=video',
+    icon: <VideoIcon />,
   },
 ];
 export default function MyPage() {
@@ -27,7 +33,9 @@ export default function MyPage() {
             key={item.label}
             className='w-fit h-auto flex justify-start items-center gap-2'
           >
-            <span className='size-6 aspect-square bg-[#FF9C9C]' />
+            <span className='size-6 aspect-square flex-center'>
+              {item.icon}
+            </span>
             <span className='text-bodyMedium text-gray600'>{item.label}</span>
           </Link>
         ))}

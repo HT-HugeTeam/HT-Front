@@ -11,6 +11,15 @@ export function InfoHeader() {
     useInfoQuery();
   const handleSave = useMyPageStore(state => state.handleSave);
 
+  const handleEditClick = () => {
+    if (edit) {
+      void handleSave();
+      void setEdit(false);
+    } else {
+      void setEdit(true);
+    }
+  };
+
   const handleBack = () => {
     if (edit) {
       void setEdit(false);
@@ -44,13 +53,7 @@ export function InfoHeader() {
       {tabLabel === '상세 정보' && (
         <button
           className='text-bodySmall text-gray600 hover:underline cursor-pointer'
-          onClick={() => {
-            if (edit) {
-              handleSave(setEdit);
-            } else {
-              void setEdit(true);
-            }
-          }}
+          onClick={handleEditClick}
         >
           {edit ? '완료' : '편집'}
         </button>

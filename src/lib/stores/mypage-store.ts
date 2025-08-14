@@ -24,7 +24,7 @@ interface MyPageStore {
   resetFormData: (storeDetail: StoreDetail) => void;
 
   // 저장 함수
-  handleSave: (setEdit: (edit: boolean) => void) => void;
+  handleSave: () => void;
 
   // 메뉴 관련 헬퍼 함수들
   addMenuItem: (menuItem: string) => void;
@@ -63,10 +63,9 @@ export const useMyPageStore = create<MyPageStore>((set, get) => ({
     get().initializeFormData(storeDetail);
   },
 
-  handleSave: setEdit => {
+  handleSave: () => {
     // TODO: API 호출 로직 추가
     toast.success('수정되었습니다.');
-    setEdit(false);
   },
 
   addMenuItem: menuItem => {
