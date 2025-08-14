@@ -182,4 +182,30 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
   }
+  .custom-scrollbar {
+    /* 스크롤바 전체 너비 */
+    scrollbar-width: 2px;
+    scrollbar-color: var(--color-orange400) var(--color-orange200);
+  }
+
+  /* 웹킷 브라우저용 (Chrome, Safari, Edge) */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px; /* 세로 스크롤바 너비 */
+    height: 8px; /* 가로 스크롤바 높이 */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--color-orange200); /* 트랙 색상 */
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-orange400); /* 썸 색상 */
+    border-radius: 4px;
+    border: 1px solid var(--color-orange200); /* 썸 테두리 */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-orange500); /* 호버시 색상 */
+  }
 }

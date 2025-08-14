@@ -80,7 +80,7 @@ const FormField = ({ field }: { field: (typeof FORM_FIELDS)[number] }) => {
   const value = formData[field.key];
 
   const commonProps = {
-    value: value as string,
+    value: value,
     onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       updateField(field.key, e.target.value),
     className: `${INPUT_STYLES.base} ${

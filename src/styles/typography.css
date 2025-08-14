@@ -57,6 +57,11 @@
   --text-labelLarge--font-weight: 400;
   --text-labelLarge--font-family: var(--font-pretendard);
 
+  --text-labelLargeMid: 14px;
+  --text-labelLargeMid--line-height: 18px;
+  --text-labelLargeMid--font-weight: 500;
+  --text-labelLargeMid--font-family: var(--font-pretendard);
+
   --text-labelSmall: 12px;
   --text-labelSmall--line-height: 16px;
   --text-labelSmall--font-weight: 400;

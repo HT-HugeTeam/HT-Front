@@ -56,6 +56,7 @@ const FieldContainer = memo(
     );
   },
 );
+FieldContainer.displayName = 'FieldContainer';
 
 // Helper Components - 메뉴 목록 렌더링
 const MenuList = memo(
@@ -78,3 +79,4 @@ const MenuList = memo(
     return prevProps.menus.every((menu, i) => menu === nextProps.menus[i]);
   },
 );
+MenuList.displayName = 'MenuList';
