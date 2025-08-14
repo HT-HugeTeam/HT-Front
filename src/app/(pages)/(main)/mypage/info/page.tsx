@@ -10,7 +10,7 @@ export default async function MyPageInfoPage() {
   const storeDetailPromise2 = getStoreDetail('gojibi'); // 실제로는 동적으로 받아올 storeId
 
   return (
-    <div className='w-full h-full'>
+    <div className='w-full h-auto'>
       <Suspense fallback={<></>}>
         <InfoHeader />
       </Suspense>

@@ -5,7 +5,7 @@ import LoginMainBigLogo from '@/public/svg/logo/login-main-big.svg';
 
 export default function LoginPage() {
   return (
-    <div className='px-6 pt-57 pb-20 not-only-of-type:w-full min-h-screen mx-auto login-bg flex flex-col justify-between'>
+    <div className='px-6 pt-57 pb-20 not-only-of-type:w-full h-screen mx-auto login-bg flex flex-col justify-between'>
       {/* 헤더 || 로고 영역 */}
       <header className='flex flex-col items-center justify-center gap-8'>
         <LoginMainBigLogo />
@@ -21,13 +21,7 @@ export default function LoginPage() {
       <button
         // onClick={login}
         // disabled={isLoading}
-        className='w-full bg-[#FEE500] hover:bg-[#fdef94] active:bg-[#F5D800] 
-                    text-[#3C1E1E] font-semibold py-4 px-6 rounded-[6px] 
-                    flex items-center justify-center space-x-3
-                    transition-all duration-200 ease-in-out
-                    disabled:opacity-70 disabled:cursor-not-allowed
-                    shadow-lg hover:shadow-xl
-                    border border-[#FEE500]'
+        className='kakao-btn'
       >
         <KakaoLogo />
         <span className='kakao-btn-text'>카카오톡으로 로그인</span>

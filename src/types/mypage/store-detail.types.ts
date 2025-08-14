@@ -5,3 +5,9 @@ export interface StoreDetail {
   storeDescription: string;
   storeMenu: string[];
 }
+export interface StoreFormData {
+  storeName: string;
+  storeAddress: string;
+  storeDescription: string;
+  storeMenu: string[];
+}
