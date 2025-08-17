@@ -3,6 +3,7 @@ import { OwnerIntro } from './_components/owner-intro';
 import Link from 'next/link';
 import { VideoSection } from './_components/video-section';
 import VideoLayerIcon from '@/public/svg/home/video-layer.svg';
+import VideoTapeLayerIcon from '@/public/svg/home/video-tape-layer.svg';
 
 const HITS_COUNT = 333333;
 const HOME_BUTTON_STYLE =
@@ -17,11 +18,14 @@ export default function HomePage() {
         <VideoSection />
 
         {/* 영상 제작 링크 이동 버튼 */}
-        <Link href='/make-video' className={HOME_BUTTON_STYLE}>
+        <Link href='/make-video' className={'relative ' + HOME_BUTTON_STYLE}>
           <h4 className='text-labelLargeMid text-gray500'>
             우리 가게 홍보가 필요할 때
           </h4>
           <h1 className='text-displayMedium text-orange400'>영상 제작하기</h1>
+          <span className='absolute top-0 right-0'>
+            <VideoTapeLayerIcon />
+          </span>
         </Link>
 
         {/* 최근 영상 조회수 버튼 */}

@@ -27,7 +27,7 @@ const VIDEO_CARD_LIST = [
 
 export function VideoSection() {
   return (
-    <section className='w-full h-auto flex flex-col items-start gap-2'>
+    <section className='mb-2 w-full h-auto flex flex-col items-start gap-2'>
       <header className='px-1.5 py-1 bg-orange100 rounded-[5px] flex-center text-labelSmall text-orange400'>
         업로드 된 영상
       </header>
