@@ -31,7 +31,6 @@ export function InfoHeader() {
       if (success) return;
     }
 
-    // 남아있는 query history 없으면 뒤로가기
     router.back();
   };
 
@@ -44,11 +43,7 @@ export function InfoHeader() {
         {tabLabel !== '상세 정보' ? tabLabel : storeName}
       </span>
 
-      {tabLabel === '가게 정보' && (
-        <button className='text-bodySmall text-gray600 hover:underline cursor-pointer'>
-          추가
-        </button>
-      )}
+      {tabLabel === '가게 정보' && <div className='w-[27.66px] h-5' />}
 
       {tabLabel === '상세 정보' && (
         <button

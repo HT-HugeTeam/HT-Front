@@ -7,7 +7,6 @@ import { LoadingSpinner } from '@/components/loading-spinner';
 export default async function MyPageInfoPage() {
   // Promise 생성 (즉시 실행되지만 await하지 않음)
   const storeDetailPromise = getStoreDetail('donkatsu'); // 실제로는 동적으로 받아올 storeId
-  const storeDetailPromise2 = getStoreDetail('gojibi'); // 실제로는 동적으로 받아올 storeId
 
   return (
     <div className='w-full h-auto'>
@@ -15,12 +14,7 @@ export default async function MyPageInfoPage() {
         <InfoHeader />
       </Suspense>
       <Suspense fallback={<LoadingSpinner />}>
-        <InfoContents
-          storeDetailPromise={Promise.all([
-            storeDetailPromise,
-            storeDetailPromise2,
-          ])}
-        />
+        <InfoContents storeDetailPromise={storeDetailPromise} />
       </Suspense>
     </div>
   );

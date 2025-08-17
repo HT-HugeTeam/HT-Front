@@ -37,6 +37,7 @@ export const useMyPageStore = create<MyPageStore>((set, get) => ({
     storeAddress: '',
     storeDescription: '',
     storeMenu: [],
+    storeNaverMap: '',
   },
 
   updateField: (field, value) => {
@@ -55,6 +56,7 @@ export const useMyPageStore = create<MyPageStore>((set, get) => ({
         storeAddress: storeDetail.storeAddress,
         storeDescription: storeDetail.storeDescription,
         storeMenu: [...storeDetail.storeMenu],
+        storeNaverMap: storeDetail.storeNaverMap ?? '',
       },
     });
   },
