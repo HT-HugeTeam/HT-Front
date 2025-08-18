@@ -8,6 +8,12 @@ import { ImageUploadCard } from '@/components/image-upload-card';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
 import MakeVideoStartIcon from '@/public/svg/make-video/make-video-start.svg';
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
+import {
+  useFileUploadStore,
+  useUploadStats,
+  useVideoCreationStatus,
+} from '@/lib/stores/file-upload-store';
+import { useRouter } from 'next/navigation';
 
 export const StoreField = [
   {
@@ -33,7 +39,15 @@ export function MakeVideoInputUi({
 }: {
   storeDetail: StoreDetail;
 }) {
+  const router = useRouter();
   const { fileUpload, setFileUpload } = useMakeVideoQuery();
+
+  // 전역 store 사용
+  const uploadStats = useUploadStats();
+  const videoCreationStatus = useVideoCreationStatus();
+  const { startVideoCreation, completeVideoCreation, resetUploadProgress } =
+    useFileUploadStore();
+
   // 동영상 파일들 관리
   const [selectedVideoFiles, setSelectedVideoFiles] = useState<File[]>([]);
 
@@ -44,7 +58,7 @@ export function MakeVideoInputUi({
 
   const [uploadedUrls, setUploadedUrls] = useState<string[]>([]);
 
-  // 프로그레스 바 애니메이션 상태
+  // 프로그레스 바 애니메이션 상태 (업로드 완료 후 영상 제작 진행바용)
   const [progress, setProgress] = useState(0);
 
   const { uploadFiles, uploadProgress, isUploading, resetProgress } =
@@ -55,6 +69,10 @@ export function MakeVideoInputUi({
         toast.success(`${results.length}개 파일 업로드 완료!`);
         setSelectedVideoFiles([]); // 동영상 파일 초기화
         setSelectedMenuImages({}); // 메뉴 이미지들 초기화
+
+        // 업로드 완료 후 영상 제작 시작
+        startVideoCreation();
+
         resetProgress();
       },
       onError: error => {
@@ -107,7 +125,7 @@ export function MakeVideoInputUi({
           if (prev >= 100) {
             clearInterval(interval);
             // TODO: 3초 후 페이지 이동 로직 추가
-            console.log('3초 완료! 페이지 이동 준비');
+            router.push('/mypage/manage-video');
             return 100;
           }
           return prev + 33.33; // 1초마다 33.33% 증가 (3초에 100%)

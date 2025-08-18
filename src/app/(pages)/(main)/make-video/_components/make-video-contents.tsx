@@ -3,7 +3,7 @@
 import { StoreDetail } from '@/types/mypage/store-detail.types';
 import { use } from 'react';
 import { StoreAddButton } from '@/components/store-add-button';
-import { InfoStoreCard } from '../../mypage/_components/info-store-card';
+import { InfoStoreCard } from '../../mypage/_components/info/info-store-card';
 import { MakeVideoInputUi } from './make-video-input-ui';
 import { cn } from '@/lib/utils/cn';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';

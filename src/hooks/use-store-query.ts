@@ -6,13 +6,12 @@ import {
 } from 'nuqs';
 import { useEffect, useRef } from 'react';
 
-export type TabType = 'store' | 'store-detail' | 'owner' | 'video';
+export type TabType = 'store' | 'store-detail' | 'owner';
 
 export const tabs: Record<TabType, string> = {
   store: '가게 정보',
   'store-detail': '상세 정보',
   owner: '사장님 정보',
-  video: '영상 관리',
 } as const;
 
 const DEFAULT_TAB: TabType = 'store';

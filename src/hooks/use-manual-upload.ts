@@ -2,7 +2,10 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import {
+  useFileUploadStore,
+  UploadProgress,
+} from '@/lib/stores/file-upload-store';
 
 interface UploadResponse {
   success: boolean;
@@ -12,14 +15,6 @@ interface UploadResponse {
   fileType: string;
 }
 
-interface UploadProgress {
-  fileName: string;
-  progress: number;
-  status: 'pending' | 'uploading' | 'completed' | 'error';
-  error?: string;
-  result?: UploadResponse;
-}
-
 interface UseManualUploadOptions {
   onAllComplete?: (results: UploadResponse[]) => void;
   onError?: (error: Error) => void;
@@ -27,7 +22,15 @@ interface UseManualUploadOptions {
 }
 
 export function useManualUpload(options?: UseManualUploadOptions) {
-  const [uploadProgress, setUploadProgress] = useState<UploadProgress[]>([]);
+  // 전역 store 사용
+  const {
+    uploadProgress,
+    isUploading,
+    setUploadProgress,
+    updateUploadProgress,
+    setIsUploading,
+    resetUploadProgress,
+  } = useFileUploadStore();
 
   const uploadSingleFile = async (file: File): Promise<UploadResponse> => {
     const formData = new FormData();
@@ -48,6 +51,9 @@ export function useManualUpload(options?: UseManualUploadOptions) {
 
   const { mutate: executeUpload, isPending } = useMutation({
     mutationFn: async (files: File[]): Promise<UploadResponse[]> => {
+      // 전역 store에 업로드 상태 설정
+      setIsUploading(true);
+
       // 진행상태 초기화
       const initialProgress: UploadProgress[] = files.map(file => ({
         fileName: file.name,
@@ -62,52 +68,34 @@ export function useManualUpload(options?: UseManualUploadOptions) {
       // 파일을 순차적으로 업로드 (병렬도 가능)
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-
+        if (!file) continue;
         try {
           // 업로드 시작
-          setUploadProgress(prev => {
-            const updated = [...prev];
-            updated[i] = {
-              ...updated[i],
-              status: 'uploading',
-              progress: 50,
-              fileName: file?.name ?? '',
-            };
-            options?.onProgress?.(updated);
-            return updated;
+          updateUploadProgress(file.name, {
+            status: 'uploading',
+            progress: 50,
           });
+          options?.onProgress?.(uploadProgress);
 
           const result = await uploadSingleFile(file as File);
           console.log('result', result);
           results.push(result);
 
           // 업로드 완료
-          setUploadProgress(prev => {
-            const updated = [...prev];
-            updated[i] = {
-              ...updated[i],
-              status: 'completed',
-              progress: 100,
-              result,
-              fileName: file?.name ?? '',
-            };
-            options?.onProgress?.(updated);
-            return updated;
+          updateUploadProgress(file.name, {
+            status: 'completed',
+            progress: 100,
+            result,
           });
+          options?.onProgress?.(uploadProgress);
         } catch (error) {
           // 업로드 실패
-          setUploadProgress(prev => {
-            const updated = [...prev];
-            updated[i] = {
-              ...updated[i],
-              status: 'error',
-              progress: 0,
-              error: error instanceof Error ? error.message : '업로드 실패',
-              fileName: file?.name ?? '',
-            };
-            options?.onProgress?.(updated);
-            return updated;
+          updateUploadProgress(file.name, {
+            status: 'error',
+            progress: 0,
+            error: error instanceof Error ? error.message : '업로드 실패',
           });
+          options?.onProgress?.(uploadProgress);
 
           throw error; // 실패 시 전체 중단
         }
@@ -116,9 +104,11 @@ export function useManualUpload(options?: UseManualUploadOptions) {
       return results;
     },
     onSuccess: results => {
+      setIsUploading(false);
       options?.onAllComplete?.(results);
     },
     onError: error => {
+      setIsUploading(false);
       options?.onError?.(error);
     },
   });
@@ -135,6 +125,8 @@ export function useManualUpload(options?: UseManualUploadOptions) {
   const { mutate: executeParallelUpload, isPending: isParallelPending } =
     useMutation({
       mutationFn: async (files: File[]): Promise<UploadResponse[]> => {
+        setIsUploading(true);
+
         // 진행상태 초기화
         const initialProgress: UploadProgress[] = files.map(file => ({
           fileName: file.name,
@@ -145,51 +137,30 @@ export function useManualUpload(options?: UseManualUploadOptions) {
         options?.onProgress?.(initialProgress);
 
         // 모든 파일을 병렬로 업로드
-        const uploadPromises = files.map(async (file, index) => {
+        const uploadPromises = files.map(async file => {
           try {
             // 업로드 시작
-            setUploadProgress(prev => {
-              const updated = [...prev];
-              updated[index] = {
-                ...updated[index],
-                status: 'uploading',
-                progress: 50,
-                fileName: file?.name ?? '',
-              };
-              options?.onProgress?.(updated);
-              return updated;
+            updateUploadProgress(file.name, {
+              status: 'uploading',
+              progress: 50,
             });
 
             const result = await uploadSingleFile(file);
 
             // 업로드 완료
-            setUploadProgress(prev => {
-              const updated = [...prev];
-              updated[index] = {
-                ...updated[index],
-                status: 'completed',
-                progress: 100,
-                result,
-                fileName: file?.name ?? '',
-              };
-              options?.onProgress?.(updated);
-              return updated;
+            updateUploadProgress(file.name, {
+              status: 'completed',
+              progress: 100,
+              result,
             });
 
             return result;
           } catch (error) {
             // 업로드 실패
-            setUploadProgress(prev => {
-              const updated = [...prev];
-              updated[index] = {
-                ...updated[index],
-                status: 'error',
-                progress: 0,
-                error: error instanceof Error ? error.message : '업로드 실패',
-                fileName: file?.name ?? '',
-              };
-              options?.onProgress?.(updated);
-              return updated;
+            updateUploadProgress(file.name, {
+              status: 'error',
+              progress: 0,
+              error: error instanceof Error ? error.message : '업로드 실패',
             });
 
             throw error;
@@ -200,9 +171,11 @@ export function useManualUpload(options?: UseManualUploadOptions) {
         return results;
       },
       onSuccess: results => {
+        setIsUploading(false);
         options?.onAllComplete?.(results);
       },
       onError: error => {
+        setIsUploading(false);
         options?.onError?.(error);
       },
     });
@@ -215,15 +188,11 @@ export function useManualUpload(options?: UseManualUploadOptions) {
     executeParallelUpload(files);
   };
 
-  const resetProgress = () => {
-    setUploadProgress([]);
-  };
-
   return {
     uploadFiles, // 순차 업로드
     uploadFilesParallel, // 병렬 업로드
     uploadProgress,
-    isUploading: isPending || isParallelPending,
-    resetProgress,
+    isUploading,
+    resetProgress: resetUploadProgress,
   };
 }
