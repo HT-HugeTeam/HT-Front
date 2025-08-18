@@ -6,20 +6,11 @@ import { useState, useRef } from 'react';
 import { toast } from 'sonner';
 
 interface MediaUploadProps {
-  onUploadComplete: (url: string, fileType: 'image' | 'video', backendResponse?: any) => void;
+  onUploadComplete: (url: string, fileType: 'image' | 'video') => void;
   allowedTypes?: ('image' | 'video')[];
   maxSize?: number;
   className?: string;
   children?: React.ReactNode;
-  // 백엔드 통합 옵션
-  submitToBackend?: boolean;
-  backendOptions?: {
-    endpoint?: string;
-    headers?: Record<string, string>;
-    category?: string;
-    description?: string;
-    tags?: string[];
-  };
 }
 
 export function MediaUpload({
@@ -28,8 +19,6 @@ export function MediaUpload({
   maxSize = 50 * 1024 * 1024, // 50MB
   className = '',
   children,
-  submitToBackend = false,
-  backendOptions,
 }: MediaUploadProps) {
   const [preview, setPreview] = useState<{
     url: string;
@@ -38,28 +27,16 @@ export function MediaUpload({
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const uploadOptions: any = {
-    submitToBackend,
-    onSuccess: (data: any) => {
+  const { mutate: uploadFile, isPending, error } = useSecureFileUpload({
+    onSuccess: (data) => {
       const fileType = data.fileType.startsWith('image/') ? 'image' : 'video';
-      onUploadComplete(data.url, fileType, data.backendResponse);
-      
-      if (submitToBackend) {
-        toast.success(`${fileType === 'image' ? '이미지' : '동영상'} 업로드 및 백엔드 저장 완료!`);
-      } else {
-        toast.success(`${fileType === 'image' ? '이미지' : '동영상'} 업로드 완료!`);
-      }
+      onUploadComplete(data.url, fileType);
+      toast.success(`${fileType === 'image' ? '이미지' : '동영상'} 업로드 완료!`);
     },
-    onError: (error: Error) => {
+    onError: (error) => {
       toast.error(error.message);
     },
-  };
-
-  if (backendOptions) {
-    uploadOptions.backendOptions = backendOptions;
-  }
-
-  const { mutate: uploadFile, isPending, error } = useSecureFileUpload(uploadOptions);
+  });
 
   const validateFile = (file: File): boolean => {
     // 파일 타입 검증

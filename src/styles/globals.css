@@ -3,6 +3,16 @@
 @import './theme.css';
 @import './typography.css';
 
+/* 프로그레스 바 광택 애니메이션 */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

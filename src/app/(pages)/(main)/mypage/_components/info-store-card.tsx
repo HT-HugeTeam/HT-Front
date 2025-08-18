@@ -1,15 +1,24 @@
 'use client';
 
 import { StoreDetail } from '@/types/mypage/store-detail.types';
-import { useInfoQuery } from '../_hooks/use-info-query';
+import { useStoreQuery } from '@/hooks/use-store-query';
+import { usePathname } from 'next/navigation';
+import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
 
 export function InfoStoreCard({ storeDetail }: { storeDetail: StoreDetail }) {
-  const { setStoreName, setTab } = useInfoQuery();
+  const pathname = usePathname();
+  const isMakeVideo = pathname.includes('make-video');
+  const { setStoreName, setTab } = useStoreQuery();
+  const { setMakeVideoInput } = useMakeVideoQuery();
   return (
     <div
       onClick={() => {
-        void setTab('store-detail');
-        void setStoreName(storeDetail.storeName);
+        if (isMakeVideo) {
+          void setMakeVideoInput(true);
+        } else {
+          void setTab('store-detail');
+          void setStoreName(storeDetail.storeName);
+        }
       }}
       className='p-6 w-full h-auto flex flex-col gap-6 rounded-[15px] border border-gray100 bg-white shadow-[0_4px_10px_0_rgba(154,159,160,0.15)] cursor-pointer'
     >

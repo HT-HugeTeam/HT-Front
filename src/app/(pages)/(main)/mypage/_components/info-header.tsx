@@ -1,22 +1,32 @@
 'use client';
 
 import LeftArrowInactive from '@/public/svg/left-arrow-inactive.svg';
-import { useInfoQuery } from '../_hooks/use-info-query';
+import { useStoreQuery } from '@/hooks/use-store-query';
 import { useRouter } from 'next/navigation';
 import { useMyPageStore } from '@/lib/stores/mypage-store';
 
 export function InfoHeader() {
   const router = useRouter();
-  const { tabLabel, storeName, edit, setEdit, goBackTab, canGoBackTab } =
-    useInfoQuery();
+  const {
+    tabLabel,
+    storeName,
+    edit,
+    storeAdd,
+    setStoreAdd,
+    setEdit,
+    goBackTab,
+    canGoBackTab,
+  } = useStoreQuery();
   const handleSave = useMyPageStore(state => state.handleSave);
 
-  const handleEditClick = () => {
-    if (edit) {
-      void handleSave();
+  const handleClick = () => {
+    if (edit || storeAdd) {
+      void handleSave(storeAdd ? 'storeAdd' : 'storeEdit');
       void setEdit(false);
+      void setStoreAdd(false);
     } else {
       void setEdit(true);
+      void setStoreAdd(false);
     }
   };
 
@@ -43,14 +53,24 @@ export function InfoHeader() {
         {tabLabel !== '상세 정보' ? tabLabel : storeName}
       </span>
 
-      {tabLabel === '가게 정보' && <div className='w-[27.66px] h-5' />}
+      {tabLabel === '가게 정보' && !storeAdd && (
+        <div className='w-[27.66px] h-5' />
+      )}
 
       {tabLabel === '상세 정보' && (
         <button
           className='text-bodySmall text-gray600 hover:underline cursor-pointer'
-          onClick={handleEditClick}
+          onClick={handleClick}
         >
           {edit ? '완료' : '편집'}
+        </button>
+      )}
+      {storeAdd && (
+        <button
+          className='text-bodySmall text-gray600 hover:underline cursor-pointer'
+          onClick={handleClick}
+        >
+          완료
         </button>
       )}
     </header>

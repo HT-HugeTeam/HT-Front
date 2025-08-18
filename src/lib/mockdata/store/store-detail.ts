@@ -11,6 +11,14 @@ export const donkatsuStore: StoreDetail = {
     'https://map.naver.com/p/entry/place/1640683116?placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202508170034&locale=ko&svcName=map_pcv5',
 };
 
+export const emptyStore: StoreDetail = {
+  storeId: 0,
+  storeName: '',
+  storeAddress: '',
+  storeDescription: '',
+  storeMenu: [],
+  storeNaverMap: '',
+};
 // 고지비 mock data
 export const gozhibiStore: StoreDetail = {
   storeId: 2,

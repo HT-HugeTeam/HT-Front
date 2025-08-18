@@ -1,16 +1,17 @@
 'use client';
 
 import { StoreDetail } from '@/types/mypage/store-detail.types';
-import { useInfoQuery } from '../_hooks/use-info-query';
+import { useStoreQuery } from '@/hooks/use-store-query';
 import { StoreEditForm } from './store-edit-form';
 import { StoreDetailUI } from './store-detail-ui';
+import { StoreAddForm } from './store-add-form';
 
 export function InfoStoreDetail({
   storeDetail,
 }: {
   storeDetail: StoreDetail | undefined;
 }) {
-  const { edit } = useInfoQuery();
+  const { edit, storeAdd } = useStoreQuery();
   if (!storeDetail) return null;
 
   return (

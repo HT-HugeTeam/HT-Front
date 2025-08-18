@@ -24,7 +24,7 @@ interface MyPageStore {
   resetFormData: (storeDetail: StoreDetail) => void;
 
   // 저장 함수
-  handleSave: () => void;
+  handleSave: (saveType: 'storeAdd' | 'storeEdit') => void;
 
   // 메뉴 관련 헬퍼 함수들
   addMenuItem: (menuItem: string) => void;
@@ -65,9 +65,15 @@ export const useMyPageStore = create<MyPageStore>((set, get) => ({
     get().initializeFormData(storeDetail);
   },
 
-  handleSave: () => {
-    // TODO: API 호출 로직 추가
-    toast.success('수정되었습니다.');
+  handleSave: (saveType: 'storeAdd' | 'storeEdit') => {
+    // TODO: API 호출 로직 추가 - storeAdd & storeEdit post, put 구분
+    if (saveType === 'storeAdd') {
+      // TODO: API 호출 로직 추가 - storeAdd post
+      toast.success('추가되었습니다.');
+    } else if (saveType === 'storeEdit') {
+      // TODO: API 호출 로직 추가 - storeEdit put
+      toast.success('수정되었습니다.');
+    }
   },
 
   addMenuItem: menuItem => {
