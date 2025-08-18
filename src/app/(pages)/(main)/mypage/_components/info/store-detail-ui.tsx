@@ -1,9 +1,7 @@
+'use client';
+
+import { useStoreDetail } from '@/hooks/queries/use-store-detail';
 import { StoreDetail } from '@/types/mypage/store-detail.types';
-import { memo } from 'react';
-import AlertIcon from '@/public/svg/mypage/alert.svg';
-import { cn } from '@/lib/utils/cn';
-import { Copy } from 'lucide-react';
-import { CopyButton } from '@/components/copy-button';
 import { FieldContainer, MenuList } from '@/components/store-info';
 
 export const StoreField = [
@@ -21,15 +19,11 @@ export const StoreField = [
   },
 ];
 
-/**
- * Main Components (line 27)
- * - StoreDetailUI
- *
- * Helper Components (line 44)
- * - FieldContainer
- * - MenuList
- */
-export function StoreDetailUI({ storeDetail }: { storeDetail: StoreDetail }) {
+export function StoreDetailUI() {
+  const { data: storeDetail } = useStoreDetail('donkatsu');
+
+  if (!storeDetail) return null;
+
   return (
     <>
       {/* 상호명, 주소, 소개 */}

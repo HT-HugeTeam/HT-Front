@@ -13,7 +13,8 @@ type HeaderType =
   | 'STORE_DETAIL'
   | 'OWNER_INFO'
   | 'VIDEO_CREATION'
-  | 'VIDEO_MANAGEMENT';
+  | 'VIDEO_MANAGEMENT'
+  | 'SHORTS';
 interface HeaderConfig {
   title: string;
   showBackButton: boolean;
@@ -29,6 +30,7 @@ export function Header() {
   const isMypage = pathnameArray[1] === 'mypage';
   const isMakeVideo = pathnameArray[1] === 'make-video';
   const isManageVideo = pathnameArray[2] === 'manage-video';
+  const isShorts = pathnameArray[1] === 'shorts';
 
   const {
     tabLabel,
@@ -38,6 +40,7 @@ export function Header() {
     setEdit,
     goBackTab,
     canGoBackTab,
+    storeName,
   } = useStoreQuery();
 
   const { makeVideoInput, setMakeVideoInput, fileUpload, setFileUpload } =
@@ -46,6 +49,7 @@ export function Header() {
   const handleSave = useMyPageStore(state => state.handleSave);
 
   const getHeaderType = (): HeaderType => {
+    if (isShorts) return 'SHORTS';
     if (isMakeVideo) return 'VIDEO_CREATION';
     if (isManageVideo) return 'VIDEO_MANAGEMENT';
     if (isMypage && storeAdd) return 'STORE_ADD';
@@ -86,7 +90,7 @@ export function Header() {
         };
       case 'STORE_DETAIL':
         return {
-          title: '상세 정보',
+          title: storeName,
           showBackButton: true,
           showEditButton: true,
           editButtonText: edit ? '완료' : '편집',
@@ -105,12 +109,22 @@ export function Header() {
           showEditButton: makeVideoInput,
           editButtonText: '편집',
           // 가게 상세정보로 이동해야 함.
-          //   onEditClick: handleClick,
+          onEditClick: () => {
+            router.push(
+              `/mypage/info?tab=store-detail&edit=true&storeName=${storeName}`,
+            );
+          },
         };
       case 'VIDEO_MANAGEMENT':
         return {
           title: '영상 관리',
           showBackButton: true,
+          showEditButton: false,
+        };
+      case 'SHORTS':
+        return {
+          title: '둘러보기',
+          showBackButton: false,
           showEditButton: false,
         };
       default:
@@ -121,17 +135,6 @@ export function Header() {
         };
     }
   }, [getHeaderType, handleSave, storeAdd, setEdit, setStoreAdd, tabLabel]);
-
-  const handleClick = () => {
-    if (edit || storeAdd) {
-      void handleSave(storeAdd ? 'storeAdd' : 'storeEdit');
-      void setEdit(false);
-      void setStoreAdd(false);
-    } else {
-      void setEdit(true);
-      void setStoreAdd(false);
-    }
-  };
 
   const handleBack = () => {
     if (edit) {

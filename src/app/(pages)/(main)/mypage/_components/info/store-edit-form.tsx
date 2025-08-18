@@ -3,7 +3,7 @@
 import { useMyPageStore } from '@/lib/stores/mypage-store';
 import { useStoreQuery } from '@/hooks/use-store-query';
 import { useEffect } from 'react';
-import { StoreDetail } from '@/types/mypage/store-detail.types';
+import { useStoreDetail } from '@/hooks/queries/use-store-detail';
 import { FORM_FIELDS } from '@/lib/constants/style.constant';
 import { InputFormField } from '@/components/input-form-field';
 import { StoreMenuEditor } from './store-menu-editor';
@@ -14,10 +14,13 @@ import { StoreMenuEditor } from './store-menu-editor';
  */
 
 // Main Components
-export function StoreEditForm({ storeDetail }: { storeDetail: StoreDetail }) {
+export function StoreEditForm() {
   const { edit } = useStoreQuery();
+  const { data: storeDetail } = useStoreDetail('donkatsu');
   const initializeFormData = useMyPageStore(state => state.initializeFormData);
   const resetFormData = useMyPageStore(state => state.resetFormData);
+
+  if (!storeDetail) return null;
 
   // storeDetail이 변경될 때 formData 초기화
   useEffect(() => {

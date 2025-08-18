@@ -1,4 +1,3 @@
-import { StoreDetail } from '@/types/mypage/store-detail.types';
 import { FieldContainer } from '@/components/store-info';
 import { useManualUpload } from '@/hooks/use-manual-upload';
 import { useState, useEffect } from 'react';
@@ -14,6 +13,8 @@ import {
   useVideoCreationStatus,
 } from '@/lib/stores/file-upload-store';
 import { useRouter } from 'next/navigation';
+import { useStoreDetail } from '@/hooks/queries/use-store-detail';
+import { StoreDetail } from '@/types/mypage/store-detail.types';
 
 export const StoreField = [
   {
@@ -34,19 +35,21 @@ export const StoreField = [
  * Main Components (line 27)
  * - StoreDetailUI
  */
-export function MakeVideoInputUi({
-  storeDetail,
-}: {
-  storeDetail: StoreDetail;
-}) {
+export function MakeVideoInputUi() {
   const router = useRouter();
   const { fileUpload, setFileUpload } = useMakeVideoQuery();
+
+  // TanStack Query로 StoreDetail 가져오기
+  const { data: storeDetail } = useStoreDetail('donkatsu');
 
   // 전역 store 사용
   const uploadStats = useUploadStats();
   const videoCreationStatus = useVideoCreationStatus();
   const { startVideoCreation, completeVideoCreation, resetUploadProgress } =
     useFileUploadStore();
+
+  // storeDetail이 없으면 렌더링하지 않음 (상위에서 처리됨)
+  if (!storeDetail) return null;
 
   // 동영상 파일들 관리
   const [selectedVideoFiles, setSelectedVideoFiles] = useState<File[]>([]);
@@ -147,7 +150,7 @@ export function MakeVideoInputUi({
         clearTimeout(timeout);
       };
     }
-  }, [fileUpload]);
+  }, [fileUpload, router, setFileUpload]);
 
   if (fileUpload) {
     return (
