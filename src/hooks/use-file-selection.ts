@@ -1,8 +1,9 @@
-// hooks/use-file-selection.ts
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
 import { toast } from 'sonner';
+import { FileValidationService } from '@/services/upload/FileValidationService';
+import { DEFAULT_UPLOAD_CONFIG } from '@/services/upload/types';
 
 interface FilePreview {
   file: File;
@@ -32,61 +33,76 @@ export function useFileSelection(options: UseFileSelectionOptions = {}) {
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // 서비스 레이어 사용
+  const validationService = FileValidationService.getInstance();
+
   const validateFile = (file: File): boolean => {
-    // 파일 타입 검증
-    const isImage = file.type.startsWith('image/');
-    const isVideo = file.type.startsWith('video/');
+    // 서비스 레이어로 검증 로직 위임
+    const config = {
+      ...DEFAULT_UPLOAD_CONFIG,
+      allowedTypes: allowedTypes.map(type =>
+        type === 'image' ? 'image' : type === 'video' ? 'video' : 'document',
+      ) as ('image' | 'video' | 'document')[],
+      maxFileSize: maxSize,
+      maxFiles,
+    };
 
-    if (!allowedTypes.includes('image') && isImage) {
-      toast.error('이미지 파일은 허용되지 않습니다.');
+    const result = validationService.validate(file, config);
+
+    if (!result.isValid) {
+      if (result.errors.length > 0) {
+        toast.error(result.errors[0]);
+      }
       return false;
     }
 
-    if (!allowedTypes.includes('video') && isVideo) {
-      toast.error('동영상 파일은 허용되지 않습니다.');
-      return false;
-    }
-
-    if (!isImage && !isVideo) {
-      toast.error(`${allowedTypes.join(', ')} 파일만 선택할 수 있습니다.`);
-      return false;
-    }
-
-    // 파일 크기 검증
-    if (file.size > maxSize) {
-      const sizeMB = Math.round(maxSize / (1024 * 1024));
-      toast.error(`파일 크기가 ${sizeMB}MB를 초과할 수 없습니다.`);
-      return false;
+    if (result.warnings.length > 0) {
+      result.warnings.forEach(warning => toast.warning(warning));
     }
 
     return true;
   };
 
   const addFiles = (newFiles: File[]) => {
-    const validFiles = newFiles.filter(validateFile);
+    // 전체 파일 목록 (기존 + 새로운)으로 검증
+    const allFiles = [...selectedFiles, ...newFiles];
 
-    if (selectedFiles.length + validFiles.length > maxFiles) {
-      toast.error(`최대 ${maxFiles}개의 파일만 선택할 수 있습니다.`);
-      return;
-    }
+    // 서비스 레이어로 다중 파일 검증 (중복 체크 포함)
+    const config = {
+      ...DEFAULT_UPLOAD_CONFIG,
+      allowedTypes: allowedTypes.map(type =>
+        type === 'image' ? 'image' : type === 'video' ? 'video' : 'document',
+      ) as ('image' | 'video' | 'document')[],
+      maxFileSize: maxSize,
+      maxFiles,
+    };
 
-    // 중복 파일 체크 (이름과 크기로 비교)
-    const uniqueFiles = validFiles.filter(
-      newFile =>
-        !selectedFiles.some(
-          existingFile =>
-            existingFile.name === newFile.name &&
-            existingFile.size === newFile.size,
-        ),
+    const validationResults = validationService.validateMultiple(
+      allFiles,
+      config,
     );
 
-    if (uniqueFiles.length === 0) {
-      toast.error('이미 선택된 파일입니다.');
+    // 새로운 파일들에 대한 검증 결과만 확인
+    const newFileResults = validationResults.slice(selectedFiles.length);
+    const validNewFiles = newFiles.filter(
+      (_, index) => newFileResults[index]?.isValid,
+    );
+
+    // 검증 실패한 파일들의 에러 메시지 표시
+    newFileResults.forEach((result, index) => {
+      if (!result.isValid) {
+        result.errors.forEach(error =>
+          toast.error(`${newFiles[index]?.name}: ${error}`),
+        );
+      }
+    });
+
+    if (validNewFiles.length === 0) {
       return;
     }
 
     // 미리보기 생성
-    const newPreviews = uniqueFiles.map(file => {
+    const newPreviews = validNewFiles.map(file => {
       const url = URL.createObjectURL(file);
       const type = file.type.startsWith('image/')
         ? 'image'
@@ -94,7 +110,7 @@ export function useFileSelection(options: UseFileSelectionOptions = {}) {
       return { file, url, type };
     });
 
-    const updatedFiles = [...selectedFiles, ...uniqueFiles];
+    const updatedFiles = [...selectedFiles, ...validNewFiles];
     const updatedPreviews: FilePreview[] = [...previews, ...newPreviews];
 
     setSelectedFiles(updatedFiles);
@@ -169,7 +185,7 @@ export function useFileSelection(options: UseFileSelectionOptions = {}) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+    const files = Array.from(e.target.files ?? []);
     if (files.length > 0) {
       addFiles(files);
     }
@@ -182,7 +198,7 @@ export function useFileSelection(options: UseFileSelectionOptions = {}) {
     return () => {
       previews.forEach(preview => URL.revokeObjectURL(preview.url));
     };
-  }, []);
+  }, [previews]);
 
   return {
     // State

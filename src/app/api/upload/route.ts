@@ -1,5 +1,5 @@
 // app/api/upload/route.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { serverS3Client, BUCKET_NAME } from '@/lib/utils/server-s3-client';
 

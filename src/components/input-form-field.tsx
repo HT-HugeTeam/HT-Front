@@ -1,10 +1,10 @@
 'use client';
 
-import { ChangeEvent } from 'react';
+import { type ChangeEvent } from 'react';
 
 import { useMyPageStore } from '@/lib/stores/mypage-store';
 
-import { FORM_FIELDS } from '@/lib/constants/style.constant';
+import { type FORM_FIELDS } from '@/lib/constants/style.constant';
 
 import { INPUT_STYLES } from '@/lib/constants/style.constant';
 

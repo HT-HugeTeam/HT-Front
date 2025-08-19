@@ -4,7 +4,7 @@ import LeftArrowInactive from '@/public/svg/left-arrow-inactive.svg';
 import { useStoreQuery } from '@/hooks/use-store-query';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMyPageStore } from '@/lib/stores/mypage-store';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
 
 type HeaderType =
@@ -15,13 +15,6 @@ type HeaderType =
   | 'VIDEO_CREATION'
   | 'VIDEO_MANAGEMENT'
   | 'SHORTS';
-interface HeaderConfig {
-  title: string;
-  showBackButton: boolean;
-  showEditButton: boolean;
-  editButtonText?: string;
-  onEditClick?: () => void;
-}
 
 export function Header() {
   const router = useRouter();
@@ -157,7 +150,7 @@ export function Header() {
   };
 
   return (
-    <header className='fixed mobile-area top-0 left-0 right-0 w-full flex justify-between items-end pt-10 pb-2 px-6 text-headlineLarge text-gray600 bg-white'>
+    <header className='fixed z-50 mobile-area top-0 left-0 right-0 w-full flex justify-between items-end pt-10 pb-2 px-6 text-headlineLarge text-gray600 bg-white000'>
       {/* 뒤로가기 버튼 */}
       {headerConfig.showBackButton ? (
         <button className='w-fit h-fit cursor-pointer' onClick={handleBack}>

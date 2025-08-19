@@ -2,7 +2,7 @@
 'use client';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { StoreDetail } from '@/types/mypage/store-detail.types';
+import { type StoreDetail } from '@/types/mypage/store-detail.types';
 import { getStoreDetail } from '@/lib/api/store';
 
 /**

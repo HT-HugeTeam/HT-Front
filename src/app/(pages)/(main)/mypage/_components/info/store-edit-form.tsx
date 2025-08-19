@@ -20,21 +20,19 @@ export function StoreEditForm() {
   const initializeFormData = useMyPageStore(state => state.initializeFormData);
   const resetFormData = useMyPageStore(state => state.resetFormData);
 
-  if (!storeDetail) return null;
-
-  // storeDetail이 변경될 때 formData 초기화
   useEffect(() => {
     if (storeDetail) {
       initializeFormData(storeDetail);
     }
   }, [storeDetail]);
 
-  // edit 상태가 false로 변경될 때 원본 데이터로 복원
   useEffect(() => {
     if (!edit && storeDetail) {
       resetFormData(storeDetail);
     }
   }, [edit]);
+
+  if (!storeDetail) return null;
 
   return (
     <>

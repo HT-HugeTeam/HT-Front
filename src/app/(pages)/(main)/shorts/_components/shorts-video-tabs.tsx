@@ -31,7 +31,7 @@ export function ShortsVideoTabs() {
     SHORTS_TAB_PARSER.withDefault('all'),
   );
   return (
-    <nav className='w-full h-auto flex items-center justify-start gap-4'>
+    <nav className='sticky top-0 z-10 py-4 w-full h-auto flex items-center justify-start gap-4 bg-gray100'>
       {TABS_LABEL.map(tab => (
         <button
           key={tab.value}

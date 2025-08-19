@@ -1,6 +1,6 @@
 'use client';
 
-import { UserType } from '@/types/onboarding';
+import { type UserType } from '@/types/onboarding';
 import { cn } from '@/lib/utils/cn';
 import OwnerIcon from '@/public/svg/onboarding-owner.svg';
 import CustomerIcon from '@/public/svg/onboarding-customer.svg';

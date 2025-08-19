@@ -1,7 +1,7 @@
 'use client';
 
 import { useStoreDetail } from '@/hooks/queries/use-store-detail';
-import { StoreDetail } from '@/types/mypage/store-detail.types';
+import { type StoreDetail } from '@/types/mypage/store-detail.types';
 import { FieldContainer, MenuList } from '@/components/store-info';
 
 export const StoreField = [

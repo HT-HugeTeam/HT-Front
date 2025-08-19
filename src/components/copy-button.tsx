@@ -7,12 +7,12 @@ import { toast } from 'sonner';
 export function CopyButton({ text }: { text: string }) {
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(text);
-    setIsCopied(true);
+  const handleCopy = (): void => {
+    void navigator.clipboard.writeText(text);
+    void setIsCopied(true);
     toast.success('복사되었습니다.');
     setTimeout(() => {
-      setIsCopied(false);
+      void setIsCopied(false);
     }, 1000);
   };
 

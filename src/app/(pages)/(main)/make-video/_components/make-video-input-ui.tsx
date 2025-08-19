@@ -1,20 +1,16 @@
+'use client';
+
 import { FieldContainer } from '@/components/store-info';
-import { useManualUpload } from '@/hooks/use-manual-upload';
+import { useUploadService } from '@/hooks/use-upload-service';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { VideoUploadCard } from './video-upload-card';
-import { ImageUploadCard } from '@/components/image-upload-card';
-import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
+import { ImageUploadCard } from './image-upload-card';
 import MakeVideoStartIcon from '@/public/svg/make-video/make-video-start.svg';
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
-import {
-  useFileUploadStore,
-  useUploadStats,
-  useVideoCreationStatus,
-} from '@/lib/stores/file-upload-store';
 import { useRouter } from 'next/navigation';
 import { useStoreDetail } from '@/hooks/queries/use-store-detail';
-import { StoreDetail } from '@/types/mypage/store-detail.types';
+import type { StoreDetail } from '@/types/mypage/store-detail.types';
 
 export const StoreField = [
   {
@@ -31,60 +27,39 @@ export const StoreField = [
   },
 ];
 
-/**
- * Main Components (line 27)
- * - StoreDetailUI
- */
 export function MakeVideoInputUi() {
   const router = useRouter();
-  const { fileUpload, setFileUpload } = useMakeVideoQuery();
-
-  // TanStack Query로 StoreDetail 가져오기
+  const [fileUpload, setFileUpload] = useState(false);
   const { data: storeDetail } = useStoreDetail('donkatsu');
-
-  // 전역 store 사용
-  const uploadStats = useUploadStats();
-  const videoCreationStatus = useVideoCreationStatus();
-  const { startVideoCreation, completeVideoCreation, resetUploadProgress } =
-    useFileUploadStore();
-
-  // storeDetail이 없으면 렌더링하지 않음 (상위에서 처리됨)
-  if (!storeDetail) return null;
 
   // 동영상 파일들 관리
   const [selectedVideoFiles, setSelectedVideoFiles] = useState<File[]>([]);
 
-  // 메뉴별 이미지 파일들 관리 (메뉴명을 키로 사용)
+  // 메뉴별 이미지 파일들 관리
   const [selectedMenuImages, setSelectedMenuImages] = useState<
     Record<string, File | null>
   >({});
 
-  const [uploadedUrls, setUploadedUrls] = useState<string[]>([]);
-
-  // 프로그레스 바 애니메이션 상태 (업로드 완료 후 영상 제작 진행바용)
+  // 프로그레스 바 애니메이션 상태 (업로드 임시 진행바)
   const [progress, setProgress] = useState(0);
 
-  const { uploadFiles, uploadProgress, isUploading, resetProgress } =
-    useManualUpload({
-      onAllComplete: results => {
-        const urls = results.map(result => result.url);
-        setUploadedUrls(prev => [...prev, ...urls]);
-        toast.success(`${results.length}개 파일 업로드 완료!`);
-        setSelectedVideoFiles([]); // 동영상 파일 초기화
-        setSelectedMenuImages({}); // 메뉴 이미지들 초기화
+  const { uploadFiles, isUploading, getUploadedUrls } = useUploadService({
+    onUploadComplete: results => {
+      setSelectedVideoFiles([]); // 동영상 파일 초기화
+      setSelectedMenuImages({}); // 메뉴 이미지들 초기화
 
-        // 업로드 완료 후 영상 제작 시작
-        startVideoCreation();
+      const urls = getUploadedUrls(results);
 
-        resetProgress();
-      },
-      onError: error => {
-        toast.error(error.message);
-      },
-      onProgress: progress => {
-        console.log('Upload progress:', progress);
-      },
-    });
+      console.log('업로드 완료된 URLs:', { urls });
+
+      // TODO: 추후 백엔드 API 연동 시 여기서 영상 생성 요청
+    },
+    onUploadError: error => {
+      toast.error(error.message);
+    },
+    validateBeforeUpload: true,
+    uploadMode: 'sequential',
+  });
 
   const handleVideoFileSelect = (files: File[]) => {
     setSelectedVideoFiles(files);
@@ -97,7 +72,7 @@ export function MakeVideoInputUi() {
     }));
   };
 
-  const handleUpload = () => {
+  const handleUpload = (): void => {
     // 선택된 모든 파일들을 하나의 배열로 합치기
     const allFiles: File[] = [
       ...selectedVideoFiles,
@@ -113,44 +88,36 @@ export function MakeVideoInputUi() {
     uploadFiles(allFiles);
   };
 
-  const clearUploadedFiles = () => {
-    setUploadedUrls([]);
-  };
-
-  // 프로그레스 바 애니메이션 효과 (3초 동안 1초마다 33.33%씩 증가)
   useEffect(() => {
-    if (fileUpload) {
-      setProgress(0); // 초기화
+    if (!fileUpload) return;
+    
+    setProgress(0); // 초기화
 
-      // 1초마다 프로그레스 업데이트
-      const interval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            // TODO: 3초 후 페이지 이동 로직 추가
-            router.push('/mypage/manage-video');
-            return 100;
-          }
-          return prev + 33.33; // 1초마다 33.33% 증가 (3초에 100%)
-        });
-      }, 1000);
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 33.33;
+      });
+    }, 1000);
+    
+    const timeout = setTimeout(() => {
+      setProgress(100);
+      clearInterval(interval);
+      router.push('/mypage/manage-video');
+    }, 3000);
 
-      // 3초 후 정확히 100%로 설정하고 정리
-      const timeout = setTimeout(() => {
-        setProgress(100);
-        clearInterval(interval);
-        // TODO: 여기에 페이지 이동 로직 추가
-        void setFileUpload(false);
-        console.log('3초 완료! 페이지 이동 실행');
-      }, 3000);
+    return () => {
+      void setFileUpload(false);
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [fileUpload, router]);
 
-      // 컴포넌트 언마운트 시 정리
-      return () => {
-        clearInterval(interval);
-        clearTimeout(timeout);
-      };
-    }
-  }, [fileUpload, router, setFileUpload]);
+  // 조건부 렌더링은 모든 hooks 호출 후에
+  if (!storeDetail) return null;
 
   if (fileUpload) {
     return (
@@ -200,7 +167,7 @@ export function MakeVideoInputUi() {
           {storeDetail.storeMenu.map(menu => (
             <ImageUploadCard
               key={menu}
-              onFileSelect={handleMenuImageSelect(menu)}
+              onFileSelect={handleMenuImageSelect(menu) ?? null}
               maxSize={10 * 1024 * 1024} // 이미지는 10MB 제한
               menuName={menu}
             />

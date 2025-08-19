@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { StepProps, UserType, USER_TYPE_INFO } from '@/types/onboarding';
+import { type StepProps, type UserType, USER_TYPE_INFO } from '@/types/onboarding';
 import { StepLayout } from '../ui/step-layout';
 import { UserTypeCard } from '../ui/user-type-card';
 import { BottomButton } from '../ui/bottom-button';

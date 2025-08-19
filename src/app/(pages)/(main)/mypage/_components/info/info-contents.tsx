@@ -7,6 +7,7 @@ import { StoreAddButton } from '@/components/store-add-button';
 import { StoreAddForm } from './store-add-form';
 import { useStoreDetail } from '@/hooks/queries/use-store-detail';
 import { LoadingSpinner } from '@/components/loading-spinner';
+import { InfoOwner } from './info-owner';
 
 export function InfoContents() {
   const { tabLabel, storeAdd } = useStoreQuery();
@@ -45,6 +46,7 @@ export function InfoContents() {
         </div>
       )}
       {tabLabel === '상세 정보' && <InfoStoreDetail />}
+      {tabLabel === '사장님 정보' && <InfoOwner />}
     </>
   );
 }

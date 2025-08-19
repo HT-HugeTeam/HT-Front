@@ -2,7 +2,7 @@
 
 import { useFunnel } from '@use-funnel/browser';
 import { useState } from 'react';
-import { OnboardingData, OnboardingStep } from '@/types/onboarding';
+import { type OnboardingData, type OnboardingStep } from '@/types/onboarding';
 import { UserTypeStep } from './steps/user-type-step';
 import { NicknameStep } from './steps/nickname-step';
 import { AgreementsStep } from './steps/agreements-step';

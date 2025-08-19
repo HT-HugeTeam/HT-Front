@@ -1,10 +1,4 @@
-const formatViewCount = (count: number): string => {
-  if (count >= 10000) {
-    const man = Math.floor(count / 10000);
-    return `${man}만회`;
-  }
-  return `${count}회`;
-};
+import { formatViewCount } from '@/lib/utils/format-view-count';
 
 const HIT_COUNT = 9400000;
 const FORMATTED_HIT_COUNT = formatViewCount(HIT_COUNT); // "940만회"

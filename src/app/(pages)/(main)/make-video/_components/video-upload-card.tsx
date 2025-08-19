@@ -1,4 +1,3 @@
-// components/video-upload-card.tsx
 'use client';
 
 import React from 'react';
