@@ -1,4 +1,4 @@
-import { StoreDetail } from '@/types/mypage/store-detail.types';
+import { type StoreDetail } from '@/types/mypage/store-detail.types';
 
 export const donkatsuStore: StoreDetail = {
   storeId: 1,
@@ -7,8 +7,18 @@ export const donkatsuStore: StoreDetail = {
   storeDescription:
     '합정 지역에서 유명한 웨이팅 맛집으로, 특히 로스카츠가 인기 메뉴입니다. 로스카츠는 한입 크기로 제공되며, 지방층이 풍부해 고소한 맛이 특징입니다.',
   storeMenu: ['로스카츠', '토스트', '치즈버거'],
+  storeNaverMap:
+    'https://map.naver.com/p/entry/place/1640683116?placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202508170034&locale=ko&svcName=map_pcv5',
 };
 
+export const emptyStore: StoreDetail = {
+  storeId: 0,
+  storeName: '',
+  storeAddress: '',
+  storeDescription: '',
+  storeMenu: [],
+  storeNaverMap: '',
+};
 // 고지비 mock data
 export const gozhibiStore: StoreDetail = {
   storeId: 2,

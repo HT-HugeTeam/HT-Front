@@ -24,8 +24,8 @@
   --color-orange-point: #fa502e;
 
   /* Main Gradient Colors */
-  --color-main-gradient-start: #488bff;
-  --color-main-gradient-end: #2150ec;
+  --color-main-gradient-start: #ffd9d2;
+  --color-main-gradient-end: #ff3f0f;
   --color-main-gradient: linear-gradient(
     to right,
     var(--color-main-gradient-start) 0%,

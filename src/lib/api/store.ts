@@ -1,5 +1,9 @@
-import { StoreDetail } from '@/types/mypage/store-detail.types';
-import { donkatsuStore, gozhibiStore } from '@/lib/mockdata/store/store-detail';
+import { type StoreDetail } from '@/types/mypage/store-detail.types';
+import {
+  donkatsuStore,
+  emptyStore,
+  gozhibiStore,
+} from '@/lib/mockdata/store/store-detail';
 
 export async function getStoreDetail(storeId: string): Promise<StoreDetail> {
   // simulate api call
@@ -10,6 +14,8 @@ export async function getStoreDetail(storeId: string): Promise<StoreDetail> {
       return donkatsuStore;
     case 'gojibi':
       return gozhibiStore;
+    case 'empty':
+      return emptyStore;
     default:
       throw new Error(`Store not found: ${storeId}`);
   }

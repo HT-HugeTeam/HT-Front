@@ -88,7 +88,7 @@ export default function NavigationBar() {
               </span>
 
               {/* 텍스트 라벨 */}
-              <span className='font-labelSmall text-[11px] min-mobile:text-[12px]'>
+              <span className='text-labelSmall text-[11px] min-mobile:text-[12px]'>
                 {item.label}
               </span>
             </Link>

@@ -16,7 +16,7 @@ const LinkItems = [
   },
   {
     label: '영상 관리',
-    herf: '/mypage/info?tab=video',
+    herf: '/mypage/manage-video',
     icon: <VideoIcon />,
   },
 ];
