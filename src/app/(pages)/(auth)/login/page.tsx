@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 export default function LoginPage() {
   const router = useRouter();
   return (
-    <div className='px-6 pt-57 pb-nav-height not-only-of-type:w-full h-screen mx-auto login-bg flex flex-col justify-between'>
+    <div className='px-6 pt-57 pb-20 not-only-of-type:w-full h-screen mx-auto login-bg flex flex-col justify-between'>
       {/* 헤더 || 로고 영역 */}
       <header className='flex flex-col items-center justify-center gap-8'>
         <LoginMainBigLogo />
