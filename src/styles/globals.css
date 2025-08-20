@@ -199,7 +199,7 @@
   .custom-scrollbar {
     /* 스크롤바 전체 너비 */
     scrollbar-width: 2px;
-    scrollbar-color: var(--color-orange300) var(--color-orange200);
+    scrollbar-color: var(--color-orange400) var(--color-orange200);
   }
 
   /* 웹킷 브라우저용 (Chrome, Safari, Edge) */
@@ -214,7 +214,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--color-orange300); /* 썸 색상 */
+    background: var(--color-orange400); /* 썸 색상 */
     border-radius: 4px;
     border: 1px solid var(--color-orange200); /* 썸 테두리 */
   }

@@ -19,7 +19,7 @@ export function OnboardingFunnel() {
       context: {
         userType: 'owner',
         nickname: '',
-        agreements: { privacy: false, terms: false, marketing: false },
+        agreements: { terms: false, privacy: false, location: false },
       },
     },
   });

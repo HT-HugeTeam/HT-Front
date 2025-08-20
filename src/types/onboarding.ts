@@ -6,9 +6,9 @@ export interface OnboardingData {
   userType: UserType;
   nickname: string;
   agreements: {
-    privacy: boolean; // 개인정보 처리방침 (필수)
-    terms: boolean; // 서비스 이용약관 (필수)
-    marketing: boolean; // 마케팅 수신 동의 (선택)
+    terms: boolean; // 쇼츠테이블 이용약관 (필수)
+    privacy: boolean; // 개인정보 수집 및 이용동의 (필수)
+    location: boolean; // 위치기반 서비스 이용동의 (선택)
   };
 }
 
@@ -34,20 +34,20 @@ export const USER_TYPE_INFO = {
 
 // 약관 정보
 export const AGREEMENT_INFO = {
+  terms: {
+    title: '쇼츠테이블 서비스 이용약관',
+    required: true,
+    description: '서비스 이용을 위해 이용약관에 동의해주세요.',
+  },
   privacy: {
-    title: '개인정보 처리방침',
+    title: '개인정보 수집 및 이용동의',
     required: true,
     description: '서비스 이용을 위해 개인정보 수집·이용에 동의해주세요.',
   },
-  terms: {
-    title: '서비스 이용약관',
-    required: true,
-    description: '서비스 이용 규정에 동의해주세요.',
-  },
-  marketing: {
-    title: '마케팅 수신 동의',
+  location: {
+    title: '위치기반 서비스 이용동의',
     required: false,
-    description: '이벤트, 혜택 정보 수신에 동의하시나요? (선택)',
+    description: '위치 정보를 활용한 맞춤 서비스 제공에 동의하시나요?',
   },
 } as const;
 
@@ -61,7 +61,7 @@ export const validators = {
   },
 
   requiredAgreements: (agreements: OnboardingData['agreements']): boolean => {
-    return agreements.privacy && agreements.terms;
+    return agreements.terms && agreements.privacy;
   },
 };
 
