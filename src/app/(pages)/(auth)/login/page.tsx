@@ -2,8 +2,10 @@
 
 import KakaoLogo from '@/public/svg/logo/kakao-logo.svg';
 import LoginMainBigLogo from '@/public/svg/logo/login-main-big.svg';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
   return (
     <div className='px-6 pt-57 pb-20 not-only-of-type:w-full h-screen mx-auto login-bg flex flex-col justify-between'>
       {/* 헤더 || 로고 영역 */}
@@ -19,17 +21,25 @@ export default function LoginPage() {
 
       {/* 로그인 버튼 영역 */}
 
-      {/* 카카오 로그인 */}
-      <button
-        // onClick={login}
-        // disabled={isLoading}
-        className='kakao-btn'
-      >
-        <KakaoLogo />
-        <span className='kakao-btn-text'>카카오톡으로 로그인</span>
-      </button>
+      <div className='flex flex-col gap-4'>
+        {/* 카카오 로그인 */}
+        <button
+          // onClick={login}
+          // disabled={isLoading}
+          className='kakao-btn'
+        >
+          <KakaoLogo />
+          <span className='kakao-btn-text'>카카오 로그인</span>
+        </button>
 
-      {/* 게스트 로그인 */}
+        {/* 게스트 로그인 */}
+        <button
+          onClick={() => router.push('/home')}
+          className='px-5 py-2 w-full h-14 flex-center bg-orange200 rounded-[6px] text-bodySmall text-orange400'
+        >
+          게스트로 로그인
+        </button>
+      </div>
     </div>
   );
 }
