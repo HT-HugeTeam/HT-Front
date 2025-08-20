@@ -1,14 +1,11 @@
 'use client';
 
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
-import { useFileUploadStore } from '@/lib/stores/file-upload-store';
 
 const FILE_PROGRESS = 72;
-const FILE_NAME =
-  '파일명파일명파일명파일명파일명파일명파일명파일명파일명';
+const FILE_NAME = '파일명파일명파일명파일명파일명파일명파일명파일명파일명';
 
 export function VideoProgressHeader() {
-  const isUploading = useFileUploadStore(state => state.isUploading);
   return (
     <>
       {true && (
