@@ -18,6 +18,8 @@ export default function LoginPage() {
       </header>
 
       {/* 로그인 버튼 영역 */}
+
+      {/* 카카오 로그인 */}
       <button
         // onClick={login}
         // disabled={isLoading}
@@ -26,6 +28,8 @@ export default function LoginPage() {
         <KakaoLogo />
         <span className='kakao-btn-text'>카카오톡으로 로그인</span>
       </button>
+
+      {/* 게스트 로그인 */}
     </div>
   );
 }
