@@ -4,10 +4,9 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-
   if (request.nextUrl.pathname === '/') {
     const url = request.nextUrl.clone();
-    url.pathname = '/home';
+    url.pathname = '/login';
 
     return NextResponse.redirect(url);
   }
@@ -16,7 +15,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/',
-  ], // 미들웨어가 적용될 경로 설정
+  matcher: ['/'], // 미들웨어가 적용될 경로 설정
 };

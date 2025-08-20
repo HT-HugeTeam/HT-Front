@@ -1,12 +1,12 @@
 {
-  "name": "쇼츠테이블",
+  "name": "쇼츠테이블 - 음식점 홍보 숏폼 영상 제작 AI 서비스",
   "short_name": "쇼츠테이블",
   "description": "쇼츠테이블, 음식점 홍보 숏폼 영상 제작 AI 서비스",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffeeea",
-  "theme_color": "#fa502e",
-  "orientation": "landscape",
+  "background_color": "#ffffff",
+  "theme_color": "#ffeeea",
+  "orientation": "portrait",
   "categories": [
     "ai",
     "shorts",

@@ -27,10 +27,13 @@ export const StoreField = [
   },
 ];
 
-export function MakeVideoInputUi() {
+export function MakeVideoInputUi({
+  storeDetail,
+}: {
+  storeDetail: StoreDetail;
+}) {
   const router = useRouter();
   const [fileUpload, setFileUpload] = useState(false);
-  const { data: storeDetail } = useStoreDetail('donkatsu');
 
   // 동영상 파일들 관리
   const [selectedVideoFiles, setSelectedVideoFiles] = useState<File[]>([]);
@@ -90,7 +93,7 @@ export function MakeVideoInputUi() {
 
   useEffect(() => {
     if (!fileUpload) return;
-    
+
     setProgress(0); // 초기화
 
     const interval = setInterval(() => {
@@ -102,7 +105,7 @@ export function MakeVideoInputUi() {
         return prev + 33.33;
       });
     }, 1000);
-    
+
     const timeout = setTimeout(() => {
       setProgress(100);
       clearInterval(interval);
@@ -116,13 +119,10 @@ export function MakeVideoInputUi() {
     };
   }, [fileUpload, router]);
 
-  // 조건부 렌더링은 모든 hooks 호출 후에
-  if (!storeDetail) return null;
-
   if (fileUpload) {
     return (
       <div className='w-full h-full flex-center'>
-        <div className='flex-center flex-col gap-4'>
+        <div className='pt-10 flex-center flex-col gap-4'>
           <MakeVideoStartIcon />
           <p className='text-headlineSmall text-black000 text-center'>
             쇼츠테이블 AI가

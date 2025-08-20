@@ -1,9 +1,10 @@
-// services/upload/types.ts
-// 업로드 및 영상 생성 서비스의 공통 타입과 인터페이스 정의
-
 export type FileType = 'image' | 'video' | 'document';
 export type UploadStatus = 'pending' | 'uploading' | 'completed' | 'failed';
-export type VideoGenerationStatus = 'pending' | 'processing' | 'completed' | 'failed';
+export type VideoGenerationStatus =
+  | 'pending'
+  | 'processing'
+  | 'completed'
+  | 'failed';
 
 // 기본 파일 정보
 export interface FileInfo {
@@ -24,14 +25,6 @@ export interface UploadResult {
   fileType: string;
   uploadTime: number;
   metadata?: Record<string, unknown>;
-}
-
-// 업로드 진행 상태 (백엔드 폴링용으로 단순화)
-export interface UploadProgress {
-  fileName: string;
-  status: UploadStatus;
-  error?: string;
-  result?: UploadResult;
 }
 
 // 영상 생성 요청 데이터
@@ -91,7 +84,6 @@ export interface UploadConfig {
 
 // 업로드 옵션
 export interface UploadOptions {
-  onProgress?: (progress: UploadProgress[]) => void;
   onSuccess?: (results: UploadResult[]) => void;
   onError?: (error: Error) => void;
   config?: Partial<UploadConfig>;
@@ -114,9 +106,16 @@ export interface IUploadService {
 }
 
 export interface IVideoGenerationService {
-  createVideoGeneration(request: VideoGenerationRequest): Promise<VideoGenerationResponse>;
-  getGenerationStatus(generationId: string): Promise<VideoGenerationStatusResponse>;
-  pollGenerationStatus(generationId: string, options?: VideoGenerationOptions): Promise<VideoGenerationStatusResponse>;
+  createVideoGeneration(
+    request: VideoGenerationRequest,
+  ): Promise<VideoGenerationResponse>;
+  getGenerationStatus(
+    generationId: string,
+  ): Promise<VideoGenerationStatusResponse>;
+  pollGenerationStatus(
+    generationId: string,
+    options?: VideoGenerationOptions,
+  ): Promise<VideoGenerationStatusResponse>;
   cancelGeneration?(generationId: string): Promise<void>;
 }
 
@@ -138,7 +137,7 @@ export class UploadError extends Error {
     message: string,
     public code: string,
     public fileId?: string,
-    public originalError?: Error
+    public originalError?: Error,
   ) {
     super(message);
     this.name = 'UploadError';
@@ -157,7 +156,7 @@ export class VideoGenerationError extends Error {
     message: string,
     public code: string,
     public generationId?: string,
-    public originalError?: Error
+    public originalError?: Error,
   ) {
     super(message);
     this.name = 'VideoGenerationError';

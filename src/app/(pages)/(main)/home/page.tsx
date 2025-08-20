@@ -13,8 +13,9 @@ export default function HomePage() {
   return (
     <div className='w-full h-full flex flex-col'>
       <LogoHeader />
-      <main className='w-full h-full px-6 pt-6 pb-20 flex flex-col gap-4 overflow-y-auto scrollbar-hide scroll-smooth'>
+      <main className='w-full h-full px-6 pt-6 pb-nav-height flex flex-col gap-4 overflow-y-auto scrollbar-hide scroll-smooth'>
         <OwnerIntro />
+
         <VideoSection />
 
         {/* 영상 제작 링크 이동 버튼 */}

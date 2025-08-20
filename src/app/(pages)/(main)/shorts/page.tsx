@@ -9,7 +9,7 @@ export default function ShortsPage() {
       <Suspense fallback={<></>}>
         <Header />
       </Suspense>
-      <main className='pt-18 pl-3 pb-10 w-full flex-1 flex flex-col min-h-0 bg-gray100'>
+      <main className='pt-header-height pl-3 pb-10 w-full flex-1 flex flex-col min-h-0 bg-gray100'>
         <div className='sticky top-0 z-10 bg-gray100 '>
           <Suspense fallback={<></>}>
             <ShortsVideoTabs />

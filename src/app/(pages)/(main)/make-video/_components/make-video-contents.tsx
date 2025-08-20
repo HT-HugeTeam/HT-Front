@@ -46,7 +46,11 @@ export function MakeVideoContents() {
         fileUpload && 'h-full',
       )}
     >
-      {makeVideoInput ? <MakeVideoInputUi /> : <InfoStoreCard />}
+      {makeVideoInput ? (
+        <MakeVideoInputUi storeDetail={storeDetail} />
+      ) : (
+        <InfoStoreCard />
+      )}
     </div>
   );
 }
