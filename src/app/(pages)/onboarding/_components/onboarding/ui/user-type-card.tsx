@@ -11,6 +11,7 @@ interface UserTypeCardProps {
   title: string;
   selected: boolean;
   onSelect: () => void;
+  disabled?: boolean; // 비활성화 옵션 추가
 }
 
 export function UserTypeCard({
@@ -18,20 +19,25 @@ export function UserTypeCard({
   title,
   selected,
   onSelect,
+  disabled = false,
 }: UserTypeCardProps) {
   return (
     <button
-      onClick={onSelect}
+      onClick={disabled ? undefined : onSelect}
+      disabled={disabled}
       className={cn(
-        'pt-4 px-8 flex-1 size-auto flex-center flex-col text-center gap-3 rounded-2xl border border-white bg-gray200 transition-all duration-200 aspect-square cursor-pointer',
-        selected && 'border-orange400 bg-orange200 ',
+        'pt-4 px-8 flex-1 size-auto flex-center flex-col text-center gap-3 rounded-2xl border border-white bg-gray200 transition-all duration-200 aspect-square',
+        !disabled && 'cursor-pointer',
+        disabled && 'cursor-not-allowed opacity-50',
+        selected && !disabled && 'border-orange400 bg-orange200',
       )}
     >
       {/* 텍스트 */}
       <div
         className={clsx(
           'w-fit h-auto text-center text-headlineMedium transition-colors min-mobile:text-displayMedium',
-          selected ? 'text-orange400' : 'text-gray500',
+          selected && !disabled ? 'text-orange400' : 'text-gray500',
+          disabled && 'text-gray400',
         )}
       >
         {title}
