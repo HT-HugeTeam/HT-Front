@@ -4,7 +4,8 @@ import { GlobalProvider } from '@/lib/providers/global-providers';
 
 export const metadata: Metadata = {
   title: '쇼츠테이블',
-  description: '쇼츠테이블, 음식점 홍보 숏폼 영상 제작 AI 서비스',
+  description:
+    '음식점 사장님을 위한 쇼츠 영상 제작 플랫폼. AI로 쉽고 빠르게 가게 홍보 영상을 만들어 조회수와 매출을 늘려보세요.',
   keywords: [
     '쇼츠테이블',
     'shorts-table',
