@@ -7,7 +7,7 @@ export default function MainLayout({
 }>) {
   return (
     <>
-      <main className='w-full h-full pb-20 bg-white overflow-y-auto scrollbar-hide'>
+      <main className='w-full h-full pb-nav-height bg-white overflow-y-auto scrollbar-hide'>
         {children}
       </main>
       <NavigationBar />

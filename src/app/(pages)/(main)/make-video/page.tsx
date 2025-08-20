@@ -11,7 +11,7 @@ export default async function MakeVideoPage() {
         <Header />
       </Suspense>
       <Suspense fallback={<LoadingSpinner />}>
-        <main className='pt-18 pb-18 w-full h-full flex flex-col gap-6 min-h-0 overflow-y-auto scrollbar-hide'>
+        <main className='pt-header-height pb-18 w-full h-full flex flex-col gap-6 min-h-0 overflow-y-auto scrollbar-hide'>
           <MakeVideoText />
           <MakeVideoContents />
         </main>
