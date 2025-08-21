@@ -110,7 +110,7 @@ export function Header() {
         };
       case 'VIDEO_MANAGEMENT':
         return {
-          title: '영상 관리',
+          title: '영상관리',
           showBackButton: true,
           showEditButton: false,
         };

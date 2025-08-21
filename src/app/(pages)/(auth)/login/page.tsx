@@ -1,13 +1,17 @@
 'use client';
 
+import { kakaoAuthService } from '@/lib/auth/kakao.service';
 import KakaoLogo from '@/public/svg/logo/kakao-logo.svg';
 import LoginMainBigLogo from '@/public/svg/logo/login-main-big.svg';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const router = useRouter();
+  const handleKakaoLogin = () => {
+    kakaoAuthService.login();
+  };
   return (
-    <div className='px-6 pt-57 pb-20 not-only-of-type:w-full h-screen mx-auto login-bg flex flex-col justify-between'>
+    <div className='px-6 pt-57 pb-20 min-w-0 w-full h-screen mx-auto login-bg flex flex-col justify-between'>
       {/* 헤더 || 로고 영역 */}
       <header className='flex flex-col items-center justify-center gap-8'>
         <LoginMainBigLogo />
@@ -23,11 +27,7 @@ export default function LoginPage() {
 
       <div className='flex flex-col gap-4'>
         {/* 카카오 로그인 */}
-        <button
-          // onClick={login}
-          // disabled={isLoading}
-          className='kakao-btn'
-        >
+        <button onClick={handleKakaoLogin} className='kakao-btn'>
           <KakaoLogo />
           <span className='kakao-btn-text'>카카오 로그인</span>
         </button>

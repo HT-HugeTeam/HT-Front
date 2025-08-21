@@ -222,4 +222,11 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: var(--color-orange400); /* 호버시 색상 */
   }
+
+  /* ReactPlayer 비디오 전체 화면 스타일 */
+  .video-player-container .react-player video {
+    object-fit: cover !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
 }

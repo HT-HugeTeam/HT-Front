@@ -26,11 +26,11 @@ export function InfoContents() {
     return (
       <>
         {!storeAdd ? (
-          <div className='px-6 py-8 w-full h-auto'>
+          <div className='py-8 w-full h-auto'>
             <StoreAddButton />
           </div>
         ) : (
-          <div className='pl-6 pt-8 pr-6 w-full h-auto flex flex-col gap-8'>
+          <div className='pt-8 w-full h-auto flex flex-col gap-8'>
             <StoreAddForm />
           </div>
         )}
@@ -41,7 +41,7 @@ export function InfoContents() {
   return (
     <>
       {tabLabel === '가게 정보' && (
-        <div className='px-6 py-8 w-full h-auto flex flex-col gap-4'>
+        <div className='py-8 w-full h-auto flex flex-col gap-4'>
           <InfoStoreCard key={storeDetail.storeName} />
         </div>
       )}

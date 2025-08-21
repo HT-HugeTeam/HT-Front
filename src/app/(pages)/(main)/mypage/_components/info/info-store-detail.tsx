@@ -12,7 +12,7 @@ export function InfoStoreDetail() {
   if (!storeDetail) return null;
 
   return (
-    <div className='pl-6 pt-8 pr-6 w-full h-auto flex flex-col gap-8'>
+    <div className='pt-8 w-full h-auto flex flex-col gap-8'>
       {edit ? <StoreEditForm /> : <StoreDetailUI />}
     </div>
   );

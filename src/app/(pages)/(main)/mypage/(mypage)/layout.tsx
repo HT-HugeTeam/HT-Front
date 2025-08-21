@@ -11,7 +11,7 @@ export default function MyPageLayout({
       <Suspense fallback={<></>}>
         <Header />
       </Suspense>
-      {children}
+      <main className='px-6 pt-18 pb-10 w-full h-full min-h-0'>{children}</main>
     </div>
   );
 }
