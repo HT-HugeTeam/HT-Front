@@ -1,33 +1,14 @@
 'use client';
 
-import { Suspense, useState } from 'react';
-import dynamic from 'next/dynamic';
+import { useState } from 'react';
 import { LoadingSpinner } from '@/components/loading-spinner';
 import { useRouter } from 'next/navigation';
 
-// ReactPlayer를 dynamic import로 로드하여 SSR 문제 해결
-const ReactPlayer = dynamic(() => import('react-player'), {
-  ssr: false,
-}) as any;
-
 export function VideoPlayer({ videoId }: { videoId: string }) {
   const router = useRouter();
-  const [isReady, setIsReady] = useState(false);
-  const videoUrl: string =
+  const videoUrl =
     'https://f002.backblazeb2.com/file/creatomate-c8xg3hsxdu/6683c14f-7d35-45ea-9402-d87fd498f5a7.mp4';
-  const handleReady = () => {
-    setIsReady(true);
-  };
 
-  const handleRedo = () => {
-    // TODO: 다시만들기 로직 구현
-    console.log('다시만들기 클릭');
-  };
-
-  const handleNext = () => {
-    // TODO: 다음 버튼 로직 구현
-    console.log('다음 클릭');
-  };
   return (
     <>
       {/* ReactPlayer - 전체 화면 꽉 채우기 */}
@@ -35,9 +16,6 @@ export function VideoPlayer({ videoId }: { videoId: string }) {
         {videoUrl ? (
           <video
             src={videoUrl}
-            onPlay={e => {
-              console.log('비디오 재생');
-            }}
             controls={true}
             muted={true}
             //   pip={false}

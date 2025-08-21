@@ -14,7 +14,7 @@ apiClient.interceptors.request.use(
     // 로직 추가 예정 -> header에다가 token 아마 ?
     return config;
   },
-  error => Promise.reject(error),
+  error => Promise.reject(error as Error),
 );
 
 // Response 인터셉터 - 에러 처리
@@ -26,6 +26,6 @@ apiClient.interceptors.response.use(
     //   Cookies.remove('accessToken');
     //   window.location.href = '/login';
     // }
-    return Promise.reject(error);
+    return Promise.reject(error as Error);
   },
 );

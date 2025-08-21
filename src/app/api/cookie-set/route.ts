@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const cookieStore = await cookies();
 
     // 토큰 쿠키 설정
-    cookieStore.set('accessToken', token, {
+    cookieStore.set('accessToken', token as string, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
