@@ -2,6 +2,7 @@ import Link from 'next/link';
 import StoreIcon from '@/public/svg/mypage/store.svg';
 import OwnerIcon from '@/public/svg/mypage/owner.svg';
 import VideoIcon from '@/public/svg/mypage/video.svg';
+import { LogoutButton } from '@/components/logout-button';
 
 const LinkItems = [
   {
@@ -15,7 +16,7 @@ const LinkItems = [
     icon: <OwnerIcon />,
   },
   {
-    label: '영상 관리',
+    label: '영상관리',
     herf: '/mypage/manage-video',
     icon: <VideoIcon />,
   },
@@ -39,6 +40,7 @@ export default function MyPage() {
             <span className='text-bodyMedium text-gray600'>{item.label}</span>
           </Link>
         ))}
+        <LogoutButton />
       </section>
     </div>
   );

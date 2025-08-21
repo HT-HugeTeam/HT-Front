@@ -12,7 +12,7 @@ export const tabs: Record<TabType, string> = {
   store: '가게 정보',
   'store-detail': '상세 정보',
   owner: '사장님 정보',
-  video: '영상 관리',
+  video: '영상관리',
 } as const;
 
 const DEFAULT_TAB: TabType = 'store';
@@ -32,7 +32,11 @@ export function useInfoQuery() {
     'tab',
     parseAsStringLiteral(validTabs).withDefault(DEFAULT_TAB),
   );
+
+  // 가게 상세 페이지 정보를 위한 쿼리 파라미터
   const [storeName, setStoreName] = useQueryState('storeName', parseAsString);
+
+  // 가게 상세 정보 편집 여부
   const [edit, setEdit] = useQueryState(
     'edit',
     parseAsBoolean.withDefault(false),

@@ -23,7 +23,7 @@ export const FieldContainer = memo(
       </h4>
       <p
         className={cn(
-          'text-bodySmall text-gray600 !font-normal ',
+          'text-bodySmall text-gray600 !font-normal whitespace-pre-wrap',
           label === '네이버 지도 연결' && 'line-clamp-1 text-ellipsis',
         )}
       >
