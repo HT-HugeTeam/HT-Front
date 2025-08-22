@@ -4,12 +4,20 @@ import Link from 'next/link';
 import { VideoSection } from './_components/video-section';
 import VideoLayerIcon from '@/public/svg/home/video-layer.svg';
 import VideoTapeLayerIcon from '@/public/svg/home/video-tape-layer.svg';
+import { getHomeData } from '@/lib/api/home/home';
+import { getOnboardingStatusServer } from '@/lib/api/user/user-server';
 
 const HITS_COUNT = 333333;
 const HOME_BUTTON_STYLE =
   'pl-6 py-6 w-full h-auto flex flex-col bg-white000 items-start gap-2 rounded-[15px] shadow-[0_4px_10px_0_rgba(154,159,160,0.15)] hover:bg-slate-50/40 transition-colors duration-300';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const response = await getHomeData();
+  console.log('response', response);
+  // console.log('response', response);
+  // const user = await getOnboardingStatusServer();
+  // console.log('user', user);
+
   return (
     <div className='w-full h-full flex flex-col'>
       <LogoHeader />

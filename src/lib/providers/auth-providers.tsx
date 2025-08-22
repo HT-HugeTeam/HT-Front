@@ -10,8 +10,10 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children, initialToken }: AuthProviderProps) {
   const setAccessToken = useAuthStore(state => state.setAccessToken);
-
+  console.log('initialToken', initialToken);
+  setAccessToken(initialToken);
   useEffect(() => {
+    console.log('initialToken', initialToken);
     if (initialToken) {
       setAccessToken(initialToken);
     }

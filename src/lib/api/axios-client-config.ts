@@ -1,6 +1,5 @@
 import axios from 'axios';
 import type { AxiosRequestConfig } from 'axios';
-import { cookies } from 'next/headers';
 import { useAuthStore } from '../stores/auth-store';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
@@ -27,9 +26,8 @@ instance.interceptors.request.use(
     if (isNoAuthRequired) {
       return config;
     }
-    const cookieStore = await cookies();
-    const accessToken = cookieStore.get('accessToken')?.value;
-
+    const accessToken = useAuthStore.getState().accessToken;
+    console.log('accessToken', accessToken);
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     } else {

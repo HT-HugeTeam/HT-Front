@@ -5,27 +5,22 @@
  * API documentation for HT Server
  * OpenAPI spec version: 1.0
  */
-import type {
-  KakaoLoginRequest,
-  LoginResponse
-} from '../../../types/api';
+import type { KakaoLoginRequest, LoginResponse } from '../../../types/api';
 
-import { apiClient } from '.././config';
+import { apiClient } from '../axios-client-config';
 
-
-
-  /**
+/**
  * 카카오 OAuth Authorization Code를 사용하여 사용자 정보를 가져오고 로그인 처리합니다. 새로운 사용자라면 자동으로 회원가입됩니다.
  * @summary 카카오 Authorization Code로 로그인
  */
-export const kakaoLogin = (
-    kakaoLoginRequest: KakaoLoginRequest,
- ) => {
-      return apiClient<LoginResponse>(
-      {url: `/auth/kakao-login`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: kakaoLoginRequest
-    },
-      );
-    }
-  export type KakaoLoginResult = NonNullable<Awaited<ReturnType<typeof kakaoLogin>>>
+export const kakaoLogin = (kakaoLoginRequest: KakaoLoginRequest) => {
+  return apiClient<LoginResponse>({
+    url: `/auth/kakao-login`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: kakaoLoginRequest,
+  });
+};
+export type KakaoLoginResult = NonNullable<
+  Awaited<ReturnType<typeof kakaoLogin>>
+>;

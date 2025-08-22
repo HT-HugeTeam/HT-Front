@@ -12,16 +12,13 @@ export async function POST(request: NextRequest) {
     const isProduction = process.env.NODE_ENV === 'production';
     const response = NextResponse.json({ success: true });
 
-    // NextResponse로 쿠키 설정 (더 안정적)
     response.cookies.set('accessToken', token, {
       httpOnly: isProduction,
       secure: isProduction,
-      sameSite: isProduction ? 'none' : 'strict',
-      maxAge: 60 * 60 * 24 * 7, // 7일
+      sameSite: isProduction ? 'lax' : 'strict',
+      maxAge: 60 * 60 * 24 * 7,
       path: '/',
     });
-
-    console.log('Cookie set via NextResponse');
 
     return response;
   } catch (error) {

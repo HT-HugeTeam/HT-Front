@@ -9,64 +9,56 @@ import type {
   CreateVideoGenerationRequest,
   CreateVideoGenerationResponse,
   VideoGenerationStatusResponse,
-  VideoResponse
+  VideoResponse,
 } from '../../../types/api';
 
-import { apiClient } from '.././config';
+import { apiClient } from '../axios-client-config';
 
-
-
-  /**
+/**
  * 새로운 영상 생성을 요청합니다
  * @summary 영상 생성 요청
  */
 export const createVideoGeneration = (
-    createVideoGenerationRequest: CreateVideoGenerationRequest,
- ) => {
-      return apiClient<CreateVideoGenerationResponse>(
-      {url: `/videos/generations`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createVideoGenerationRequest
-    },
-      );
-    }
-  /**
+  createVideoGenerationRequest: CreateVideoGenerationRequest,
+) => {
+  return apiClient<CreateVideoGenerationResponse>({
+    url: `/videos/generations`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: createVideoGenerationRequest,
+  });
+};
+/**
  * 영상 ID로 영상 정보를 조회합니다
  * @summary 영상 조회
  */
-export const getVideo = (
-    videoId: string,
- ) => {
-      return apiClient<VideoResponse>(
-      {url: `/videos/${videoId}`, method: 'GET'
-    },
-      );
-    }
-  /**
+export const getVideo = (videoId: string) => {
+  return apiClient<VideoResponse>({ url: `/videos/${videoId}`, method: 'GET' });
+};
+/**
  * 영상 ID로 영상을 삭제합니다
  * @summary 영상 삭제
  */
-export const deleteVideo = (
-    videoId: string,
- ) => {
-      return apiClient<null>(
-      {url: `/videos/${videoId}`, method: 'DELETE'
-    },
-      );
-    }
-  /**
+export const deleteVideo = (videoId: string) => {
+  return apiClient<null>({ url: `/videos/${videoId}`, method: 'DELETE' });
+};
+/**
  * 영상 생성 ID로 생성 상태를 조회합니다
  * @summary 영상 생성 상태 조회
  */
-export const getVideoGenerationStatus = (
-    videoGenerationId: string,
- ) => {
-      return apiClient<VideoGenerationStatusResponse>(
-      {url: `/videos/generations/${videoGenerationId}`, method: 'GET'
-    },
-      );
-    }
-  export type CreateVideoGenerationResult = NonNullable<Awaited<ReturnType<typeof createVideoGeneration>>>
-export type GetVideoResult = NonNullable<Awaited<ReturnType<typeof getVideo>>>
-export type DeleteVideoResult = NonNullable<Awaited<ReturnType<typeof deleteVideo>>>
-export type GetVideoGenerationStatusResult = NonNullable<Awaited<ReturnType<typeof getVideoGenerationStatus>>>
+export const getVideoGenerationStatus = (videoGenerationId: string) => {
+  return apiClient<VideoGenerationStatusResponse>({
+    url: `/videos/generations/${videoGenerationId}`,
+    method: 'GET',
+  });
+};
+export type CreateVideoGenerationResult = NonNullable<
+  Awaited<ReturnType<typeof createVideoGeneration>>
+>;
+export type GetVideoResult = NonNullable<Awaited<ReturnType<typeof getVideo>>>;
+export type DeleteVideoResult = NonNullable<
+  Awaited<ReturnType<typeof deleteVideo>>
+>;
+export type GetVideoGenerationStatusResult = NonNullable<
+  Awaited<ReturnType<typeof getVideoGenerationStatus>>
+>;

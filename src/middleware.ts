@@ -35,9 +35,9 @@ function redirectToLogin(request: NextRequest): NextResponse {
   const loginUrl = new URL('/login', request.url);
 
   // 현재 URL을 callbackUrl로 저장 (로그인 후 원래 페이지로 돌아가기 위함)
-  if (request.nextUrl.pathname !== '/login') {
-    loginUrl.searchParams.set('callbackUrl', request.url);
-  }
+  // if (request.nextUrl.pathname !== '/login') {
+  //   loginUrl.searchParams.set('callbackUrl', request.url);
+  // }
 
   return NextResponse.redirect(loginUrl);
 }

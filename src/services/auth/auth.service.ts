@@ -1,4 +1,4 @@
-import { apiClient } from '../../lib/api/config';
+import { apiClient } from '../../lib/api/axios-client-config';
 import { ApiResponse, LoginResponse } from '../../types/auth';
 
 export const authService = {

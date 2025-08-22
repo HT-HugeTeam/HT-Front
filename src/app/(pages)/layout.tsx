@@ -103,6 +103,7 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const initialToken = cookieStore.get('accessToken')?.value ?? null;
+  console.log('initialToken', initialToken);
 
   return (
     <html lang='en'>

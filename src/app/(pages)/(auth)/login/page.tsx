@@ -4,9 +4,13 @@ import { kakaoAuthService } from '@/services/auth/kakao.service';
 import KakaoLogo from '@/public/svg/logo/kakao-logo.svg';
 import LoginMainBigLogo from '@/public/svg/logo/login-main-big.svg';
 import { redirect, useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/stores/auth-store';
+import { useEffect } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
+  const accessToken = useAuthStore(state => state.accessToken);
+
   const handleKakaoLogin = () => {
     kakaoAuthService.login();
   };
@@ -28,6 +32,11 @@ export default function LoginPage() {
     }
     router.push('/home');
   };
+  useEffect(() => {
+    if (accessToken) {
+      router.push('/home');
+    }
+  }, [accessToken]);
   return (
     <div className='px-6 pt-57 pb-20 min-w-0 w-full h-screen mx-auto login-bg flex flex-col justify-between'>
       {/* 헤더 || 로고 영역 */}

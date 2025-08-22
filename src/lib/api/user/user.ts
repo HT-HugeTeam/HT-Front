@@ -7,38 +7,40 @@
  */
 import type {
   UpdateUserOnboardingStatusRequest,
-  UserOnboardingStatusResponse
+  UserOnboardingStatusResponse,
 } from '../../../types/api';
 
-import { apiClient } from '.././config';
+import { apiClient } from '../axios-client-config';
+import { apiServer } from '../axios-server-config';
 
-
-
-  /**
+/**
  * 현재 사용자의 온보딩 정보 및 동의 상태를 조회합니다
  * @summary 사용자 온보딩 상태 조회
  */
-export const getOnboardingStatus = (
-    
- ) => {
-      return apiClient<UserOnboardingStatusResponse>(
-      {url: `/users/onboarding`, method: 'GET'
-    },
-      );
-    }
-  /**
+export const getOnboardingStatus = () => {
+  return apiClient<UserOnboardingStatusResponse>({
+    url: `/users/onboarding`,
+    method: 'GET',
+  });
+};
+
+/**
  * 사용자의 닉네임 및 서비스 이용약관, 개인정보보호정책, 위치기반서비스 동의 상태를 업데이트합니다
  * @summary 사용자 온보딩 상태 업데이트
  */
 export const updateUserOnboardingStatus = (
-    updateUserOnboardingStatusRequest: UpdateUserOnboardingStatusRequest,
- ) => {
-      return apiClient<UserOnboardingStatusResponse>(
-      {url: `/users/onboarding`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateUserOnboardingStatusRequest
-    },
-      );
-    }
-  export type GetOnboardingStatusResult = NonNullable<Awaited<ReturnType<typeof getOnboardingStatus>>>
-export type UpdateUserOnboardingStatusResult = NonNullable<Awaited<ReturnType<typeof updateUserOnboardingStatus>>>
+  updateUserOnboardingStatusRequest: UpdateUserOnboardingStatusRequest,
+) => {
+  return apiClient<UserOnboardingStatusResponse>({
+    url: `/users/onboarding`,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    data: updateUserOnboardingStatusRequest,
+  });
+};
+export type GetOnboardingStatusResult = NonNullable<
+  Awaited<ReturnType<typeof getOnboardingStatus>>
+>;
+export type UpdateUserOnboardingStatusResult = NonNullable<
+  Awaited<ReturnType<typeof updateUserOnboardingStatus>>
+>;
