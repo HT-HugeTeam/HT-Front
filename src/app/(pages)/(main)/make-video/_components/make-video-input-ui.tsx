@@ -10,7 +10,7 @@ import MakeVideoStartIcon from '@/public/svg/make-video/make-video-start.svg';
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
 import { useRouter } from 'next/navigation';
 import { useStoreDetail } from '@/hooks/queries/use-store-detail';
-import type { StoreDetail } from '@/types/mypage/store-detail.types';
+import type { StoreDetail } from '@/types/store';
 
 export const StoreField = [
   {

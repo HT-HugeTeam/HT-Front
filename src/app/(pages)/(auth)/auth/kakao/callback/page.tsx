@@ -1,4 +1,4 @@
-import { authService } from '@/lib/auth/auth.service';
+import { authService } from '@/services/auth/auth.service';
 import { redirect } from 'next/navigation';
 
 interface SearchParams {
@@ -16,24 +16,43 @@ export default async function KakaoCallbackPage({
   const params = await searchParams;
   const { code, error, error_description } = params;
 
-  //   try {
-  //     const result = await authService.kakaoLogin(code ?? '');
+  // 에러 처리
+  if (error) {
+    console.error('Kakao login error:', error, error_description);
+    redirect('/login?error=kakao_auth_failed');
+  }
 
-  //     // token이 있다고 가정
-  //     const token = result.token;
+  if (!code) {
+    console.error('No authorization code received');
+    redirect('/login?error=no_code');
+  }
 
-  //     const response = await fetch('/api/cookie-set', {
-  //       method: 'POST',
-  //       body: JSON.stringify({ token }),
-  //     });
+  try {
+    const result = await authService.kakaoLogin(code);
+    console.log(result);
+    const token = result.data.accessToken;
+    console.log('token', token);
 
-  //     if (!response.ok) {
-  //       throw new Error('Failed to set cookie');
-  //     }
-  //     redirect('/');
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_ROUTE_URL}/api/cookie-set`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      },
+    );
 
-  return null;
+    if (!response.ok) {
+      console.error('Failed to set cookie:', response.statusText);
+      redirect('/login?error=cookie_failed');
+    }
+  } catch (error) {
+    console.error('Kakao login failed:', error);
+    redirect('/login?error=login_failed');
+  }
+
+  // 성공 시 리디렉션
+  redirect('/');
 }

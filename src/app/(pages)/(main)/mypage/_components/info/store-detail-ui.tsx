@@ -1,7 +1,7 @@
 'use client';
 
 import { useStoreDetail } from '@/hooks/queries/use-store-detail';
-import { type StoreDetail } from '@/types/mypage/store-detail.types';
+import { type StoreDetail } from '@/types/store';
 import { FieldContainer, MenuList } from '@/components/store-info';
 
 export const StoreField = [
@@ -36,10 +36,10 @@ export function StoreDetailUI() {
       ))}
 
       {/* 메뉴 */}
-      <MenuList menus={storeDetail.storeMenu} />
+      {/* <MenuList menus={storeDetail.menu} /> */}
       <FieldContainer
         label='네이버 지도 연결'
-        value={storeDetail?.storeNaverMap ?? ''}
+        value={storeDetail?.naverUrl ?? ''}
       />
 
       <span className='-mt-6 p-3 flex-center w-fit h-auto bg-orange100 rounded-[8px] text-labelSmall text-orange400'>

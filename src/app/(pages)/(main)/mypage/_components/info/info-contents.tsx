@@ -22,7 +22,7 @@ export function InfoContents() {
     );
   }
 
-  if (error || !storeDetail || storeDetail.storeName === '') {
+  if (error || !storeDetail || storeDetail.name === '') {
     return (
       <>
         {!storeAdd ? (
@@ -42,7 +42,7 @@ export function InfoContents() {
     <>
       {tabLabel === '가게 정보' && (
         <div className='py-8 w-full h-auto flex flex-col gap-4'>
-          <InfoStoreCard key={storeDetail.storeName} />
+          <InfoStoreCard key={storeDetail.name} />
         </div>
       )}
       {tabLabel === '상세 정보' && <InfoStoreDetail />}

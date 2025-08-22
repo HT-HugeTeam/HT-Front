@@ -2,10 +2,7 @@
 
 import { create } from 'zustand';
 import { toast } from 'sonner';
-import type {
-  StoreDetail,
-  StoreFormData,
-} from '@/types/mypage/store-detail.types';
+import type { StoreDetail, StoreFormData } from '@/types/store';
 
 interface MyPageStore {
   // 폼 데이터

@@ -1,4 +1,4 @@
-import { type StoreDetail } from '@/types/mypage/store-detail.types';
+import { type StoreDetail } from '@/types/store';
 import {
   donkatsuStore,
   emptyStore,

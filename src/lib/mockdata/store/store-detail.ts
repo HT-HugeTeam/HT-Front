@@ -1,4 +1,4 @@
-import { type StoreDetail } from '@/types/mypage/store-detail.types';
+import { type StoreDetail } from '@/types/store';
 
 export const donkatsuStore: StoreDetail = {
   storeId: 1,

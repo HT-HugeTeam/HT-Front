@@ -1,14 +1,32 @@
 'use client';
 
-import { kakaoAuthService } from '@/lib/auth/kakao.service';
+import { kakaoAuthService } from '@/services/auth/kakao.service';
 import KakaoLogo from '@/public/svg/logo/kakao-logo.svg';
 import LoginMainBigLogo from '@/public/svg/logo/login-main-big.svg';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const router = useRouter();
   const handleKakaoLogin = () => {
     kakaoAuthService.login();
+  };
+  const handleGuestLogin = async () => {
+    const token = 'guest';
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_ROUTE_URL}/api/cookie-set`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      },
+    );
+    if (!response.ok) {
+      console.error('Failed to set cookie:', response.statusText);
+      return;
+    }
+    router.push('/home');
   };
   return (
     <div className='px-6 pt-57 pb-20 min-w-0 w-full h-screen mx-auto login-bg flex flex-col justify-between'>
@@ -34,7 +52,7 @@ export default function LoginPage() {
 
         {/* 게스트 로그인 */}
         <button
-          onClick={() => router.push('/home')}
+          onClick={handleGuestLogin}
           className='px-5 py-2 w-full h-14 flex-center bg-orange200 rounded-[6px] text-bodySmall text-orange400'
         >
           게스트로 로그인
