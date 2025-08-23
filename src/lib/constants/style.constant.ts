@@ -6,22 +6,28 @@ export const INPUT_STYLES = {
 
 export const FORM_FIELDS = [
   {
-    key: 'storeName' as const,
+    key: 'id' as const,
+    type: 'input',
+    label: '가게 ID',
+    isHidden: true,
+  },
+  {
+    key: 'name' as const,
     type: 'input',
     label: '상호명',
   },
   {
-    key: 'storeAddress' as const,
+    key: 'address' as const,
     type: 'input',
     label: '주소',
   },
   {
-    key: 'storeDescription' as const,
+    key: 'description' as const,
     type: 'textarea',
     label: '소개',
   },
   {
-    key: 'storeNaverMap' as const,
+    key: 'naverUrl' as const,
     type: 'input',
     label: '네이버 지도 연결',
   },

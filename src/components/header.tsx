@@ -6,6 +6,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useMyPageStore } from '@/lib/stores/mypage-store';
 import { useMemo } from 'react';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
+import { useQueryClient } from '@tanstack/react-query';
+import { StoreResponse } from '@/types/api';
+import { useStoreSubmit, useUpdateStore } from '@/hooks/use-store-mutation';
 
 type HeaderType =
   | 'STORE_INFO'
@@ -39,7 +42,10 @@ export function Header() {
   const { makeVideoInput, setMakeVideoInput, fileUpload, setFileUpload } =
     useMakeVideoQuery();
 
-  const handleSave = useMyPageStore(state => state.handleSave);
+  const queryClient = useQueryClient();
+
+  const handleStoreSave = useMyPageStore(state => state.handleStoreSave);
+  // const updateStore = useUpdateStore();
 
   const getHeaderType = (): HeaderType => {
     if (isShorts) return 'SHORTS';
@@ -57,9 +63,27 @@ export function Header() {
 
     const handleClick = () => {
       if (edit || storeAdd) {
-        void handleSave(storeAdd ? 'storeAdd' : 'storeEdit');
+        const response = handleStoreSave(storeAdd ? 'storeAdd' : 'storeEdit');
+        console.log('response', response);
         void setEdit(false);
         void setStoreAdd(false);
+        // void queryClient.invalidateQueries({ queryKey: ['storeByUser'] });
+        void queryClient.setQueryData(
+          ['storeByUser'],
+          (oldData: StoreResponse) => ({
+            ...oldData,
+            ...response,
+          }),
+        );
+        // void updateStore.mutate({
+        //   storeId: response.id ?? '',
+        //   data: {
+        //     name: response.name ?? '',
+        //     address: response.address ?? '',
+        //     description: response.description ?? '',
+        //     naverUrl: response.naverUrl ?? '',
+        //   },
+        // });
       } else {
         void setEdit(true);
         void setStoreAdd(false);
@@ -127,7 +151,14 @@ export function Header() {
           showEditButton: false,
         };
     }
-  }, [getHeaderType, handleSave, storeAdd, setEdit, setStoreAdd, tabLabel]);
+  }, [
+    getHeaderType,
+    handleStoreSave,
+    storeAdd,
+    setEdit,
+    setStoreAdd,
+    tabLabel,
+  ]);
 
   const handleBack = () => {
     if (edit) {

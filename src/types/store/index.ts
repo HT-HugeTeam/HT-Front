@@ -6,6 +6,7 @@ export interface StoreDetail {
   naverUrl?: string;
 }
 export interface StoreFormData {
+  id: string;
   name: string;
   address: string;
   description: string;

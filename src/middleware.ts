@@ -46,14 +46,12 @@ function redirectToLogin(request: NextRequest): NextResponse {
  * 홈페이지로 리디렉션
  */
 function redirectToHome(request: NextRequest): NextResponse {
-  console.log('redirectToHome');
   const homeUrl = new URL('/home', request.url);
   return NextResponse.redirect(homeUrl);
 }
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  console.log('pathname', pathname);
 
   // API 라우트는 미들웨어에서 제외
   if (pathname.startsWith('/api/')) {
@@ -71,8 +69,19 @@ export async function middleware(request: NextRequest) {
   // 쿠키에서 토큰 추출
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
-  console.log('accessToken', accessToken);
   const isAuthenticated = !!accessToken;
+
+  console.log('request.nextUrl.pathname', request.nextUrl.pathname);
+  if (request.nextUrl.pathname.includes('/api/') && accessToken) {
+    // API Route 호출 시 헤더로 토큰 전달
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set('x-access-token', accessToken);
+    console.log('requestHeaders', requestHeaders);
+
+    return NextResponse.next({
+      request: { headers: requestHeaders },
+    });
+  }
 
   // 인증된 사용자가 로그인/인증 페이지에 접근하는 경우
   if (isAuthenticated && isRouteMatch(pathname, AUTH_ROUTES)) {
@@ -115,6 +124,7 @@ export const config = {
      * - favicon.ico (favicon file)
      * - 파일 확장자가 있는 경로
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.).*)',
+    '/api/:path*',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.).*)',
   ],
 };

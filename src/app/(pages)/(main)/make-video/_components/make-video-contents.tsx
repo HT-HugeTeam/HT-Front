@@ -5,7 +5,7 @@ import { InfoStoreCard } from '../../mypage/_components/info/info-store-card';
 import { MakeVideoInputUi } from './make-video-input-ui';
 import { cn } from '@/lib/utils/cn';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
-import { useStoreDetail } from '@/hooks/queries/use-store-detail';
+import { useStoreDetail } from '@/hooks/queries/use-store';
 import { LoadingSpinner } from '@/components/loading-spinner';
 
 export function MakeVideoContents() {
@@ -30,7 +30,7 @@ export function MakeVideoContents() {
     );
   }
 
-  if (storeDetail.storeName === '') {
+  if (storeDetail.name === '') {
     return (
       <div className='px-6 w-full h-auto'>
         <StoreAddButton />

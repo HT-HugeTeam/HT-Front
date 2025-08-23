@@ -1,19 +1,22 @@
-const OWNER_NICKNAME = '윤멋사';
-const HITS_COUNT_PERCENT = 12;
+'use client';
+
+import { useUserOnboarding } from '@/hooks/queries/use-user-onboarding';
 
 export function OwnerIntro() {
+  const { data: user } = useUserOnboarding();
+  console.log('userInfo', user);
+
   return (
-    <header className='w-full h-auto flex flex-col items-start gap-2'>
+    <header className='pb-4 w-full h-auto flex flex-col items-start gap-2'>
       <div className='flex flex-col gap-1'>
         <h2 className='flex gap-1 items-end text-gray600'>
-          <span className='text-displayLarge'>{OWNER_NICKNAME}</span>
+          <span className='text-displayLarge'>{user?.nickname}</span>
           <span className='text-displayMedium'>사장님</span>
         </h2>
         <h3 className='text-displayMedium text-gray600'>
-          조회수가 {HITS_COUNT_PERCENT}% 올랐어요
+          숏폼으로 입소문 타는 중!
         </h3>
       </div>
-      <p className='text-labelLarge text-gray500'>전날 대비</p>
     </header>
   );
 }

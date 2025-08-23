@@ -27,11 +27,8 @@ instance.interceptors.request.use(
       return config;
     }
     const accessToken = useAuthStore.getState().accessToken;
-    console.log('accessToken', accessToken);
-    if (accessToken) {
+    if (accessToken !== null && accessToken !== undefined) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-    } else {
-      throw new Error('인증이 필요합니다');
     }
 
     return config;
@@ -53,7 +50,7 @@ instance.interceptors.response.use(
   },
 );
 
-// Orval mutator 함수 - Orval이 요구하는 시그니처
+// Client Axios Instance
 export const apiClient = <T>(config: AxiosRequestConfig): Promise<T> => {
   return instance.request(config).then(response => response.data as T);
 };

@@ -3,7 +3,19 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { type StoreDetail } from '@/types/store';
-import { getStoreDetail } from '@/lib/api/store';
+import { getStoreByUserClient, getStoreDetail } from '@/lib/api/store/store';
+import { StoreResponse } from '@/types/api';
+
+export function useStoreByUser(initialData?: StoreResponse[]) {
+  return useQuery({
+    queryKey: ['storeByUser'],
+    queryFn: () => getStoreByUserClient(),
+    staleTime: Infinity, // 편집 시에만 변경되므로 무한 캐싱
+    gcTime: 1000 * 60 * 60, // 1시간 메모리 보관
+    retry: 2,
+    initialData,
+  });
+}
 
 /**
  * StoreDetail 데이터를 전역 캐시로 관리하는 Tanstack Query Hook

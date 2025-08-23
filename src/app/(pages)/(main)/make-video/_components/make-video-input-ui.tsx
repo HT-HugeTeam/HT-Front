@@ -9,7 +9,7 @@ import { ImageUploadCard } from './image-upload-card';
 import MakeVideoStartIcon from '@/public/svg/make-video/make-video-start.svg';
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
 import { useRouter } from 'next/navigation';
-import { useStoreDetail } from '@/hooks/queries/use-store-detail';
+import { useStoreDetail } from '@/hooks/queries/use-store';
 import type { StoreDetail } from '@/types/store';
 
 export const StoreField = [
@@ -177,7 +177,7 @@ export function MakeVideoInputUi({
 
       <FieldContainer
         label='네이버 지도 연결'
-        value={storeDetail?.storeNaverMap ?? ''}
+        value={storeDetail?.naverUrl ?? ''}
       />
 
       {/* 업로드 버튼 + position fixed */}

@@ -1,3 +1,6 @@
+// ssg 정적 페이지 생성
+export const dynamic = 'force-static';
+
 import Link from 'next/link';
 import StoreIcon from '@/public/svg/mypage/store.svg';
 import OwnerIcon from '@/public/svg/mypage/owner.svg';
