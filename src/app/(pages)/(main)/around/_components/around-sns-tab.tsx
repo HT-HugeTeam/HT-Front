@@ -1,35 +1,24 @@
 'use client';
 
+import { SnsTab, useSnsTabQuery } from '@/hooks/use-sns-tab-query';
 import { cn } from '@/lib/utils/cn';
-import { parseAsStringLiteral, useQueryState } from 'nuqs';
-
 const TABS_LABEL = [
   {
-    label: '전체',
-    value: 'all',
+    label: '인스타그램',
+    value: 'instagram',
   },
   {
-    label: '내 주변',
-    value: 'around',
+    label: '유튜브',
+    value: 'youtube',
   },
   {
-    label: '동종업계',
-    value: 'same-industry',
+    label: '틱톡',
+    value: 'tiktok',
   },
 ];
-type ShortsTab = 'all' | 'around' | 'same-industry';
 
-const SHORTS_TAB_PARSER = parseAsStringLiteral<ShortsTab>([
-  'all',
-  'around',
-  'same-industry',
-]);
-
-export function ShortsVideoTabs() {
-  const [selectedTab, setSelectedTab] = useQueryState<ShortsTab>(
-    'shortsTab',
-    SHORTS_TAB_PARSER.withDefault('all'),
-  );
+export function AroundSnsTab() {
+  const { selectedTab, setSelectedTab } = useSnsTabQuery();
   return (
     <nav className='sticky top-0 z-10 py-4 w-full h-auto flex items-center justify-start gap-4 bg-gray100'>
       {TABS_LABEL.map(tab => (
@@ -41,7 +30,7 @@ export function ShortsVideoTabs() {
             selectedTab === tab.value &&
               'bg-orange100 border-orange400 text-orange400 hover:bg-orange200',
           )}
-          onClick={() => setSelectedTab(tab.value as ShortsTab)}
+          onClick={() => setSelectedTab(tab.value as SnsTab)}
         >
           {tab.label}
         </button>
