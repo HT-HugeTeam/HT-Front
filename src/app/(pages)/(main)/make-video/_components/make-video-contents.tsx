@@ -5,14 +5,15 @@ import { InfoStoreCard } from '../../mypage/_components/info/info-store-card';
 import { MakeVideoInputUi } from './make-video-input-ui';
 import { cn } from '@/lib/utils/cn';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
-import { useStoreDetail } from '@/hooks/queries/use-store';
+import { useStoreByUser, useStoreDetail } from '@/hooks/queries/use-store';
 import { LoadingSpinner } from '@/components/loading-spinner';
+import { StoreResponse } from '@/types/api';
 
 export function MakeVideoContents() {
   const { makeVideoInput, fileUpload } = useMakeVideoQuery();
 
   // TanStack Query로 데이터 캐싱 및 관리
-  const { data: storeDetail, isLoading, error } = useStoreDetail('donkatsu');
+  const { data: storeDetail, isLoading, error } = useStoreByUser();
 
   if (isLoading) {
     return (
@@ -30,7 +31,7 @@ export function MakeVideoContents() {
     );
   }
 
-  if (storeDetail.name === '') {
+  if (storeDetail.length === 0) {
     return (
       <div className='px-6 w-full h-auto'>
         <StoreAddButton />
@@ -47,9 +48,13 @@ export function MakeVideoContents() {
       )}
     >
       {makeVideoInput ? (
-        <MakeVideoInputUi storeDetail={storeDetail} />
+        <MakeVideoInputUi
+          storeDetail={storeDetail[0] as Required<StoreResponse>}
+        />
       ) : (
-        <InfoStoreCard />
+        <InfoStoreCard
+          storeDetail={storeDetail[0] as Required<StoreResponse>}
+        />
       )}
     </div>
   );

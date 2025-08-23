@@ -11,26 +11,27 @@ import { GradientProgressBar } from '@/components/gradient-progress-bar';
 import { useRouter } from 'next/navigation';
 import { useStoreDetail } from '@/hooks/queries/use-store';
 import type { StoreDetail } from '@/types/store';
+import { StoreResponse } from '@/types/api';
 
 export const StoreField = [
   {
     label: '상호명',
-    value: 'storeName',
+    value: 'name',
   },
   {
     label: '주소',
-    value: 'storeAddress',
+    value: 'address',
   },
   {
     label: '소개',
-    value: 'storeDescription',
+    value: 'description',
   },
 ];
 
 export function MakeVideoInputUi({
   storeDetail,
 }: {
-  storeDetail: StoreDetail;
+  storeDetail: Required<StoreResponse>;
 }) {
   const router = useRouter();
   const [fileUpload, setFileUpload] = useState(false);
@@ -142,7 +143,7 @@ export function MakeVideoInputUi({
         <FieldContainer
           key={field.label}
           label={field.label}
-          value={storeDetail[field.value as keyof StoreDetail] as string}
+          value={storeDetail[field.value as keyof StoreResponse] as string}
         />
       ))}
 
@@ -159,7 +160,7 @@ export function MakeVideoInputUi({
       </div>
 
       {/* 메뉴 사진 입력 */}
-      <div className='flex flex-col gap-2'>
+      {/* <div className='flex flex-col gap-2'>
         <h4 className='text-headlineMedium text-gray500 flex items-center '>
           메뉴
         </h4>
@@ -173,7 +174,7 @@ export function MakeVideoInputUi({
             />
           ))}
         </div>
-      </div>
+      </div> */}
 
       <FieldContainer
         label='네이버 지도 연결'
