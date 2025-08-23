@@ -1,4 +1,4 @@
-import { StoreResponse } from '@/types/api';
+import { type StoreResponse } from '@/types/api';
 import { apiServer } from '../axios-server-config';
 
 export const getStoreByUserServer = () => {

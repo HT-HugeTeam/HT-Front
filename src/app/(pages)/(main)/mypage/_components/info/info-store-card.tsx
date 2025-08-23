@@ -3,12 +3,14 @@
 import { useStoreQuery } from '@/hooks/use-store-query';
 import { usePathname } from 'next/navigation';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
-import { StoreResponse } from '@/types/api';
+import { type StoreResponse } from '@/types/api';
 
 export function InfoStoreCard({
   storeDetail,
+  onCardClick,
 }: {
   storeDetail: Required<StoreResponse>;
+  onCardClick?: (() => void) | undefined;
 }) {
   const pathname = usePathname();
   const isMakeVideo = pathname.includes('make-video');
@@ -18,10 +20,14 @@ export function InfoStoreCard({
   return (
     <div
       onClick={() => {
-        if (isMakeVideo) {
+        if (onCardClick) {
+          void onCardClick();
+        } else if (isMakeVideo) {
+          // 기존 make-video 페이지 로직
           void setMakeVideoInput(true);
           void setStoreName(storeDetail.name);
         } else {
+          // 기존 mypage 로직
           void setTab('store-detail');
           void setStoreName(storeDetail.name);
         }

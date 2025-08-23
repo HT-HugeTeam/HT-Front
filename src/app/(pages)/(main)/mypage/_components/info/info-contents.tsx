@@ -7,7 +7,7 @@ import { StoreAddButton } from '@/components/store-add-button';
 import { StoreAddForm } from './store-add-form';
 import { useStoreByUser } from '@/hooks/queries/use-store';
 import { InfoOwner } from './info-owner';
-import { StoreResponse } from '@/types/api';
+import { type StoreResponse } from '@/types/api';
 import { LoadingSpinnerBasic } from '@/components/loading-spinner';
 
 export function InfoContents() {

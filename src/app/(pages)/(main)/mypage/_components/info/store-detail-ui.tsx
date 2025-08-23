@@ -3,7 +3,7 @@
 import { useStoreByUser, useStoreDetail } from '@/hooks/queries/use-store';
 import { type StoreDetail } from '@/types/store';
 import { FieldContainer, MenuList } from '@/components/store-info';
-import { StoreResponse } from '@/types/api';
+import { type StoreResponse } from '@/types/api';
 
 export const StoreField = [
   {
@@ -32,7 +32,7 @@ export function StoreDetailUI() {
           key={field.label}
           label={field.label}
           value={
-            storeDetail?.[0]?.[field.value as keyof StoreResponse] as string
+            storeDetail?.[0]?.[field.value as keyof StoreResponse]!
           }
         />
       ))}

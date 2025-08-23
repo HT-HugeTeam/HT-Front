@@ -8,7 +8,6 @@ import { useMemo } from 'react';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { StoreResponse } from '@/types/api';
-import { useStoreSubmit, useUpdateStore } from '@/hooks/use-store-mutation';
 
 type HeaderType =
   | 'STORE_INFO'
@@ -17,7 +16,9 @@ type HeaderType =
   | 'OWNER_INFO'
   | 'VIDEO_CREATION'
   | 'VIDEO_MANAGEMENT'
-  | 'SHORTS';
+  | 'AROUND'
+  | 'DASHBOARD'
+  | 'MYPAGE';
 
 export function Header() {
   const router = useRouter();
@@ -26,7 +27,8 @@ export function Header() {
   const isMypage = pathnameArray[1] === 'mypage';
   const isMakeVideo = pathnameArray[1] === 'make-video';
   const isManageVideo = pathnameArray[2] === 'manage-video';
-  const isShorts = pathnameArray[1] === 'shorts';
+  const isAround = pathnameArray[1] === 'around';
+  const isDashboard = pathnameArray[1] === 'dashboard';
 
   const {
     tabLabel,
@@ -45,16 +47,17 @@ export function Header() {
   const queryClient = useQueryClient();
 
   const handleStoreSave = useMyPageStore(state => state.handleStoreSave);
-  // const updateStore = useUpdateStore();
 
   const getHeaderType = (): HeaderType => {
-    if (isShorts) return 'SHORTS';
+    if (isAround) return 'AROUND';
     if (isMakeVideo) return 'VIDEO_CREATION';
     if (isManageVideo) return 'VIDEO_MANAGEMENT';
+    if (isDashboard) return 'DASHBOARD';
     if (isMypage && storeAdd) return 'STORE_ADD';
     if (isMypage && tabLabel === '가게 정보') return 'STORE_INFO';
     if (isMypage && tabLabel === '상세 정보') return 'STORE_DETAIL';
     if (isMypage && tabLabel === '사장님 정보') return 'OWNER_INFO';
+    if (isMypage && tabLabel === '영상관리') return 'VIDEO_MANAGEMENT';
     return 'STORE_INFO';
   };
 
@@ -67,7 +70,6 @@ export function Header() {
         console.log('response', response);
         void setEdit(false);
         void setStoreAdd(false);
-        // void queryClient.invalidateQueries({ queryKey: ['storeByUser'] });
         void queryClient.setQueryData(
           ['storeByUser'],
           (oldData: StoreResponse) => ({
@@ -75,15 +77,6 @@ export function Header() {
             ...response,
           }),
         );
-        // void updateStore.mutate({
-        //   storeId: response.id ?? '',
-        //   data: {
-        //     name: response.name ?? '',
-        //     address: response.address ?? '',
-        //     description: response.description ?? '',
-        //     naverUrl: response.naverUrl ?? '',
-        //   },
-        // });
       } else {
         void setEdit(true);
         void setStoreAdd(false);
@@ -121,16 +114,9 @@ export function Header() {
         };
       case 'VIDEO_CREATION':
         return {
-          title: '영상 제작',
-          showBackButton: makeVideoInput,
-          showEditButton: makeVideoInput,
-          editButtonText: '편집',
-          // 가게 상세정보로 이동해야 함.
-          onEditClick: () => {
-            router.push(
-              `/mypage/info?tab=store-detail&edit=true&storeName=${storeName}`,
-            );
-          },
+          title: '영상제작',
+          showBackButton: false,
+          showEditButton: false,
         };
       case 'VIDEO_MANAGEMENT':
         return {
@@ -138,9 +124,15 @@ export function Header() {
           showBackButton: true,
           showEditButton: false,
         };
-      case 'SHORTS':
+      case 'AROUND':
         return {
           title: '둘러보기',
+          showBackButton: false,
+          showEditButton: false,
+        };
+      case 'DASHBOARD':
+        return {
+          title: '대시보드',
           showBackButton: false,
           showEditButton: false,
         };

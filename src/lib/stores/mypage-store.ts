@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { toast } from 'sonner';
 import type { StoreFormData } from '@/types/store';
 import { createStore, updateStore } from '../api/store/store';
-import { StoreResponse } from '@/types/api';
+import { type StoreResponse } from '@/types/api';
 import { useStoreByUser } from '@/hooks/queries/use-store';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -86,7 +86,7 @@ export const useMyPageStore = create<MyPageStore>((set, get) => ({
       });
       console.log('update response', response);
 
-      toast.success('수정되었습니다.');
+      toast.success('수정되었습니다. 새로고침 후 적용됩니다.');
       return response;
     }
     return null;

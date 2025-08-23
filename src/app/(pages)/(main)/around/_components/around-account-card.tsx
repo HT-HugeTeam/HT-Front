@@ -1,5 +1,5 @@
-import { SnsTab } from '@/hooks/use-sns-tab-query';
-import { SocialAccount } from '@/lib/mockdata/sns-accounts';
+import { type SnsTab } from '@/hooks/use-sns-tab-query';
+import { type SocialAccount } from '@/lib/mockdata/sns-accounts';
 import AroundAccountIcon from '@/public/svg/shorts/around-card-arrow.svg';
 import { UserCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -41,9 +41,7 @@ export function AroundAccountCard({
           </p>
         </div>
       </div>
-      <Link href={account.url} target='_blank' rel='noopener noreferrer'>
-        <AroundAccountIcon />
-      </Link>
+      <AroundAccountIcon />
     </Link>
   );
 }

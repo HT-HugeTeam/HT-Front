@@ -3,7 +3,7 @@
 import { useSnsTabQuery } from '@/hooks/use-sns-tab-query';
 import {
   INSTAGRAM_FOOD_ACCOUNTS,
-  SocialAccount,
+  type SocialAccount,
   TIKTOK_FOOD_ACCOUNTS,
   YOUTUBE_FOOD_ACCOUNTS,
 } from '@/lib/mockdata/sns-accounts';

@@ -7,12 +7,15 @@ import { cn } from '@/lib/utils/cn';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
 import { useStoreByUser, useStoreDetail } from '@/hooks/queries/use-store';
 import { LoadingSpinner } from '@/components/loading-spinner';
-import { StoreResponse } from '@/types/api';
+import { type StoreResponse } from '@/types/api';
 
-export function MakeVideoContents() {
+interface MakeVideoContentsProps {
+  onStoreSelect?: (store: StoreResponse) => void; // 새로운 플로우용 콜백
+}
+
+export function MakeVideoContents({ onStoreSelect }: MakeVideoContentsProps = {}) {
   const { makeVideoInput, fileUpload } = useMakeVideoQuery();
 
-  // TanStack Query로 데이터 캐싱 및 관리
   const { data: storeDetail, isLoading, error } = useStoreByUser();
 
   if (isLoading) {
@@ -54,6 +57,7 @@ export function MakeVideoContents() {
       ) : (
         <InfoStoreCard
           storeDetail={storeDetail[0] as Required<StoreResponse>}
+          onCardClick={onStoreSelect ? () => onStoreSelect(storeDetail[0]!) : undefined}
         />
       )}
     </div>

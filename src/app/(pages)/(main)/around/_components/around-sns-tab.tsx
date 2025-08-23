@@ -1,6 +1,6 @@
 'use client';
 
-import { SnsTab, useSnsTabQuery } from '@/hooks/use-sns-tab-query';
+import { type SnsTab, useSnsTabQuery } from '@/hooks/use-sns-tab-query';
 import { cn } from '@/lib/utils/cn';
 const TABS_LABEL = [
   {

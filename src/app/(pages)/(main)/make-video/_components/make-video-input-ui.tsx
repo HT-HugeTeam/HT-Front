@@ -11,7 +11,7 @@ import { GradientProgressBar } from '@/components/gradient-progress-bar';
 import { useRouter } from 'next/navigation';
 import { useStoreDetail } from '@/hooks/queries/use-store';
 import type { StoreDetail } from '@/types/store';
-import { StoreResponse } from '@/types/api';
+import { type StoreResponse } from '@/types/api';
 
 export const StoreField = [
   {
@@ -143,7 +143,7 @@ export function MakeVideoInputUi({
         <FieldContainer
           key={field.label}
           label={field.label}
-          value={storeDetail[field.value as keyof StoreResponse] as string}
+          value={storeDetail[field.value as keyof StoreResponse]}
         />
       ))}
 

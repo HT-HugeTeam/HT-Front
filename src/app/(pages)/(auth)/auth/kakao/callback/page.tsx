@@ -22,7 +22,7 @@ export default function KakaoCallbackPage() {
     const result = await kakaoLogin({
       authorizationCode: code,
     });
-    const token = result.accessToken as string;
+    const token = result.accessToken!;
     setAccessToken(token);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_ROUTE_URL}/api/cookie-set`,

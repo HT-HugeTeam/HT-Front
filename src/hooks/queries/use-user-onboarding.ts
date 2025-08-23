@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { UserOnboardingStatusResponse } from '@/types/api';
+import { type UserOnboardingStatusResponse } from '@/types/api';
 import { getOnboardingStatus } from '@/lib/api/user/user';
 
 /**

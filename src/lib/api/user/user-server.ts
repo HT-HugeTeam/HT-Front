@@ -1,4 +1,4 @@
-import { UserOnboardingStatusResponse } from '@/types/api';
+import { type UserOnboardingStatusResponse } from '@/types/api';
 import { apiServer } from '../axios-server-config';
 
 export const getOnboardingStatusServer = () => {

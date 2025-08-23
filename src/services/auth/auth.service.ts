@@ -1,5 +1,5 @@
 import { apiClient } from '../../lib/api/axios-client-config';
-import { ApiResponse, LoginResponse } from '../../types/auth';
+import { type ApiResponse, type LoginResponse } from '../../types/auth';
 
 export const authService = {
   // 게스트 로그인 추가

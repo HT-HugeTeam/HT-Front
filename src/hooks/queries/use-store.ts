@@ -4,7 +4,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { type StoreDetail } from '@/types/store';
 import { getStoreByUserClient, getStoreDetail } from '@/lib/api/store/store';
-import { StoreResponse } from '@/types/api';
+import { type StoreResponse } from '@/types/api';
 
 export function useStoreByUser(initialData?: StoreResponse[]) {
   return useQuery({

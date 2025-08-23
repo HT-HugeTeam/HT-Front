@@ -104,7 +104,7 @@ export function ImageUploadCard({
 
       {/* 메뉴명 표시 */}
       {menuName && (
-        <p className='text-bodySmall text-gray500 text-center w-[104px] truncate'>
+        <p className='text-bodySmall text-gray600 text-left w-[104px] truncate'>
           {menuName}
         </p>
       )}

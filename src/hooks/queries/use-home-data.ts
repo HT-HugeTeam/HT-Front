@@ -2,7 +2,7 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getHomeData } from '@/lib/api/home/home';
-import { HomeResponse } from '@/types/api';
+import { type HomeResponse } from '@/types/api';
 
 /**
  * Home 데이터를 전역 캐시로 관리하는 Tanstack Query Hook
