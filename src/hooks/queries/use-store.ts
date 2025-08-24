@@ -8,7 +8,7 @@ import { type StoreResponse } from '@/types/api';
 
 export function useStoreByUser(initialData?: StoreResponse[]) {
   return useQuery({
-    queryKey: ['storeByUser'],
+    queryKey: ['store-user'],
     queryFn: () => getStoreByUserClient(),
     staleTime: Infinity, // 편집 시에만 변경되므로 무한 캐싱
     gcTime: 1000 * 60 * 60, // 1시간 메모리 보관

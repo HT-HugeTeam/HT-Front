@@ -71,18 +71,6 @@ export async function middleware(request: NextRequest) {
   const accessToken = cookieStore.get('accessToken')?.value;
   const isAuthenticated = !!accessToken;
 
-  console.log('request.nextUrl.pathname', request.nextUrl.pathname);
-  if (request.nextUrl.pathname.includes('/api/') && accessToken) {
-    // API Route 호출 시 헤더로 토큰 전달
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set('x-access-token', accessToken);
-    console.log('requestHeaders', requestHeaders);
-
-    return NextResponse.next({
-      request: { headers: requestHeaders },
-    });
-  }
-
   // 인증된 사용자가 로그인/인증 페이지에 접근하는 경우
   if (isAuthenticated && isRouteMatch(pathname, AUTH_ROUTES)) {
     return redirectToHome(request);
