@@ -17,4 +17,8 @@ export interface VideoGenerationStatusResponse {
   status?: VideoGenerationStatusResponseStatus;
   /** 요청 생성 시간 */
   createdAt?: string;
+  /** 생성된 영상 URL */
+  generatedVideoUrl?: string;
+  /** 오류 메시지 */
+  errorMessage?: string;
 }

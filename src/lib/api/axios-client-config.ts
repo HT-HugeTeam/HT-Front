@@ -7,12 +7,12 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 // 기본 axios 인스턴스 생성
 const instance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 50000,
   withCredentials: true,
 });
 
 // 토큰 검사를 하지 않을 경로들
-const NO_AUTH_REQUIRED_PATHS = ['/auth/kakao-login'];
+const NO_AUTH_REQUIRED_PATHS = ['/auth/kakao-login', '/test/auth/login'];
 
 instance.interceptors.request.use(
   async config => {

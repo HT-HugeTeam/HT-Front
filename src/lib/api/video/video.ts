@@ -33,7 +33,10 @@ export const createVideoGeneration = (
  * @summary 영상 조회
  */
 export const getVideo = (videoId: string) => {
-  return apiClient<VideoResponse>({ url: `/videos/${videoId}`, method: 'GET' });
+  return apiClient<VideoResponse>({
+    url: `/videos/${videoId}`,
+    method: 'GET',
+  });
 };
 /**
  * 영상 ID로 영상을 삭제합니다

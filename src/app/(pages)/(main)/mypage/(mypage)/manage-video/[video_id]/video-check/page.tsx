@@ -1,6 +1,6 @@
-import { FieldContainer } from '@/components/store-info';
 import { VideoCheckDescription } from '../../../../_components/manage-video/video-check-description';
 import { cn } from '@/lib/utils/cn';
+import { VideoCheckButton } from '../../../../_components/manage-video/video-check-button';
 
 const VIDEO_URL =
   'https://f002.backblazeb2.com/file/creatomate-c8xg3hsxdu/6683c14f-7d35-45ea-9402-d87fd498f5a7.mp4';
@@ -30,6 +30,7 @@ export default async function VideoCheckPage({
         </div>
       </div>
       <VideoCheckDescription />
+      <VideoCheckButton videoUrl={VIDEO_URL} />
     </div>
   );
 }
