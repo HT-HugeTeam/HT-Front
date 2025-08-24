@@ -7,13 +7,6 @@ export function LogoHeader() {
       <Link href='/home' className='w-fit h-auto'>
         <HeaderMainLogo />
       </Link>
-      {/* 임시 온보딩 확인용 */}
-      <Link
-        href='/onboarding'
-        className='px-6 py-2 w-fit h-auto bg-orange400 rounded-2xl text-white'
-      >
-        onboarding
-      </Link>
     </header>
   );
 }

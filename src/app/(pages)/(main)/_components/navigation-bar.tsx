@@ -7,8 +7,8 @@ import HomeActive from '@/public/svg/nav/home-active.svg';
 import HomeInactive from '@/public/svg/nav/home-inactive.svg';
 import MakeVideoActive from '@/public/svg/nav/makevideo-active.svg';
 import MakeVideoInactive from '@/public/svg/nav/makevideo-inactive.svg';
-import ShortsActive from '@/public/svg/nav/shorts-active.svg';
-import ShortsInactive from '@/public/svg/nav/shorts-inactive.svg';
+import AroundActive from '@/public/svg/nav/around-active.svg';
+import AroundInactive from '@/public/svg/nav/around-inactive.svg';
 import DashboardActive from '@/public/svg/nav/dashboard-active.svg';
 import DashboardInactive from '@/public/svg/nav/dashboard-inactive.svg';
 import MyPageActive from '@/public/svg/nav/mypage-active.svg';
@@ -38,11 +38,11 @@ const navItems: NavItem[] = [
     key: 'make-video',
   },
   {
-    href: '/shorts',
-    activeIcon: <ShortsActive />,
-    inactiveIcon: <ShortsInactive />,
+    href: '/around',
+    activeIcon: <AroundActive />,
+    inactiveIcon: <AroundInactive />,
     label: '둘러보기',
-    key: 'shorts',
+    key: 'around',
   },
   {
     href: '/dashboard',

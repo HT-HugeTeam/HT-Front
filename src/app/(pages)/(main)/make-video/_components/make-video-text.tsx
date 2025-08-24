@@ -1,11 +1,11 @@
 'use client';
 
-import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
+import { useVideoCreationStore } from '@/stores/video-creation-store';
 
 export function MakeVideoText() {
-  const { makeVideoInput } = useMakeVideoQuery();
+  const currentStep = useVideoCreationStore(state => state.currentStep);
 
-  if (makeVideoInput) {
+  if (currentStep !== 'store-select') {
     return null;
   }
 

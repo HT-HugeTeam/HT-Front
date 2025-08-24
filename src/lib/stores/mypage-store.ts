@@ -2,10 +2,11 @@
 
 import { create } from 'zustand';
 import { toast } from 'sonner';
-import type {
-  StoreDetail,
-  StoreFormData,
-} from '@/types/mypage/store-detail.types';
+import type { StoreFormData } from '@/types/store';
+import { createStore, updateStore } from '../api/store/store';
+import { type StoreResponse } from '@/types/api';
+import { useStoreByUser } from '@/hooks/queries/use-store';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface MyPageStore {
   // 폼 데이터
@@ -18,26 +19,26 @@ interface MyPageStore {
   ) => void;
 
   // 폼 데이터 초기화 (storeDetail 기준)
-  initializeFormData: (storeDetail: StoreDetail) => void;
+  initializeFormData: (storeDetail: StoreResponse) => void;
 
   // 폼 데이터 리셋 (원본 데이터로 복원)
-  resetFormData: (storeDetail: StoreDetail) => void;
+  resetFormData: (storeDetail: StoreResponse) => void;
 
   // 저장 함수
-  handleSave: (saveType: 'storeAdd' | 'storeEdit') => void;
+  handleStoreSave: (saveType: 'storeAdd' | 'storeEdit') => StoreResponse;
 
-  // 메뉴 관련 헬퍼 함수들
-  addMenuItem: (menuItem: string) => void;
-  removeMenuItem: (index: number) => void;
+  // // 메뉴 관련 헬퍼 함수들
+  // addMenuItem: (menuItem: string) => void;
+  // removeMenuItem: (index: number) => void;
 }
 
 export const useMyPageStore = create<MyPageStore>((set, get) => ({
   formData: {
-    storeName: '',
-    storeAddress: '',
-    storeDescription: '',
-    storeMenu: [],
-    storeNaverMap: '',
+    id: '',
+    name: '',
+    address: '',
+    description: '',
+    naverUrl: '',
   },
 
   updateField: (field, value) => {
@@ -52,11 +53,11 @@ export const useMyPageStore = create<MyPageStore>((set, get) => ({
   initializeFormData: storeDetail => {
     set({
       formData: {
-        storeName: storeDetail.storeName,
-        storeAddress: storeDetail.storeAddress,
-        storeDescription: storeDetail.storeDescription,
-        storeMenu: [...storeDetail.storeMenu],
-        storeNaverMap: storeDetail.storeNaverMap ?? '',
+        id: storeDetail.id ?? '',
+        name: storeDetail.name ?? '',
+        address: storeDetail.address ?? '',
+        description: storeDetail.description ?? '',
+        naverUrl: storeDetail.naverUrl ?? '',
       },
     });
   },
@@ -65,34 +66,48 @@ export const useMyPageStore = create<MyPageStore>((set, get) => ({
     get().initializeFormData(storeDetail);
   },
 
-  handleSave: (saveType: 'storeAdd' | 'storeEdit') => {
-    // TODO: API 호출 로직 추가 - storeAdd & storeEdit post, put 구분
+  handleStoreSave: async (saveType: 'storeAdd' | 'storeEdit') => {
     if (saveType === 'storeAdd') {
-      // TODO: API 호출 로직 추가 - storeAdd post
+      const response = await createStore({
+        name: get().formData.name,
+        address: get().formData.address,
+        description: get().formData.description,
+        naverUrl: get().formData.naverUrl ?? '',
+      });
+      console.log('response', response);
       toast.success('추가되었습니다.');
+      return response;
     } else if (saveType === 'storeEdit') {
-      // TODO: API 호출 로직 추가 - storeEdit put
-      toast.success('수정되었습니다.');
+      const response = await updateStore(get().formData.id, {
+        name: get().formData.name,
+        address: get().formData.address,
+        description: get().formData.description,
+        naverUrl: get().formData.naverUrl ?? '',
+      });
+      console.log('update response', response);
+
+      toast.success('수정되었습니다. 새로고침 후 적용됩니다.');
+      return response;
     }
+    return null;
   },
 
-  addMenuItem: menuItem => {
-    if (menuItem.trim()) {
-      set(state => ({
-        formData: {
-          ...state.formData,
-          storeMenu: [...state.formData.storeMenu, menuItem.trim()],
-        },
-      }));
-    }
-  },
+  // addMenuItem: menuItem => {
+  //   if (menuItem.trim()) {
+  //     set(state => ({
+  //       formData: {
+  //         ...state.formData,
+  //       },
+  //     }));
+  //   }
+  // },
 
-  removeMenuItem: index => {
-    set(state => ({
-      formData: {
-        ...state.formData,
-        storeMenu: state.formData.storeMenu.filter((_, i) => i !== index),
-      },
-    }));
-  },
+  // removeMenuItem: index => {
+  //   set(state => ({
+  //     formData: {
+  //       ...state.formData,
+  //       storeMenu: state.formData.storeMenu.filter((_, i) => i !== index),
+  //     },
+  //   }));
+  // },
 }));

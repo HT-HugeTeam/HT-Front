@@ -5,24 +5,18 @@ import { InfoStoreCard } from './info-store-card';
 import { InfoStoreDetail } from './info-store-detail';
 import { StoreAddButton } from '@/components/store-add-button';
 import { StoreAddForm } from './store-add-form';
-import { useStoreDetail } from '@/hooks/queries/use-store-detail';
-import { LoadingSpinner } from '@/components/loading-spinner';
+import { useStoreByUser } from '@/hooks/queries/use-store';
 import { InfoOwner } from './info-owner';
+import { type StoreResponse } from '@/types/api';
+import { LoadingSpinnerBasic } from '@/components/loading-spinner';
 
 export function InfoContents() {
   const { tabLabel, storeAdd } = useStoreQuery();
+  const { data: storeData, isLoading } = useStoreByUser();
 
-  const { data: storeDetail, isLoading, error } = useStoreDetail('donkatsu');
+  if (isLoading) return <LoadingSpinnerBasic />;
 
-  if (isLoading) {
-    return (
-      <div className='px-6 w-full h-full flex-center'>
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
-  if (error || !storeDetail || storeDetail.storeName === '') {
+  if (!storeData?.[0]) {
     return (
       <>
         {!storeAdd ? (
@@ -42,7 +36,9 @@ export function InfoContents() {
     <>
       {tabLabel === '가게 정보' && (
         <div className='py-8 w-full h-auto flex flex-col gap-4'>
-          <InfoStoreCard key={storeDetail.storeName} />
+          <InfoStoreCard
+            storeDetail={storeData[0] as Required<StoreResponse>}
+          />
         </div>
       )}
       {tabLabel === '상세 정보' && <InfoStoreDetail />}

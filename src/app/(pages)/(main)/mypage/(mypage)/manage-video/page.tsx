@@ -1,10 +1,16 @@
+import { useVideoGeneration } from '@/hooks/use-video-generation';
 import { VideoProgressHeader } from '../../_components/manage-video/video-progress-header';
 import { VideoSection } from '../../_components/manage-video/video-section';
 
-export default function ManageVideoPage() {
+export default async function ManageVideoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ generationId?: string }>;
+}) {
+  const { generationId } = await searchParams;
   return (
     <>
-      <VideoProgressHeader />
+      <VideoProgressHeader generationId={generationId ?? ''} />
       <VideoSection />
     </>
   );

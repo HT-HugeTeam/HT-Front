@@ -13,8 +13,10 @@ import { CopyButton } from '@/components/copy-button';
 
 export const InputFormField = ({
   field,
+  isHidden = false,
 }: {
   field: (typeof FORM_FIELDS)[number];
+  isHidden?: boolean;
 }) => {
   const formData = useMyPageStore(state => state.formData);
   const updateField = useMyPageStore(state => state.updateField);
@@ -37,22 +39,28 @@ export const InputFormField = ({
       <textarea {...commonProps} />
     </div>
   ) : (
-    <div className='w-full flex flex-col items-start'>
-      <label
-        htmlFor={field.key}
-        className='text-headlineMedium text-gray500 flex items-center'
-      >
-        {field.label}
-        {field.label === '네이버 지도 연결' && (
-          <>
-            <span className='w-4 h-4 ml-1'>
-              <AlertIcon />
-            </span>
-            <CopyButton text={value ?? ''} />
-          </>
-        )}
-      </label>
-      <input type='text' {...commonProps} />
-    </div>
+    <>
+      {field.key === 'id' ? (
+        <input type='hidden' {...commonProps} />
+      ) : (
+        <div className='w-full flex flex-col items-start'>
+          <label
+            htmlFor={field.key}
+            className='text-headlineMedium text-gray500 flex items-center'
+          >
+            {field.label}
+            {field.label === '네이버 지도 연결' && (
+              <>
+                <span className='w-4 h-4 ml-1'>
+                  <AlertIcon />
+                </span>
+                <CopyButton text={value ?? ''} />
+              </>
+            )}
+          </label>
+          <input type='text' {...commonProps} />
+        </div>
+      )}
+    </>
   );
 };

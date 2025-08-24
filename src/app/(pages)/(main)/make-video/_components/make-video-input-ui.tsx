@@ -9,28 +9,29 @@ import { ImageUploadCard } from './image-upload-card';
 import MakeVideoStartIcon from '@/public/svg/make-video/make-video-start.svg';
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
 import { useRouter } from 'next/navigation';
-import { useStoreDetail } from '@/hooks/queries/use-store-detail';
-import type { StoreDetail } from '@/types/mypage/store-detail.types';
+import { useStoreDetail } from '@/hooks/queries/use-store';
+import type { StoreDetail } from '@/types/store';
+import { type StoreResponse } from '@/types/api';
 
 export const StoreField = [
   {
     label: '상호명',
-    value: 'storeName',
+    value: 'name',
   },
   {
     label: '주소',
-    value: 'storeAddress',
+    value: 'address',
   },
   {
     label: '소개',
-    value: 'storeDescription',
+    value: 'description',
   },
 ];
 
 export function MakeVideoInputUi({
   storeDetail,
 }: {
-  storeDetail: StoreDetail;
+  storeDetail: Required<StoreResponse>;
 }) {
   const router = useRouter();
   const [fileUpload, setFileUpload] = useState(false);
@@ -54,6 +55,10 @@ export function MakeVideoInputUi({
       const urls = getUploadedUrls(results);
 
       console.log('업로드 완료된 URLs:', { urls });
+      const imageUrls = urls.filter(url => url.includes('images/'));
+      const videoUrls = urls.find(url => url.includes('videos/'));
+      console.log('imageUrls:', imageUrls);
+      console.log('videoUrls:', videoUrls);
 
       // TODO: 추후 백엔드 API 연동 시 여기서 영상 생성 요청
     },
@@ -142,7 +147,7 @@ export function MakeVideoInputUi({
         <FieldContainer
           key={field.label}
           label={field.label}
-          value={storeDetail[field.value as keyof StoreDetail] as string}
+          value={storeDetail[field.value as keyof StoreResponse]}
         />
       ))}
 
@@ -159,7 +164,7 @@ export function MakeVideoInputUi({
       </div>
 
       {/* 메뉴 사진 입력 */}
-      <div className='flex flex-col gap-2'>
+      {/* <div className='flex flex-col gap-2'>
         <h4 className='text-headlineMedium text-gray500 flex items-center '>
           메뉴
         </h4>
@@ -173,11 +178,11 @@ export function MakeVideoInputUi({
             />
           ))}
         </div>
-      </div>
+      </div> */}
 
       <FieldContainer
         label='네이버 지도 연결'
-        value={storeDetail?.storeNaverMap ?? ''}
+        value={storeDetail?.naverUrl ?? ''}
       />
 
       {/* 업로드 버튼 + position fixed */}

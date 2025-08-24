@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import { GlobalProvider } from '@/lib/providers/global-providers';
+import { AuthProvider } from '@/lib/providers/auth-providers';
+import { cookies } from 'next/headers';
 
 export const metadata: Metadata = {
   title: '쇼츠테이블',
@@ -94,11 +96,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const initialToken = cookieStore.get('accessToken')?.value ?? null;
+
   return (
     <html lang='en'>
       <head>
@@ -122,7 +127,10 @@ export default function RootLayout({
         <link rel='icon' href='/favicon.ico' />
       </head>
       <body className='select-none antialiased mobile-area w-full h-screen bg-gray-200'>
-        <GlobalProvider>{children}</GlobalProvider>
+        <GlobalProvider>
+          {children}
+          <AuthProvider initialToken={initialToken} />
+        </GlobalProvider>
       </body>
     </html>
   );

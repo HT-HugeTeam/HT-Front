@@ -6,6 +6,8 @@ import { type OnboardingData, type OnboardingStep } from '@/types/onboarding';
 import { UserTypeStep } from './steps/user-type-step';
 import { NicknameStep } from './steps/nickname-step';
 import { AgreementsStep } from './steps/agreements-step';
+import { updateUserOnboardingStatus } from '@/lib/api/user/user';
+import { toast } from 'sonner';
 
 export function OnboardingFunnel() {
   const [onboardingData, setOnboardingData] = useState<Partial<OnboardingData>>(
@@ -62,14 +64,19 @@ export function OnboardingFunnel() {
   const handleOnboardingComplete = async (data: OnboardingData) => {
     try {
       // TODO: API 호출로 사용자 온보딩 데이터 저장
-      console.log('온보딩 완료:', data);
-
+      const result = await updateUserOnboardingStatus({
+        nickname: data.nickname,
+        role: 'USER',
+        termsOfServiceAccepted: data.agreements.terms,
+        privacyPolicyAccepted: data.agreements.privacy,
+        locationServiceAccepted: data.agreements.location,
+      });
+      console.log('result', result);
       // 성공 후 메인 페이지로 리디렉션
       const redirectPath = data.userType === 'owner' ? '/home' : '/home';
       window.location.href = redirectPath;
     } catch (error) {
-      console.error('온보딩 저장 실패:', error);
-      // TODO: 에러 처리 (토스트 메시지 등)
+      toast.error('온보딩 정보 저장 실패');
     }
   };
 

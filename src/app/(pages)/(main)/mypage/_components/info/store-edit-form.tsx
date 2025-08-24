@@ -3,10 +3,9 @@
 import { useMyPageStore } from '@/lib/stores/mypage-store';
 import { useStoreQuery } from '@/hooks/use-store-query';
 import { useEffect } from 'react';
-import { useStoreDetail } from '@/hooks/queries/use-store-detail';
+import { useStoreByUser } from '@/hooks/queries/use-store';
 import { FORM_FIELDS } from '@/lib/constants/style.constant';
 import { InputFormField } from '@/components/input-form-field';
-import { StoreMenuEditor } from './store-menu-editor';
 
 /**
  * Main Components (line 34)
@@ -16,19 +15,19 @@ import { StoreMenuEditor } from './store-menu-editor';
 // Main Components
 export function StoreEditForm() {
   const { edit } = useStoreQuery();
-  const { data: storeDetail } = useStoreDetail('donkatsu');
+  const { data: storeDetail } = useStoreByUser();
   const initializeFormData = useMyPageStore(state => state.initializeFormData);
   const resetFormData = useMyPageStore(state => state.resetFormData);
 
   useEffect(() => {
     if (storeDetail) {
-      initializeFormData(storeDetail);
+      initializeFormData(storeDetail[0]!);
     }
   }, [storeDetail]);
 
   useEffect(() => {
     if (!edit && storeDetail) {
-      resetFormData(storeDetail);
+      resetFormData(storeDetail[0]!);
     }
   }, [edit]);
 
@@ -36,21 +35,31 @@ export function StoreEditForm() {
 
   return (
     <>
+      {/* hidden input field store id */}
+      <InputFormField
+        field={{
+          key: 'id' as const,
+          type: 'input',
+          label: '가게 ID',
+          isHidden: true,
+        }}
+      />
       {/* 가게 상호명, 주소, 소개 */}
       {FORM_FIELDS.map(
         field =>
-          field.key !== 'storeNaverMap' && (
+          field.key !== 'naverUrl' &&
+          field.key !== 'id' && (
             <InputFormField key={field.key} field={field} />
           ),
       )}
 
       {/* 가게 메뉴 */}
-      <StoreMenuEditor />
+      {/* <StoreMenuEditor /> */}
 
       {/* 네이버 지도 연결 */}
       <InputFormField
         field={{
-          key: 'storeNaverMap' as const,
+          key: 'naverUrl' as const,
           type: 'input',
           label: '네이버 지도 연결',
         }}

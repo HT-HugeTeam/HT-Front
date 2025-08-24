@@ -26,18 +26,22 @@ export function StepLayout({
     <div className='min-h-screen bg-white flex flex-col mobile-area'>
       {/* Header */}
       <header className='pt-10 px-6 pb-2 flex items-center justify-between'>
-        <button
-          onClick={() => {
-            if (onBack) {
-              onBack();
-            } else {
-              router.back();
-            }
-          }}
-          className='cursor-pointer'
-        >
-          <LeftArrow />
-        </button>
+        {step > 1 ? (
+          <button
+            onClick={() => {
+              if (onBack) {
+                onBack();
+              } else {
+                router.back();
+              }
+            }}
+            className='cursor-pointer'
+          >
+            <LeftArrow />
+          </button>
+        ) : (
+          <div className='w-6 h-6' />
+        )}
       </header>
 
       {/* Progress Bar */}

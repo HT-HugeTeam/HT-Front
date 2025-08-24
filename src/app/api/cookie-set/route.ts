@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
@@ -9,18 +9,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '토큰이 필요합니다' }, { status: 400 });
     }
 
-    const cookieStore = await cookies();
+    const isProduction = process.env.NODE_ENV === 'production';
+    const response = NextResponse.json({ success: true });
 
-    // 토큰 쿠키 설정
-    cookieStore.set('accessToken', token as string, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-      maxAge: 60 * 60 * 24 * 7, // 7일
+    response.cookies.set('accessToken', token as string, {
+      httpOnly: isProduction,
+      secure: isProduction,
+      sameSite: isProduction ? 'lax' : 'strict',
+      maxAge: 60 * 60 * 24 * 7,
       path: '/',
     });
 
-    return NextResponse.json({ success: true });
+    return response;
   } catch (error) {
     return NextResponse.json(
       { error: '토큰 설정 중 오류가 발생했습니다' },
