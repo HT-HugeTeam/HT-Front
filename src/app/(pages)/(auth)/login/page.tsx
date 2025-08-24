@@ -6,6 +6,7 @@ import LoginMainBigLogo from '@/public/svg/logo/login-main-big.svg';
 import { redirect, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { useEffect } from 'react';
+import { apiClient } from '@/lib/api/axios-client-config';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,7 +16,10 @@ export default function LoginPage() {
     kakaoAuthService.login();
   };
   const handleGuestLogin = async () => {
-    const token = 'guest';
+    const tokenResponse: { accessToken: string } = await apiClient({
+      url: '/test/auth/login',
+      method: 'POST',
+    });
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_ROUTE_URL}/api/cookie-set`,
       {
@@ -23,7 +27,7 @@ export default function LoginPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({ token: tokenResponse.accessToken }),
       },
     );
     if (!response.ok) {

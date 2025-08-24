@@ -7,6 +7,10 @@ import { getVideoGenerationStatus } from '@/lib/api/video/video';
 
 export function useVideoGeneration(initialGenerationId: string) {
   const [generationId, setGenerationId] = useState<string | null>(null);
+  const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(
+    null,
+  );
+  const [generatedVideoId, setGeneratedVideoId] = useState<string | null>(null);
   const [status, setStatus] = useState<
     'IDLE' | 'IN_PROGRESS' | 'FINISHED' | 'FAILED'
   >('IDLE');
@@ -33,6 +37,8 @@ export function useVideoGeneration(initialGenerationId: string) {
         const result = await getVideoGenerationStatus(generationId);
         console.log('result:', result);
         setStatus(result.status ?? 'IDLE');
+        setGeneratedVideoUrl(result.generatedVideoUrl ?? null);
+        setGeneratedVideoId(result.videoGenerationId ?? null);
 
         // 상태별 프로그레스
         const progressMap = {
@@ -65,5 +71,11 @@ export function useVideoGeneration(initialGenerationId: string) {
     return () => clearInterval(interval);
   }, [generationId]);
 
-  return { status, progress, hasActiveGeneration: !!generationId };
+  return {
+    status,
+    progress,
+    hasActiveGeneration: !!generationId,
+    generatedVideoUrl: generatedVideoUrl,
+    generatedVideoId: generatedVideoId,
+  };
 }

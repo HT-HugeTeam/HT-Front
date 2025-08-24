@@ -10,9 +10,7 @@ import { toast } from 'sonner';
 import MakeVideoStartIcon from '@/public/svg/make-video/make-video-start.svg';
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
 import { useRouter } from 'next/navigation';
-import {
-  createVideoGeneration,
-} from '@/lib/api/video/video';
+import { createVideoGeneration } from '@/lib/api/video/video';
 
 export function VideoImageUpload() {
   const router = useRouter();
@@ -57,19 +55,26 @@ export function VideoImageUpload() {
           videoUrl: url,
         })),
         storeId: currentStore?.id ?? '',
-      }).then(response => {
-        if (!response.videoGenerationId) {
-          toast.error('영상 생성에 실패했습니다. 새로고침 후 다시 시도해주세요.');
+      })
+        .then(response => {
+          console.log('response:', response);
+          if (!response.videoGenerationId) {
+            toast.error(
+              '영상 생성에 실패했습니다. 새로고침 후 다시 시도해주세요.',
+            );
+            setIsProcessing(false);
+            return;
+          }
+          router.replace(
+            `/mypage/manage-video?generationId=${response.videoGenerationId}`,
+          );
+        })
+        .catch(() => {
+          toast.error(
+            '영상 생성에 실패했습니다. 새로고침 후 다시 시도해주세요.',
+          );
           setIsProcessing(false);
-          return;
-        }
-        router.replace(
-          `/mypage/manage-video?generationId=${response.videoGenerationId}`,
-        );
-      }).catch(() => {
-        toast.error('영상 생성에 실패했습니다. 새로고침 후 다시 시도해주세요.');
-        setIsProcessing(false);
-      });
+        });
     },
     onUploadError: error => {
       toast.error(error.message);

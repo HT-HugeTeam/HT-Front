@@ -10,7 +10,8 @@ export function VideoProgressHeader({
 }: {
   generationId: string;
 }) {
-  const { status, progress } = useVideoGeneration(generationId);
+  const { status, progress, generatedVideoUrl, generatedVideoId } =
+    useVideoGeneration(generationId);
 
   return (
     <header className='mt-8 p-6 w-full h-auto flex flex-col items-start gap-1 bg-white000 border border-gray100 rounded-[15px] shadow-[0_4px_10px_0_rgba(154,159,160,0.15)]'>
@@ -28,7 +29,7 @@ export function VideoProgressHeader({
               영상 제작이 완료되었어요!
             </h2>
             <Link
-              href={`/mypage/manage-video/${1}`}
+              href={`/mypage/manage-video/${generatedVideoId}`}
               className='flex items-center'
             >
               <span className='text-labelLargeMid text-orange400'>
