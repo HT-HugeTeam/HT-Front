@@ -51,15 +51,15 @@ export default function KakaoCallbackPage() {
   };
   useEffect(() => {
     let isMounted = true;
-    (async () => {
-      setIsLoading(true);
+    void (async () => {
+      void setIsLoading(true);
       try {
         await handleKakaoLogin();
         if (!isMounted) return;
         await handleOnboarding();
       } finally {
         if (!isMounted) return;
-        setIsLoading(false);
+        void setIsLoading(false);
       }
     })();
 

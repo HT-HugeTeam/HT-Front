@@ -22,7 +22,6 @@ export const StoreField = [
 
 export function StoreDetailUI() {
   const { data: storeDetail } = useStoreByUser();
-  console.log('storeDetail', storeDetail);
 
   return (
     <>
@@ -31,9 +30,7 @@ export function StoreDetailUI() {
         <FieldContainer
           key={field.label}
           label={field.label}
-          value={
-            storeDetail?.[0]?.[field.value as keyof StoreResponse]!
-          }
+          value={storeDetail?.[0]?.[field.value as keyof StoreResponse] ?? ''}
         />
       ))}
 

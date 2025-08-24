@@ -7,7 +7,7 @@ import { useMyPageStore } from '@/lib/stores/mypage-store';
 import { useMemo } from 'react';
 import { useMakeVideoQuery } from '@/hooks/use-make-video-query';
 import { useQueryClient } from '@tanstack/react-query';
-import { StoreResponse } from '@/types/api';
+import { type StoreResponse } from '@/types/api';
 
 type HeaderType =
   | 'STORE_INFO'

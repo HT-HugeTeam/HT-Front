@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const isProduction = process.env.NODE_ENV === 'production';
     const response = NextResponse.json({ success: true });
 
-    response.cookies.set('accessToken', token, {
+    response.cookies.set('accessToken', token as string, {
       httpOnly: isProduction,
       secure: isProduction,
       sameSite: isProduction ? 'lax' : 'strict',

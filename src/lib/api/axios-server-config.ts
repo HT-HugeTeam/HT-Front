@@ -1,9 +1,9 @@
 import axios from 'axios';
-import type { AxiosRequestConfig } from 'axios';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_ROUTE_URL ?? 'http://localhost:3000';
 
 // 기본 axios 인스턴스 생성
 const instance = axios.create({
@@ -17,7 +17,7 @@ const NO_AUTH_REQUIRED_PATHS = ['/auth/kakao-login'];
 
 instance.interceptors.request.use(
   async config => {
-    const requestPath = config.url || '';
+    const requestPath = config.url ?? '';
 
     // 인증이 필요하지 않은 경로는 토큰 체크 스킵
     const isNoAuthRequired = NO_AUTH_REQUIRED_PATHS.some(path =>
@@ -43,7 +43,7 @@ instance.interceptors.request.use(
 // Response 인터셉터 - 에러 처리
 instance.interceptors.response.use(
   response => response,
-  async error => {
+  async (error: AxiosError) => {
     if (error.response?.status === 401) {
       const cookieStore = await cookies();
       cookieStore.delete('accessToken');
@@ -51,7 +51,7 @@ instance.interceptors.response.use(
         window.location.href = '/login';
       }
     }
-    return Promise.reject(error as Error);
+    return Promise.reject(error);
   },
 );
 

@@ -20,7 +20,7 @@ export function VideoStoreEdit() {
     getCustomMenus,
   } = useVideoCreationStore();
   const [formData, setFormData] = useState<Partial<VideoStoreInfo>>(
-    currentStore || {},
+    currentStore ?? {},
   );
   const [newMenuItem, setNewMenuItem] = useState('');
 
@@ -42,19 +42,17 @@ export function VideoStoreEdit() {
     // 현재 메뉴 상태를 보존하면서 formData 업데이트
     updateStoreInfo({
       ...formData,
-      menus: currentStore?.menus || [], // 기존 메뉴 상태 유지
+      menus: currentStore?.menus ?? [], // 기존 메뉴 상태 유지
     });
     setCurrentStep('image-upload');
   };
 
   const handleAddMenuItem = () => {
     if (newMenuItem.trim()) {
-      console.log('Adding menu:', newMenuItem.trim());
       addMenu({
         name: newMenuItem.trim(),
       });
       setNewMenuItem('');
-      console.log('Menu added, customMenus:', getCustomMenus());
     }
   };
 
@@ -75,7 +73,7 @@ export function VideoStoreEdit() {
           <input
             type='text'
             id='name'
-            value={formData.name || ''}
+            value={formData.name ?? ''}
             onChange={e => handleInputChange('name', e.target.value)}
             className={`${INPUT_STYLES.base} ${INPUT_STYLES.input}`}
             placeholder='상호명을 입력하세요'
@@ -90,7 +88,7 @@ export function VideoStoreEdit() {
           <input
             type='text'
             id='address'
-            value={formData.address || ''}
+            value={formData.address ?? ''}
             onChange={e => handleInputChange('address', e.target.value)}
             className={`${INPUT_STYLES.base} ${INPUT_STYLES.input}`}
             placeholder='주소를 입력하세요'
@@ -107,7 +105,7 @@ export function VideoStoreEdit() {
           </label>
           <textarea
             id='description'
-            value={formData.description || ''}
+            value={formData.description ?? ''}
             onChange={e => handleInputChange('description', e.target.value)}
             className={`${INPUT_STYLES.base} ${INPUT_STYLES.textarea}`}
             placeholder='가게 소개를 입력하세요'
@@ -165,7 +163,7 @@ export function VideoStoreEdit() {
           <input
             type='text'
             id='naverUrl'
-            value={formData.naverUrl || ''}
+            value={formData.naverUrl ?? ''}
             onChange={e => handleInputChange('naverUrl', e.target.value)}
             className={`${INPUT_STYLES.base} ${INPUT_STYLES.input}`}
           />
@@ -189,61 +187,6 @@ export function VideoStoreEdit() {
           </button>
         </div>
       </div>
-    </div>
-  );
-}
-
-// 해시태그 입력 컴포넌트
-function HashtagInput({
-  value,
-  onChange,
-}: {
-  value: string[];
-  onChange: (tags: string[]) => void;
-}) {
-  const [inputValue, setInputValue] = useState('');
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      const tag = inputValue.trim().replace(/^#/, '');
-      if (tag && !value.includes(tag)) {
-        onChange([...value, tag]);
-        setInputValue('');
-      }
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    onChange(value.filter(tag => tag !== tagToRemove));
-  };
-
-  return (
-    <div className='space-y-2'>
-      <div className='flex flex-wrap gap-2'>
-        {value.map(tag => (
-          <span
-            key={tag}
-            className='inline-flex items-center px-2 py-1 bg-orange-100 text-orange-800 text-sm rounded-full'
-          >
-            #{tag}
-            <button
-              onClick={() => removeTag(tag)}
-              className='ml-1 text-orange-600 hover:text-orange-800'
-            >
-              ×
-            </button>
-          </span>
-        ))}
-      </div>
-      <input
-        type='text'
-        value={inputValue}
-        onChange={e => setInputValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-        className={`${INPUT_STYLES.base} ${INPUT_STYLES.input}`}
-        placeholder='해시태그 입력 후 Enter (예: 맛집, 신촌)'
-      />
     </div>
   );
 }

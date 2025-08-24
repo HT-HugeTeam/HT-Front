@@ -12,11 +12,11 @@ export default defineConfig({
       client: 'axios-functions',
       mode: 'tags-split',
       schemas: './src/types/api',
-    },
-    override: {
-      mutator: {
-        path: './src/lib/api/config.ts',
-        name: 'apiClient',
+      override: {
+        mutator: {
+          path: './src/lib/api/config.ts',
+          name: 'apiClient',
+        },
       },
     },
     hooks: {

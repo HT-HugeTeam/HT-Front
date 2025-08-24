@@ -2,7 +2,6 @@
 
 import { FORM_FIELDS } from '@/lib/constants/style.constant';
 import { InputFormField } from '@/components/input-form-field';
-import { StoreMenuEditor } from './store-menu-editor';
 
 export function StoreAddForm() {
   return (
@@ -14,9 +13,6 @@ export function StoreAddForm() {
             <InputFormField key={field.key} field={field} />
           ),
       )}
-
-      {/* 가게 메뉴 */}
-      {/* <StoreMenuEditor /> */}
 
       {/* 네이버 지도 연결 */}
       <InputFormField

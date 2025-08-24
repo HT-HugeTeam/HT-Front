@@ -10,16 +10,15 @@ import { toast } from 'sonner';
 import MakeVideoStartIcon from '@/public/svg/make-video/make-video-start.svg';
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
 import { useRouter } from 'next/navigation';
+import {
+  createVideoGeneration,
+} from '@/lib/api/video/video';
 
 export function VideoImageUpload() {
   const router = useRouter();
   const { currentStore, setCurrentStep, getCustomMenus } =
     useVideoCreationStore();
   const customMenus = getCustomMenus();
-
-  // 디버깅: 메뉴 상태 확인
-  console.log('VideoImageUpload - customMenus:', customMenus);
-  console.log('VideoImageUpload - currentStore.menus:', currentStore?.menus);
 
   // 업로드 상태
   const [isProcessing, setIsProcessing] = useState(false);
@@ -34,14 +33,43 @@ export function VideoImageUpload() {
   const { uploadFiles, isUploading, getUploadedUrls } = useUploadService({
     onUploadComplete: results => {
       const urls = getUploadedUrls(results);
-      console.log('업로드 완료된 URLs:', { urls });
 
-      // TODO: 영상 생성 API 호출
       setSelectedVideoFiles([]);
       setSelectedMenuImages({});
 
-      // 영상 생성 단계로 이동
-      setCurrentStep('video-generate');
+      const makeVideoText = currentStore?.description;
+      const imageUrls = urls.filter(url => url.includes('images/'));
+      const videoUrls = urls.filter(url => url.includes('videos/'));
+      const images = imageUrls.map((imageUrl, index) => {
+        // customMenus 배열의 순서대로 매칭 (업로드 순서와 동일하다고 가정)
+        const menu = customMenus[index];
+        return {
+          name: menu?.name ?? `메뉴 ${index + 1}`,
+          imageUrl: imageUrl,
+        };
+      });
+
+      // 영상 생성 API 호출을 비동기로 처리
+      void createVideoGeneration({
+        text: makeVideoText ?? '',
+        images: images,
+        videos: videoUrls.map(url => ({
+          videoUrl: url,
+        })),
+        storeId: currentStore?.id ?? '',
+      }).then(response => {
+        if (!response.videoGenerationId) {
+          toast.error('영상 생성에 실패했습니다. 새로고침 후 다시 시도해주세요.');
+          setIsProcessing(false);
+          return;
+        }
+        router.replace(
+          `/mypage/manage-video?generationId=${response.videoGenerationId}`,
+        );
+      }).catch(() => {
+        toast.error('영상 생성에 실패했습니다. 새로고침 후 다시 시도해주세요.');
+        setIsProcessing(false);
+      });
     },
     onUploadError: error => {
       toast.error(error.message);
@@ -50,10 +78,6 @@ export function VideoImageUpload() {
     validateBeforeUpload: true,
     uploadMode: 'sequential',
   });
-
-  if (!currentStore) {
-    return <div>가게 정보를 불러올 수 없습니다.</div>;
-  }
 
   const handleVideoFileSelect = (files: File[]) => {
     setSelectedVideoFiles(files);
@@ -93,28 +117,12 @@ export function VideoImageUpload() {
 
     setProgress(0);
     const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + 33.33;
-      });
+      setProgress(prev => Math.min(prev + 33.33, 90)); // 90%까지만
     }, 1000);
 
-    const timeout = setTimeout(() => {
-      setProgress(100);
-      clearInterval(interval);
-      router.push('/mypage/manage-video');
-    }, 3000);
+    return () => clearInterval(interval);
+  }, [isProcessing]);
 
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
-  }, [isProcessing, router]);
-
-  // 프로세싱 중일 때
   if (isProcessing) {
     return (
       <div className='w-full h-full flex-center'>
@@ -129,6 +137,9 @@ export function VideoImageUpload() {
         </div>
       </div>
     );
+  }
+  if (!currentStore) {
+    return <div>가게 정보를 불러올 수 없습니다.</div>;
   }
 
   return (

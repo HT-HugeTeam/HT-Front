@@ -1,110 +1,69 @@
-import { useState, useCallback } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { VideoGenerationService, type VideoGenerationInput, type PollingOptions } from '../services/video/VideoGenerationService';
-import type { VideoGenerationStatusResponse } from '../types/api';
+'use client';
 
-interface UseVideoGenerationOptions {
-  onSuccess?: (result: VideoGenerationStatusResponse) => void;
-  onError?: (error: Error) => void;
-  onStatusUpdate?: (status: VideoGenerationStatusResponse) => void;
-  pollingOptions?: PollingOptions;
-}
+// 숏폴링 훅
 
-export function useVideoGeneration(options?: UseVideoGenerationOptions) {
-  const [currentStatus, setCurrentStatus] = useState<VideoGenerationStatusResponse | null>(null);
-  const videoService = VideoGenerationService.getInstance();
+import { useState, useEffect } from 'react';
+import { getVideoGenerationStatus } from '@/lib/api/video/video';
 
-  // 영상 생성 뮤테이션
-  const generateVideoMutation = useMutation({
-    mutationFn: async (input: VideoGenerationInput) => {
-      return videoService.generateVideo(input, {
-        ...options?.pollingOptions,
-        onStatusUpdate: (status) => {
-          setCurrentStatus(status);
-          options?.onStatusUpdate?.(status);
-        },
-      });
-    },
-    onSuccess: (result) => {
-      setCurrentStatus(result);
-      options?.onSuccess?.(result);
-    },
-    onError: (error: Error) => {
-      console.error('영상 생성 오류:', error);
-      options?.onError?.(error);
-    },
-  });
+export function useVideoGeneration(initialGenerationId: string) {
+  const [generationId, setGenerationId] = useState<string | null>(null);
+  const [status, setStatus] = useState<
+    'IDLE' | 'IN_PROGRESS' | 'FINISHED' | 'FAILED'
+  >('IDLE');
+  const [progress, setProgress] = useState(0);
 
-  // 영상 생성 시작
-  const generateVideo = useCallback(
-    (input: VideoGenerationInput) => {
-      setCurrentStatus(null);
-      return generateVideoMutation.mutate(input);
-    },
-    [generateVideoMutation],
-  );
-
-  // 영상 생성 상태 폴링 (독립적으로 사용할 때)
-  const pollStatus = useCallback(
-    async (generationId: string) => {
-      try {
-        const result = await videoService.pollVideoGenerationStatus(generationId, {
-          ...options?.pollingOptions,
-          onStatusUpdate: (status) => {
-            setCurrentStatus(status);
-            options?.onStatusUpdate?.(status);
-          },
-        });
-        setCurrentStatus(result);
-        return result;
-      } catch (error) {
-        console.error('상태 폴링 오류:', error);
-        throw error;
+  useEffect(() => {
+    if (initialGenerationId) {
+      // 새로운 ID가 들어오면 로컬스토리지에 저장
+      localStorage.setItem('activeVideoGeneration', initialGenerationId);
+      setGenerationId(initialGenerationId);
+    } else {
+      // ID가 없으면 로컬스토리지에서 복원
+      const saved = localStorage.getItem('activeVideoGeneration');
+      if (saved) {
+        setGenerationId(saved);
       }
-    },
-    [videoService, options],
-  );
+    }
+  }, [initialGenerationId]);
+  useEffect(() => {
+    if (!generationId) return;
 
-  return {
-    // 상태
-    isGenerating: generateVideoMutation.isPending,
-    isError: generateVideoMutation.isError,
-    error: generateVideoMutation.error,
-    currentStatus,
-    
-    // 액션
-    generateVideo,
-    pollStatus,
-    
-    // 유틸리티
-    reset: () => {
-      generateVideoMutation.reset();
-      setCurrentStatus(null);
-    },
-  };
-}
+    const poll = async () => {
+      try {
+        const result = await getVideoGenerationStatus(generationId);
+        console.log('result:', result);
+        setStatus(result.status ?? 'IDLE');
 
-// 특정 영상 생성 상태를 조회하는 쿼리 훅
-export function useVideoGenerationStatus(
-  generationId: string | null,
-  options?: {
-    enabled?: boolean;
-    refetchInterval?: number;
-  },
-) {
-  const videoService = VideoGenerationService.getInstance();
+        // 상태별 프로그레스
+        const progressMap = {
+          IDLE: 33,
+          IN_PROGRESS: 66,
+          FINISHED: 100,
+          FAILED: 0,
+        };
+        setProgress(progressMap[result.status ?? 'IDLE']);
 
-  return useQuery({
-    queryKey: ['videoGenerationStatus', generationId],
-    queryFn: async () => {
-      if (!generationId) throw new Error('Generation ID is required');
-      const response = await videoService.pollVideoGenerationStatus(generationId, {
-        maxAttempts: 1, // 단일 조회만
+        if (['FINISHED', 'FAILED'].includes(result.status ?? 'IDLE')) {
+          localStorage.removeItem('activeVideoGeneration');
+          return true;
+        }
+
+        return false;
+      } catch (error) {
+        setStatus('FAILED');
+        return true;
+      }
+    };
+
+    const interval = setInterval(() => {
+      void poll().then(shouldStop => {
+        if (shouldStop) clearInterval(interval);
       });
-      return response;
-    },
-    enabled: !!generationId && (options?.enabled ?? true),
-    refetchInterval: options?.refetchInterval ?? 3000, // 3초마다 자동 갱신
-    refetchIntervalInBackground: false,
-  });
+    }, 5000);
+
+    void poll(); // 즉시 실행
+    return () => clearInterval(interval);
+  }, [generationId]);
+
+  return { status, progress, hasActiveGeneration: !!generationId };
 }

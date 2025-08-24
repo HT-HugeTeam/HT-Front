@@ -33,7 +33,7 @@ export function LogoutButton() {
         <span
           onClick={() => void setIsLogout(true)}
           className={clsx(
-            'text-bodyMedium text-gray600 hover:text-orange400 cursor-pointer',
+            'text-bodyMedium text-orange400 cursor-pointer',
             isLogout && 'text-orange400',
           )}
         >

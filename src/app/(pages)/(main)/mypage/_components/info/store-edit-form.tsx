@@ -3,10 +3,9 @@
 import { useMyPageStore } from '@/lib/stores/mypage-store';
 import { useStoreQuery } from '@/hooks/use-store-query';
 import { useEffect } from 'react';
-import { useStoreByUser, useStoreDetail } from '@/hooks/queries/use-store';
+import { useStoreByUser } from '@/hooks/queries/use-store';
 import { FORM_FIELDS } from '@/lib/constants/style.constant';
 import { InputFormField } from '@/components/input-form-field';
-import { StoreMenuEditor } from './store-menu-editor';
 
 /**
  * Main Components (line 34)

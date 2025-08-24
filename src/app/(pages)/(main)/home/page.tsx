@@ -58,8 +58,7 @@ export default async function HomePage() {
             가장 최근 영상 조회수
           </h4>
           <h1 className='text-[32px] leading-[30px] font-[500] text-orange400 flex gap-2 items-end'>
-            {HITS_COUNT.toLocaleString()}
-            <span className='text-labelLargeMid text-gray500'>회</span>
+            -<span className='text-labelLargeMid text-gray500'>회</span>
           </h1>
           <span className='absolute top-0 right-0'>
             <VideoLayerIcon />

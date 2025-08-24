@@ -1,3 +1,5 @@
+export const dynamic = 'force-static';
+
 import { Header } from '@/components/header';
 import { Suspense } from 'react';
 import { AroundSnsTab } from './_components/around-sns-tab';

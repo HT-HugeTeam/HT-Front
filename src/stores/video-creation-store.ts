@@ -57,15 +57,15 @@ export const useVideoCreationStore = create<VideoCreationState>((set, get) => ({
   setCurrentStore: (store: StoreResponse) => {
     set({
       currentStore: {
-        id: typeof store.id === 'string' ? store.id : String(store.id || 0),
-        name: store.name || '',
-        description: store.description || '',
-        address: store.address || '',
+        id: typeof store.id === 'string' ? store.id : String(store.id ?? 0),
+        name: store.name ?? '',
+        description: store.description ?? '',
+        address: store.address ?? '',
         phone: '',
         category: '',
         openingHours: '',
         menus: [],
-        naverUrl: store.naverUrl || '',
+        naverUrl: store.naverUrl ?? '',
       },
       currentStep: 'store-edit',
     });
@@ -134,12 +134,12 @@ export const useVideoCreationStore = create<VideoCreationState>((set, get) => ({
   // 유틸리티 함수들
   getCustomMenus: () => {
     const state = get();
-    return state.currentStore?.menus.filter(menu => menu.isCustom) || [];
+    return state.currentStore?.menus.filter(menu => menu.isCustom) ?? [];
   },
 
   getOriginalMenus: () => {
     const state = get();
-    return state.currentStore?.menus.filter(menu => !menu.isCustom) || [];
+    return state.currentStore?.menus.filter(menu => !menu.isCustom) ?? [];
   },
 
   resetStore: () => {

@@ -1,21 +1,31 @@
+'use client';
+
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
+import { useVideoGeneration } from '@/hooks/use-video-generation';
 import TinyArrowOrangeIcon from '@/public/svg/mypage/tiny-arrow-orange.svg';
 import Link from 'next/link';
-const FILE_PROGRESS = 72;
-const FILE_NAME = '파일명파일명파일명파일명파일명파일명파일명파일명파일명';
-const FILE_RESULT = true;
 
-export function VideoProgressHeader() {
+export function VideoProgressHeader({
+  generationId,
+}: {
+  generationId: string;
+}) {
+  const { status, progress } = useVideoGeneration(generationId);
+
   return (
     <header className='mt-8 p-6 w-full h-auto flex flex-col items-start gap-1 bg-white000 border border-gray100 rounded-[15px] shadow-[0_4px_10px_0_rgba(154,159,160,0.15)]'>
       <h3 className='text-labelLargeMid text-gray500'>
         새로운 영상이 제작중이에요!
+        <br />
+        <strong className='text-labelSmall text-orange400'>
+          (예상 소요 시간 : 3분)
+        </strong>
       </h3>
-      {FILE_RESULT ? (
+      {status === 'FINISHED' ? (
         <>
           <span className='mt-1 flex items-center justify-between w-full text-headlineLarge text-orange400'>
             <h2 className='max-w-[168px] truncate text-ellipsis line-clamp-1'>
-              {FILE_NAME}
+              영상 제작이 완료되었어요!
             </h2>
             <Link
               href={`/mypage/manage-video/${1}`}
@@ -30,13 +40,13 @@ export function VideoProgressHeader() {
         </>
       ) : (
         <>
-          <span className='mt-1 flex items-center justify-between w-full text-headlineLarge text-orange400'>
+          <span className='mt-1 flex items-center justify-between w-full text-headlineLarge text-orange500'>
             <h2 className='max-w-[168px] truncate text-ellipsis line-clamp-1'>
-              {FILE_NAME}
+              영상 제작이 진행중입니다
             </h2>
-            <p>{FILE_PROGRESS}%</p>
+            <p>{progress}%</p>
           </span>
-          <GradientProgressBar progress={FILE_PROGRESS} />
+          <GradientProgressBar progress={progress} />
         </>
       )}
     </header>
