@@ -4,7 +4,6 @@ import { useUserOnboarding } from '@/hooks/queries/use-user-onboarding';
 
 export function OwnerIntro() {
   const { data: user } = useUserOnboarding();
-  console.log('userInfo', user);
 
   return (
     <header className='pb-4 w-full h-auto flex flex-col items-start gap-2'>

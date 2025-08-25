@@ -42,7 +42,6 @@ export default function KakaoCallbackPage() {
   };
   const handleOnboarding = async () => {
     const result = await getOnboardingStatus();
-    console.log('result', result);
     if (!result.termsOfServiceAccepted) {
       redirect('/onboarding');
     } else {

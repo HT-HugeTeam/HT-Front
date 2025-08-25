@@ -57,7 +57,6 @@ export function VideoImageUpload() {
         storeId: currentStore?.id ?? '',
       })
         .then(response => {
-          console.log('response:', response);
           if (!response.videoGenerationId) {
             toast.error(
               '영상 생성에 실패했습니다. 새로고침 후 다시 시도해주세요.',

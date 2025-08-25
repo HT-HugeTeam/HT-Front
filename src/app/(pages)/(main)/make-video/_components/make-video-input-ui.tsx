@@ -54,12 +54,6 @@ export function MakeVideoInputUi({
 
       const urls = getUploadedUrls(results);
 
-      console.log('업로드 완료된 URLs:', { urls });
-      const imageUrls = urls.filter(url => url.includes('images/'));
-      const videoUrls = urls.find(url => url.includes('videos/'));
-      console.log('imageUrls:', imageUrls);
-      console.log('videoUrls:', videoUrls);
-
       // TODO: 추후 백엔드 API 연동 시 여기서 영상 생성 요청
     },
     onUploadError: error => {

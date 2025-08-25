@@ -14,7 +14,7 @@ export function StoreAddButton() {
         if (pathname === '/make-video') {
           router.push('/mypage/info?storeAdd=true');
         } else {
-          setStoreAdd(true);
+          void setStoreAdd(true);
         }
       }}
       className='px-5 py-2 w-full h-14 flex-center rounded-[15px] bg-gray100 gap-1 hover:bg-gray200 transition-colors duration-300 cursor-pointer'
