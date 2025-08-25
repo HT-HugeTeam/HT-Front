@@ -5,20 +5,25 @@ import { InfoStoreCard } from './info-store-card';
 import { InfoStoreDetail } from './info-store-detail';
 import { StoreAddButton } from '@/components/store-add-button';
 import { StoreAddForm } from './store-add-form';
-import { useStoreByUser } from '@/hooks/queries/use-store';
+import { LoadingSpinner } from '@/components/loading-spinner';
 import { InfoOwner } from './info-owner';
-import { type StoreResponse } from '@/types/api';
-import { LoadingSpinnerBasic } from '@/components/loading-spinner';
+import { useStoreByUser } from '@/hooks/queries/use-store';
+import { StoreResponse } from '@/types/api';
 
-export function InfoContents({
-  initialStoreData,
-}: {
-  initialStoreData: StoreResponse[];
-}) {
+export function InfoContents() {
   const { tabLabel, storeAdd } = useStoreQuery();
-  const { data: storeData } = useStoreByUser(initialStoreData);
 
-  if (!storeData?.[0]) {
+  const { data: storeDetail, isLoading } = useStoreByUser();
+
+  if (isLoading) {
+    return (
+      <div className='px-6 w-full h-full flex-center'>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (!storeDetail || storeDetail[0]?.name === '') {
     return (
       <>
         {!storeAdd ? (
@@ -39,7 +44,8 @@ export function InfoContents({
       {tabLabel === '가게 정보' && (
         <div className='py-8 w-full h-auto flex flex-col gap-4'>
           <InfoStoreCard
-            storeDetail={storeData[0] as Required<StoreResponse>}
+            key={storeDetail[0]?.name}
+            storeDetail={storeDetail[0] as Required<StoreResponse>}
           />
         </div>
       )}
