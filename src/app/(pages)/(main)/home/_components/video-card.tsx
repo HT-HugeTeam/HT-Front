@@ -1,32 +1,30 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
-import dynamic from 'next/dynamic';
+import { Video } from '@/types/api';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const ReactPlayer = dynamic(() => import('react-player'), {
-  ssr: false,
-}) as any;
-
-const videoSrc = 'https://www.youtube.com/watch?v=J7fJqDK9flg';
-
-export function VideoCard() {
-  const [isPlaying, setIsPlaying] = useState(false);
+export function VideoCard({ video }: { video: Video }) {
   return (
     <div className='relative min-w-[130px] h-auto flex flex-col items-start gap-2 aspect-[121/215] rounded-[10px] overflow-hidden cursor-pointer'>
-      <Suspense fallback={null}>
-        <ReactPlayer
-          url={videoSrc}
-          width='100%'
-          height='100%'
-          controls
-          muted
-          playing={true}
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-          loop
+      {video.videoUrl ? (
+        <video
+          src={video.videoUrl}
+          controls={true}
+          muted={true}
+          //   pip={false}
+          loop={true}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            borderRadius: '15px',
+            zIndex: 100,
+          }}
         />
-      </Suspense>
+      ) : (
+        <div className='flex-1 w-full h-auto flex-center bg-gray200 rounded-[15px]'>
+          <p className='text-bodySmall text-gray600'>영상 준비 중입니다...</p>
+        </div>
+      )}
     </div>
   );
 }

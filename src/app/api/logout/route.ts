@@ -7,8 +7,7 @@ export async function POST(request: NextRequest) {
 
     // accessToken � �
     cookieStore.delete('accessToken');
-
-    console.log('User logged out successfully');
+    localStorage.removeItem('accessToken');
 
     return NextResponse.json({
       success: true,

@@ -35,7 +35,6 @@ export function useVideoGeneration(initialGenerationId?: string) {
     const poll = async () => {
       try {
         const result = await getVideoGenerationStatus(generationId);
-        console.log(result);
         setStatus(result.status ?? 'IDLE');
         setGeneratedVideoUrl(result.generatedVideoUrl ?? null);
         setGeneratedVideoId(result.video?.id ?? null);

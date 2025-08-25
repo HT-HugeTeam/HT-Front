@@ -74,7 +74,6 @@ export const useMyPageStore = create<MyPageStore>((set, get) => ({
         description: get().formData.description,
         naverUrl: get().formData.naverUrl ?? '',
       });
-      console.log('response', response);
       toast.success('추가되었습니다.');
       return response;
     } else if (saveType === 'storeEdit') {
@@ -84,7 +83,6 @@ export const useMyPageStore = create<MyPageStore>((set, get) => ({
         description: get().formData.description,
         naverUrl: get().formData.naverUrl ?? '',
       });
-      console.log('update response', response);
 
       toast.success('수정되었습니다. 새로고침 후 적용됩니다.');
       return response;

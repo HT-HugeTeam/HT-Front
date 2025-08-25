@@ -5,13 +5,12 @@
  * API documentation for HT Server
  * OpenAPI spec version: 1.0
  */
-import type { Store } from './store';
 
 export interface Video {
   id?: string;
   createdAt?: string;
-  updatedAt?: string;
+  address?: string;
   videoUrl?: string;
   views?: number;
-  store?: Store;
+  storeName?: string;
 }

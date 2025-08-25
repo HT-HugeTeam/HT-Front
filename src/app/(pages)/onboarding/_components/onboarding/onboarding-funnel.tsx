@@ -71,7 +71,6 @@ export function OnboardingFunnel() {
         privacyPolicyAccepted: data.agreements.privacy,
         locationServiceAccepted: data.agreements.location,
       });
-      console.log('result', result);
       // 성공 후 메인 페이지로 리디렉션
       const redirectPath = data.userType === 'owner' ? '/home' : '/home';
       window.location.href = redirectPath;

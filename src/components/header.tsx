@@ -67,7 +67,6 @@ export function Header() {
     const handleClick = () => {
       if (edit || storeAdd) {
         const response = handleStoreSave(storeAdd ? 'storeAdd' : 'storeEdit');
-        console.log('response', response);
         void setEdit(false);
         void setStoreAdd(false);
         void queryClient.setQueryData(

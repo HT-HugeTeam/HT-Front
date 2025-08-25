@@ -15,7 +15,7 @@ export function VideoSection() {
       {videoList?.videos && videoList.videos.length > 0 ? (
         <div className='pb-3 w-full h-auto flex items-start gap-2 overflow-x-auto custom-scrollbar'>
           {videoList.videos.map(video => (
-            <VideoCard key={video.id} />
+            <VideoCard key={video.id} video={video} />
           ))}
         </div>
       ) : (

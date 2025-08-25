@@ -18,7 +18,6 @@ const NO_AUTH_REQUIRED_PATHS = ['/auth/kakao-login'];
 instance.interceptors.request.use(
   async config => {
     const requestPath = config.url ?? '';
-    console.log('🚀 Interceptor called for path:', requestPath);
 
     // 인증이 필요하지 않은 경로는 토큰 체크 스킵
     const isNoAuthRequired = NO_AUTH_REQUIRED_PATHS.some(path =>
@@ -26,19 +25,15 @@ instance.interceptors.request.use(
     );
 
     if (isNoAuthRequired) {
-      console.log('✅ No auth required for:', requestPath);
       return config;
     }
-    
-    console.log('🔐 Auth required for:', requestPath);
+
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('accessToken')?.value;
-    
+
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-      console.log('✅ Authorization header set for:', requestPath);
     } else {
-      console.log('❌ No access token found for:', requestPath);
       throw new Error('인증이 필요합니다');
     }
 

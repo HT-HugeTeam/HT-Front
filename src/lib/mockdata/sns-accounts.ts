@@ -178,20 +178,3 @@ export const FOOD_SOCIAL_ACCOUNTS: FoodSocialAccounts = {
 export const INSTAGRAM_FOOD_ACCOUNTS = FOOD_SOCIAL_ACCOUNTS.instagram;
 export const YOUTUBE_FOOD_ACCOUNTS = FOOD_SOCIAL_ACCOUNTS.youtube;
 export const TIKTOK_FOOD_ACCOUNTS = FOOD_SOCIAL_ACCOUNTS.tiktok;
-
-// 사용 예시
-/*
-  // 전체 데이터 사용
-  const allAccounts = FOOD_SOCIAL_ACCOUNTS;
-  
-  // 특정 플랫폼 데이터만 사용
-  const instagramAccounts = FOOD_SOCIAL_ACCOUNTS.instagram;
-  const youtubeAccounts = FOOD_SOCIAL_ACCOUNTS.youtube;
-  const tiktokAccounts = FOOD_SOCIAL_ACCOUNTS.tiktok;
-  
-  // 개별 계정 정보 접근
-  const firstInstagramAccount = FOOD_SOCIAL_ACCOUNTS.instagram[0];
-  console.log(firstInstagramAccount.name); // "먹깨비"
-  console.log(firstInstagramAccount.followers); // "156k"
-  console.log(firstInstagramAccount.url); // "https://instagram.com/mukggaebi_official"
-  */
