@@ -18,6 +18,7 @@ export function LogoutButton() {
         method: 'POST',
       },
     );
+    localStorage.removeItem('accessToken');
     if (!response.ok) {
       console.error('Failed to set cookie:', response.statusText);
       return;

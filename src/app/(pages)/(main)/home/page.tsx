@@ -9,6 +9,8 @@ import { getOnboardingStatusServer } from '@/lib/api/user/user-server';
 import { Suspense } from 'react';
 import { HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { dehydrate } from '@tanstack/react-query';
+import { getHomeData } from '@/lib/api/home/home';
+import { getOnboardingStatus } from '@/lib/api/user/user';
 
 const HOME_BUTTON_STYLE =
   'pl-6 py-6 w-full h-auto flex flex-col bg-white000 items-start gap-2 rounded-[15px] shadow-[0_4px_10px_0_rgba(154,159,160,0.15)] hover:bg-slate-50/40 transition-colors duration-300';
@@ -19,12 +21,12 @@ export default async function HomePage() {
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: ['home-data'],
-      queryFn: () => getHomeDataServer(),
+      queryFn: () => getHomeData(),
       staleTime: Infinity,
     }),
     queryClient.prefetchQuery({
       queryKey: ['user-onboarding'],
-      queryFn: () => getOnboardingStatusServer(),
+      queryFn: () => getOnboardingStatus(),
       staleTime: Infinity,
     }),
   ]);

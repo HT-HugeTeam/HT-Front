@@ -20,6 +20,7 @@ export default function LoginPage() {
       url: '/test/auth/login',
       method: 'POST',
     });
+    localStorage.setItem('accessToken', tokenResponse.accessToken);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_ROUTE_URL}/api/cookie-set`,
       {

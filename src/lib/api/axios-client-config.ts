@@ -27,7 +27,10 @@ instance.interceptors.request.use(
       return config;
     }
     const accessToken = useAuthStore.getState().accessToken;
-    if (accessToken !== null && accessToken !== undefined) {
+    if (accessToken === null && accessToken === undefined) {
+      const newAccessToken = localStorage.getItem('accessToken');
+      config.headers.Authorization = `Bearer ${newAccessToken}`;
+    } else {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 

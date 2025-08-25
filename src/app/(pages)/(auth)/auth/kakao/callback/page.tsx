@@ -24,6 +24,7 @@ export default function KakaoCallbackPage() {
     });
     const token = result.accessToken!;
     setAccessToken(token);
+    localStorage.setItem('accessToken', token);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_ROUTE_URL}/api/cookie-set`,
       {
