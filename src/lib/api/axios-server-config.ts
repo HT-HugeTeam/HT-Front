@@ -29,6 +29,8 @@ instance.interceptors.request.use(
     }
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('accessToken')?.value;
+    console.log('accessToken', accessToken);
+    console.log('cookieStore', cookieStore);
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     } else {
