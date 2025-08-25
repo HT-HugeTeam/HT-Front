@@ -32,7 +32,10 @@ instance.interceptors.request.use(
     console.log('accessToken', accessToken);
     console.log('cookieStore', cookieStore);
     if (accessToken) {
+      config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${accessToken}`;
+      console.log('Headers after setting:', config.headers);
+      console.log('Final config:', config);
     } else {
       throw new Error('인증이 필요합니다');
     }
