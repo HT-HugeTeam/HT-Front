@@ -5,6 +5,5 @@ export const getStoreByUserServer = () => {
   return apiServer<StoreResponse[]>({
     url: `/stores`,
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
   });
 };

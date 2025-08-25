@@ -42,10 +42,12 @@ export function VideoProgressHeader({
       ) : (
         <>
           <span className='mt-1 flex items-center justify-between w-full text-headlineLarge text-orange500'>
-            <h2 className='max-w-[168px] truncate text-ellipsis line-clamp-1'>
+            <h2 className='max-w-[200px] truncate text-ellipsis line-clamp-1'>
               {status === 'FAILED'
                 ? '영상 제작에 실패했어요'
-                : '영상 제작이 진행중입니다'}
+                : status === 'IDLE'
+                  ? '현재 제작중인 영상이 없습니다'
+                  : '영상 제작이 진행중입니다'}
             </h2>
             <p>{progress}%</p>
           </span>
