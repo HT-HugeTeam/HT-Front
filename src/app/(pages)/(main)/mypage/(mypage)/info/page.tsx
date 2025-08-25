@@ -1,3 +1,4 @@
+import { LoadingSpinner } from '@/components/loading-spinner';
 import { InfoContents } from '../../_components/info/info-contents';
 import { getStoreByUserServer } from '@/lib/api/store/store-server';
 import {
@@ -5,19 +6,20 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
+import { Suspense } from 'react';
 
 export default async function MyPageInfoPage() {
-  const queryClient = new QueryClient();
+  // const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ['store-user'],
-    queryFn: () => getStoreByUserServer(),
-    staleTime: Infinity,
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['store-user'],
+  //   queryFn: () => getStoreByUserServer(),
+  //   staleTime: Infinity,
+  // });
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <Suspense fallback={<LoadingSpinner />}>
       <InfoContents />
-    </HydrationBoundary>
+    </Suspense>
   );
 }
