@@ -3,12 +3,15 @@
 import { useState } from 'react';
 import { LoadingSpinner } from '@/components/loading-spinner';
 import { useRouter } from 'next/navigation';
-import type { VideoResponse } from '@/types/api';
 
-export function VideoPlayer() {
+export function VideoPlayer({
+  videoUrl,
+  videoId,
+}: {
+  videoUrl: string;
+  videoId: string;
+}) {
   const router = useRouter();
-  const videoUrl =
-    'https://f002.backblazeb2.com/file/creatomate-c8xg3hsxdu/6683c14f-7d35-45ea-9402-d87fd498f5a7.mp4';
 
   return (
     <>
@@ -40,7 +43,9 @@ export function VideoPlayer() {
             다시 만들기
           </button>
           <button
-            onClick={() => router.push(`/mypage/manage-video/1/video-check`)}
+            onClick={() =>
+              router.push(`/mypage/manage-video/${videoId}/video-check`)
+            }
             className='flex-1 w-full h-10 min-mobile:h-14 text-bodySmall rounded-[8px] bg-orange400 text-white000 cursor-pointer'
           >
             다음

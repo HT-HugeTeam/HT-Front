@@ -6,6 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 import type { VideoGenerationStatusResponseStatus } from './videoGenerationStatusResponseStatus';
+import { VideoResponse } from './videoResponse';
 
 /**
  * 영상 생성 상태 응답
@@ -21,4 +22,12 @@ export interface VideoGenerationStatusResponse {
   generatedVideoUrl?: string;
   /** 오류 메시지 */
   errorMessage?: string;
+  video?: {
+    id: string;
+    videoUrl: string;
+    address: string;
+    storeName: string;
+    views: number;
+    createdAt: string;
+  };
 }

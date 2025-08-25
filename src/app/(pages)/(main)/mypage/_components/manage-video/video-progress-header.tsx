@@ -10,8 +10,9 @@ export function VideoProgressHeader({
 }: {
   generationId: string;
 }) {
-  const { status, progress, generatedVideoUrl, generatedVideoId } =
+  const { status, progress, generatedVideoId } =
     useVideoGeneration(generationId);
+  console.log(generatedVideoId);
 
   return (
     <header className='mt-8 p-6 w-full h-auto flex flex-col items-start gap-1 bg-white000 border border-gray100 rounded-[15px] shadow-[0_4px_10px_0_rgba(154,159,160,0.15)]'>

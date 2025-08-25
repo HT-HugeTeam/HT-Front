@@ -5,7 +5,7 @@
 import { useState, useEffect } from 'react';
 import { getVideoGenerationStatus } from '@/lib/api/video/video';
 
-export function useVideoGeneration(initialGenerationId: string) {
+export function useVideoGeneration(initialGenerationId?: string) {
   const [generationId, setGenerationId] = useState<string | null>(null);
   const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(
     null,
@@ -35,10 +35,11 @@ export function useVideoGeneration(initialGenerationId: string) {
     const poll = async () => {
       try {
         const result = await getVideoGenerationStatus(generationId);
-        console.log('result:', result);
+        console.log(result);
         setStatus(result.status ?? 'IDLE');
         setGeneratedVideoUrl(result.generatedVideoUrl ?? null);
-        setGeneratedVideoId(result.videoGenerationId ?? null);
+        setGeneratedVideoId(result.video?.id ?? null);
+        localStorage.setItem('generatedVideoId', result.video?.id ?? '');
 
         // 상태별 프로그레스
         const progressMap = {

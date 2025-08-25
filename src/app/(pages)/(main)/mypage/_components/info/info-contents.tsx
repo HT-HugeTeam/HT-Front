@@ -10,11 +10,13 @@ import { InfoOwner } from './info-owner';
 import { type StoreResponse } from '@/types/api';
 import { LoadingSpinnerBasic } from '@/components/loading-spinner';
 
-export function InfoContents() {
+export function InfoContents({
+  initialStoreData,
+}: {
+  initialStoreData: StoreResponse[];
+}) {
   const { tabLabel, storeAdd } = useStoreQuery();
-  const { data: storeData, isLoading } = useStoreByUser();
-
-  if (isLoading) return <LoadingSpinnerBasic />;
+  const { data: storeData } = useStoreByUser(initialStoreData);
 
   if (!storeData?.[0]) {
     return (
