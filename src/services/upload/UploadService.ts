@@ -51,7 +51,7 @@ export class UploadService implements IUploadService {
       await serverS3Client.send(command);
 
       // public URL 생성
-      const publicUrl = `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+      const publicUrl = `https://${BUCKET_NAME}.s3.ap-southeast-2.amazonaws.com/${key}`;
 
       const result = {
         success: true,

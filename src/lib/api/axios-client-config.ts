@@ -7,7 +7,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 // 기본 axios 인스턴스 생성
 const instance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 50000,
+  timeout: 500000000,
   withCredentials: true,
 });
 
