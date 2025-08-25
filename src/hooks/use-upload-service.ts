@@ -4,14 +4,8 @@ import { useState, useCallback } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { UploadService } from '@/services/upload/UploadService';
 import { FileValidationService } from '@/services/upload/FileValidationService';
-import type {
-  UploadResult,
-  ValidationResult,
-} from '@/services/upload/types';
-import {
-  DEFAULT_UPLOAD_CONFIG,
-  UploadError,
-} from '@/services/upload/types';
+import type { UploadResult, ValidationResult } from '@/services/upload/types';
+import { DEFAULT_UPLOAD_CONFIG, UploadError } from '@/services/upload/types';
 import { toast } from 'sonner';
 
 interface UseUploadServiceOptions {

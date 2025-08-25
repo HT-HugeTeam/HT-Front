@@ -5,9 +5,8 @@ export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
 
-    // accessToken � �
+    // accessToken
     cookieStore.delete('accessToken');
-    localStorage.removeItem('accessToken');
 
     return NextResponse.json({
       success: true,

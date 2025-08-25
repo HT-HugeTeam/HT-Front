@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useVideoCreationStore } from '@/stores/video-creation-store';
-import { useUploadService } from '@/hooks/use-upload-service';
 import { VideoUploadCard } from './video-upload-card';
 import { ImageUploadCard } from './image-upload-card';
 import { FieldContainer } from '@/components/store-info';
@@ -11,6 +10,7 @@ import MakeVideoStartIcon from '@/public/svg/make-video/make-video-start.svg';
 import { GradientProgressBar } from '@/components/gradient-progress-bar';
 import { useRouter } from 'next/navigation';
 import { createVideoGeneration } from '@/lib/api/video/video';
+import { useUploadService } from '@/hooks/use-upload-service';
 
 export function VideoImageUpload() {
   const router = useRouter();
@@ -79,8 +79,6 @@ export function VideoImageUpload() {
       toast.error(error.message);
       setIsProcessing(false);
     },
-    validateBeforeUpload: true,
-    uploadMode: 'sequential',
   });
 
   const handleVideoFileSelect = (files: File[]) => {

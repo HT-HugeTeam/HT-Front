@@ -1,12 +1,7 @@
-import type {
-  IUploadService,
-  UploadResult,
-  UploadOptions,
-} from './types';
-import {
-  DEFAULT_UPLOAD_CONFIG,
-  UploadError,
-} from './types';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import type { IUploadService, UploadResult, UploadOptions } from './types';
+import { DEFAULT_UPLOAD_CONFIG, UploadError } from './types';
+import { BUCKET_NAME, serverS3Client } from '@/lib/utils/server-s3-client';
 
 export class UploadService implements IUploadService {
   private static instance: UploadService;
@@ -30,27 +25,58 @@ export class UploadService implements IUploadService {
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
+      // const response = await fetch('/api/upload', {
+      //   method: 'POST',
+      //   body: formData,
+      // });
+      const file = formData.get('file') as File;
+      const timestamp = Date.now();
+      const randomString = Math.random().toString(36).substring(2, 15);
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      const fileType = file.type.startsWith('image/') ? 'images' : 'videos';
+      const key = `uploads/${fileType}/${timestamp}-${randomString}.${fileExtension}`;
+      const buffer = Buffer.from(await file.arrayBuffer());
+
+      // S3에 업로드
+      const command = new PutObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: key,
+        Body: buffer,
+        ContentType: file.type,
+        Metadata: {
+          originalName: Buffer.from(file.name, 'utf-8').toString('base64'),
+          uploadedAt: new Date().toISOString(),
+        },
       });
+      await serverS3Client.send(command);
 
-      if (!response.ok) {
-        const errorData = await response.json() as { error?: string };
-        throw new UploadError(
-          errorData.error ?? '업로드에 실패했습니다.',
-          'UPLOAD_FAILED',
-          file.name,
-        );
-      }
+      // public URL 생성
+      const publicUrl = `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 
-      const result = await response.json() as {
-        url: string;
-        fileName: string;
-        fileSize: number;
-        fileType: string;
-        metadata?: Record<string, unknown>;
+      const result = {
+        success: true,
+        url: publicUrl,
+        fileName: file.name,
+        fileSize: file.size,
+        fileType: file.type,
       };
+
+      // if (!response.ok) {
+      //   const errorData = await response.json() as { error?: string };
+      //   throw new UploadError(
+      //     errorData.error ?? '업로드에 실패했습니다.',
+      //     'UPLOAD_FAILED',
+      //     file.name,
+      //   );
+      // }
+
+      // const result = await response.json() as {
+      //   url: string;
+      //   fileName: string;
+      //   fileSize: number;
+      //   fileType: string;
+      //   metadata?: Record<string, unknown>;
+      // };
 
       return {
         success: true,
@@ -59,7 +85,6 @@ export class UploadService implements IUploadService {
         fileSize: result.fileSize,
         fileType: result.fileType,
         uploadTime: Date.now(),
-        metadata: result.metadata ?? {},
       };
     } catch (error) {
       if (error instanceof UploadError) {
